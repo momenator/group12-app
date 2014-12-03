@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+		<style>
+			#logo-main{
+				display:block;
+				float:left;
+				margin-top: 10px;
+				margin-left: 40px;
+			}
+			#search-results-header{
+				margin-left: 40px;
+			}
+			#search-box {
+				width:600px;
+				margin-right:20px;
+			}
+			#search-form{
+				width:850px;
+				position: relative;
+				display:block;
+				margin-left:135px;
+				margin-top:45px;
+				position: absolute;
+			}
+			#search-results-box{
+				padding: 20px;
+				max-width: 100%;
+			}
+			#pic{
+				display:block;
+				margin: 0 auto;
+				margin-top: 4%;
+			}
+			#tags{
+				width: 270px;
+				height: 150px;
+				overflow: hidden;
+				border: 2px solid #eee;
+				margin: 0 auto;
+				margin-bottom: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<div style="position:absolute;display:block;margin-top:20px;margin-left:150px;font-size:16px;"><p><strong>British Library Image Collection Search</strong></p></div>
+		<img id="logo-main" src="http://s3.amazonaws.com/libapps/accounts/7637/images/british_library1.jpg" height="100" width="100">	
+		<form class="navbar-form" role="search" id="search-form">
+	        <div class="form-group">
+	        	<input type="text" class="form-control" placeholder="Search" id="search-box"> 
+	        </div>
+	        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span>&nbsp&nbspSearch</button>
+      	</form>
+       	<hr style="width:100%;">
+       	<a href="www.facebook.com"><h4 style="margin-left:50px"><span class="glyphicon glyphicon-arrow-left"></span>
+back to results</h4></a>
+		<div style="width:330px;float:right;margin-top:-40px">
+			<p>Tag categories</p>
+			<span class="label label-default">Period</span>
+			<span class="label label-primary">Location</span>
+			<span class="label label-success">Description</span>
+			<span class="label label-info">Publisher</span>
+			<span class="label label-warning">Author</span>
+		</div>
+       	<div style="text-align:center">
+       		<img id="pic" src="http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2013/12/16/1387199098529/British-Library-Flickr-007.jpg"/>
+       		<h3>Ramphorynchus</h3>
+       		<p>Source : <a href="www.facebook.com">flickr</a><br></p>	
+       		<br>
+       		<h4>Tags</h4>
+       		<div id="tags">
+       			<span class="label label-default">Ancient</span>
+       			<span class="label label-default">Jurassic</span>
+       			<span class="label label-primary">Europe</span>
+       			<span class="label label-default">2010</span>
+				<span class="label label-success">Chordata</span>
+				<span class="label label-primary">England</span>
+				<span class="label label-primary">Tanzania</span>
+				<span class="label label-primary">Spain</span>
+				<span class="label label-primary">Portugal</span>
+				<span class="label label-success">Flying</span>
+				<span class="label label-success">long-tailed</span>
+				<span class="label label-success">pterosaurs</span>
+				<span class="label label-info">British Library</span>
+				<span class="label label-warning">British Library</span>
+				<span class="label label-success">rhamphorhynchus</span>
+				<span class="label label-success">pterodactylus</span>
+
+       		</div>
+       	</div>
+	</body>
+</html>

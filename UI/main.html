@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+		<style>
+			#logo-main{
+				display:block;
+				margin: 0 auto;
+				margin-top: 5%;
+			}
+			h1,p{
+				text-align: center;
+			}
+			#search-box {
+				width:650px;
+				margin-right:20px;
+			}
+			#search-form{
+				width:800px;
+				display:block;
+				margin:0 auto;
+				margin-top:40px;
+			}
+
+			.btn-tag{
+				width: auto;
+				display: block;
+				margin:0 auto;
+			}
+
+			#help-bl{
+				margin-top: 150px;
+			}
+		</style>
+	</head>
+	<body>
+		<img id="logo-main" src="http://s3.amazonaws.com/libapps/accounts/7637/images/british_library1.jpg" height="250" width="250">	
+		<h1>British Library Image Collection</h1>
+		<form class="navbar-form" role="search" id="search-form">
+	        <div class="form-group">
+	        	<input type="text" class="form-control" placeholder="Search" id="search-box"> 
+	        </div>
+	        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span>&nbsp&nbspSearch</button>
+      	</form>
+      	<p id="help-bl">Contribute to British Library by tagging untagged images below</p>
+      	<button type="submit" class="btn btn-default btn-tag">I want to tag images</button>
+	</body>
+</html>
