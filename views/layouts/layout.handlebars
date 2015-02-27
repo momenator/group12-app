@@ -7,6 +7,25 @@
     	<title>BL Web App</title>
 
     	<link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+    	<script type="text/javascript" src="javascripts/jquery-1.11.2.min.js"></script>
+    	<script>
+    		$(document).ready(function(){
+    			var request = $.ajax({
+				  url: "http://bldata.herokuapp.com/images/random",
+				  type: "GET",
+				  dataType: "json"
+				}).done(function(data){
+					$("#image-here").append('<img src="' + data.flickr_thumb_jpeg+'" />');
+					console.log(data);
+				});
+    		});
+    	</script>
+
+    	<style>
+    		#image-here{
+    			width:75%;
+    		}
+    	</style>
 	</head>
 	<body>
 		{{{body}}}
