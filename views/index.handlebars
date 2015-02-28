@@ -1,4 +1,9 @@
 <div>
-	<h1>Hello World {{title}}</h1>
-	<div id="image-here"></div> 
+	<h1>Hello World </h1>
+	<img src="{{url}}" />
+	<ul>
+		{{#each results}}
+		<li> {{this.text}} | {{this.score}} </li>
+		{{/each}}
+	</ul>
 </div>

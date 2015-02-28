@@ -5,7 +5,7 @@ var request = require('request');
 
 
 // this is the function to make calls to 
-var demo_url = 'https://farm3.staticflickr.com/2877/11232456223_0aa1e12247_q.jpg';
+//var demo_url = 'https://farm3.staticflickr.com/2877/11232456223_0aa1e12247_q.jpg';
 function image_keywords(req, res, output) {
 	alchemyapi.image_keywords('url', demo_url, {}, function(response) {
 		output['image_keywords'] = { url:demo_url, response:JSON.stringify(response,null,4), results:response };
@@ -19,16 +19,18 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	alchemyapi.image_keywords('url', demo_url, {}, function(response) {
-		res.render( 'index', { title: 'Express' } );
-		console.log(response);
-		//res.render('index',{title: output});
-	});
-
+	
 	request('http://bldata.herokuapp.com/images/random', function (error, response, body) {
 	  if (!error && response.statusCode == 200) {
-	    //console.log(body); 
-	    console.log(JSON.parse(response.body)._id);// Show the HTML for the Google homepage. 
+	    console.log("original jpeg > " + JSON.parse(response.body).flickr_original_jpeg); 
+	    console.log(JSON.parse(response.body).flickr_thumb_jpeg);// Show the HTML for the Google homepage. 
+		var url = JSON.parse(response.body).flickr_thumb_jpeg;
+		alchemyapi.image_keywords('url', url, {}, function(response) {
+			console.log(response);
+			console.log(response.imageKeywords);
+			res.render( 'index', { url: response.url, results: response.imageKeywords } );
+			//res.render('index',{title: output});
+		});
 	  }
 	});
   	//res.render( 'index', { title: 'Express' } );	
