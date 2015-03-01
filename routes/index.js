@@ -1,5 +1,5 @@
 var http = require('http');
-var AlchemyAPI = require('../alchemyapi');
+var AlchemyAPI = require('../lib/alchemy/alchemyapi');
 var alchemyapi = new AlchemyAPI();
 var request = require('request');
 
@@ -29,11 +29,9 @@ router.get('/', function(req, res, next) {
 			console.log(response);
 			console.log(response.imageKeywords);
 			res.render( 'index', { url: response.url, results: response.imageKeywords } );
-			//res.render('index',{title: output});
 		});
 	  }
 	});
-  	//res.render( 'index', { title: 'Express' } );	
 });
 
 module.exports = router;
