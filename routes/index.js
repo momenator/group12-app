@@ -2,23 +2,14 @@ var http = require('http');
 var AlchemyAPI = require('../lib/alchemy/alchemyapi');
 var alchemyapi = new AlchemyAPI();
 var request = require('request');
-
-
-// this is the function to make calls to 
-//var demo_url = 'https://farm3.staticflickr.com/2877/11232456223_0aa1e12247_q.jpg';
-function image_keywords(req, res, output) {
-	alchemyapi.image_keywords('url', demo_url, {}, function(response) {
-		output['image_keywords'] = { url:demo_url, response:JSON.stringify(response,null,4), results:response };
-		res.render('example',output);
-	});
-}
-
 var express = require('express');
 var router = express.Router();
 
-
-/* GET home page. */
 router.get('/', function(req, res, next) {
+	res.render('index', {});
+});
+
+router.get('/alchemy', function(req, res, next) {
 	
 	request('http://bldata.herokuapp.com/images/random', function (error, response, body) {
 	  if (!error && response.statusCode == 200) {
@@ -28,10 +19,23 @@ router.get('/', function(req, res, next) {
 		alchemyapi.image_keywords('url', url, {}, function(response) {
 			console.log(response);
 			console.log(response.imageKeywords);
-			res.render( 'index', { url: response.url, results: response.imageKeywords } );
+			res.render( 'image', { title:'Alchemy API' ,url: response.url, results: response.imageKeywords } );
 		});
 	  }
 	});
+});
+
+router.get('/camfind',function(req, res, next) {
+
+	res.render('image', { title: 'Camfind API' });
+
+});
+
+
+router.get('/imagga',function(req, res, next) {
+
+	res.render('image', {title : 'Imagga API'});
+
 });
 
 module.exports = router;

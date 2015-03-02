@@ -1,0 +1,9 @@
+<div>
+	<h1>{{title}}</h1>
+	<img src="{{url}}" />
+	<ul>
+		{{#each results}}
+		<li> {{this.text}} | {{this.score}} </li>
+		{{/each}}
+	</ul>
+</div>
