@@ -3,7 +3,12 @@
 	<img src="{{url}}" />
 	<ul>
 		{{#each results}}
-		<li> {{this.text}} | {{this.score}} </li>
+			{{#if this.text}}
+				<li> tag :: {{this.text}} | score :: {{this.score}} </li>
+			{{/if}}
+			{{#if this.tag}}
+				<li> tag :: {{this.tag}} | score :: {{this.confidence}} </li>
+			{{/if}}
 		{{/each}}
 	</ul>
 </div>
