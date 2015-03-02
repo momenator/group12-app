@@ -20,13 +20,25 @@
 					console.log(data);
 				});
 				*/
-				()
     		});
 			
     	</script>
 
     	<style>
-    		
+    	@-webkit-keyframes thumb {
+			0% { -webkit-transform: scale(1); }
+			50% { -webkit-transform: scale(0.95); }
+			100% { -webkit-transform: scale(1); }
+		}
+
+		.bl-logo
+		{
+			-webkit-animation-name: thumb;
+			-webkit-animation-duration: 5000ms;
+			-webkit-transform-origin:50% 50%;
+			-webkit-animation-iteration-count:99999999;
+			-webkit-animation-timing-function: linear;
+		}
     	</style>
 	</head>
 	<body>
