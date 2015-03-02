@@ -1,6 +1,5 @@
 var AlchemyAPI = require('../lib/alchemy/alchemyapi');
 var alchemyapi = new AlchemyAPI();
-var unirest = require('unirest');
 var request = require('request');
 var express = require('express');
 var router = express.Router();
@@ -24,31 +23,48 @@ router.get('/alchemy', function(req, res, next) {
 });
 
 router.get('/camfind',function(req, res, next) {
-	/*
 	request('http://bldata.herokuapp.com/images/random', function (error, response, body) {
 	  if (!error && response.statusCode == 200) {
 	    console.log("original jpeg > " + JSON.parse(response.body).flickr_original_jpeg); 
 	    console.log(JSON.parse(response.body).flickr_thumb_jpeg);// Show the HTML for the Google homepage. 
 		var url = JSON.parse(response.body).flickr_thumb_jpeg;
-		unirest.post("https://camfind.p.mashape.com/image_requests")
-			.header("X-Mashape-Key", "GTBYDQFyOxmshDs2wkncNpnUSw4Op1RII4XjsniOkwIP1IIJab")
-			.header("Content-Type", "application/x-www-form-urlencoded")
-			.header("Accept", "application/json")
-			.send("focus[x]", "480")
-			.send("focus[y]", "640")
-			.send("image_request[altitude]", "27.912109375")
-			.send("image_request[language]", "en")
-			.send("image_request[latitude]", "35.8714220766008")
-			.send("image_request[locale]", "en_US")
-			.send("image_request[longitude]", "14.3583203002251")
-			.send("image_request[remote_image_url]", "http://upload.wikimedia.org/wikipedia/en/2/2d/Mashape_logo.png")
-			.end(function (result) {
-			  console.log(result.body);
+		request.post({
+			url : 'https://camfind.p.mashape.com/image_requests',
+			headers: {
+				'X-Mashape-Key':'0PHOUEsrVsmsh4kV3i9X5FFqfof4p1maU5Vjsn62WwTuW8AIxn',
+				'Content-Type' :'application/x-www-form-urlencoded',
+				'Accept' : 'application/json'
+			},
+			form:{
+				focus : {
+					x: 480,
+					y: 640
+				},
+				image_request : {
+					locale: 'en_US',
+					remote_image_url : url
+				}
+			}
+		}, function (error, httpResponse, body){
+			console.log(body);
+			console.log(JSON.parse(body));
+			console.log(JSON.parse(body).token);
+			var uri = JSON.parse(body).token;
+			request.get({
+				url: 'https://camfind.p.mashape.com/image_responses/' + uri,
+				headers :{
+					'X-Mashape-Key':'0PHOUEsrVsmsh4kV3i9X5FFqfof4p1maU5Vjsn62WwTuW8AIxn',
+					'Accept' : 'application/json'
+				}
+			}, function (error, httpResponse, body){
+				console.log(body);
+				res.render('image' , { title : 'Camfind API', url: url} );
 			});
+			
+		});
 	  }
 	});
-	*/
-	res.render('image' , {title : 'Camfind API'} );
+
 });
 
 
@@ -62,7 +78,8 @@ router.get('/imagga',function(req, res, next) {
 		    	username:"acc_3a8a3280ff382f5",
 		    	password: "a5c945ee52846e612ff5705d6ce2e1a8"
 		    }
-		}, function(err, httpResponse, body) {
+		}, function (err, httpResponse, body) {
+			var response = JSON.parse(body);
 		    res.render('image', {title : 'Imagga API', url:uri, results: response.results[0].tags});
 		});
 	  } else {
