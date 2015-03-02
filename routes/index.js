@@ -1,4 +1,3 @@
-var http = require('http');
 var AlchemyAPI = require('../lib/alchemy/alchemyapi');
 var alchemyapi = new AlchemyAPI();
 var unirest = require('unirest');
