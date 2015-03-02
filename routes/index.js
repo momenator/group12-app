@@ -21,6 +21,9 @@ router.get('/alchemy', function(req, res, next) {
 			console.log(response.imageKeywords);
 			res.render( 'image', { title:'Alchemy API' ,url: response.url, results: response.imageKeywords } );
 		});
+	  } else {
+	  	console.log(error);
+	  	res.send('<h2>ERROR<h2><br>' + error);
 	  }
 	});
 });
@@ -50,6 +53,7 @@ router.get('/camfind',function(req, res, next) {
 	  }
 	});
 	*/
+	res.render('image' , {title : 'Camfind API'} );
 });
 
 
@@ -71,6 +75,9 @@ router.get('/imagga',function(req, res, next) {
 		    res.render('image', {title : 'Imagga API', url:uri, results: response.results[0].tags});
 
 		});
+	  } else {
+	  	console.log(error);
+	  	res.send('<h2>ERROR<h2><br>' + error);
 	  }
 	});
 
