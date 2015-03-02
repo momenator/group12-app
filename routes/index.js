@@ -9,16 +9,11 @@ router.get('/', function(req, res, next) {
 	res.render('index', {});
 });
 
-router.get('/alchemy', function(req, res, next) {
-	
+router.get('/alchemy', function(req, res, next) {	
 	request('http://bldata.herokuapp.com/images/random', function (error, response, body) {
 	  if (!error && response.statusCode == 200) {
-	    console.log("original jpeg > " + JSON.parse(response.body).flickr_original_jpeg); 
-	    console.log(JSON.parse(response.body).flickr_thumb_jpeg);// Show the HTML for the Google homepage. 
-		var url = JSON.parse(response.body).flickr_thumb_jpeg;
+	    var url = JSON.parse(response.body).flickr_thumb_jpeg;
 		alchemyapi.image_keywords('url', url, {}, function(response) {
-			console.log(response);
-			console.log(response.imageKeywords);
 			res.render( 'image', { title:'Alchemy API' ,url: response.url, results: response.imageKeywords } );
 		});
 	  } else {
@@ -60,9 +55,7 @@ router.get('/camfind',function(req, res, next) {
 router.get('/imagga',function(req, res, next) {
 	request('http://bldata.herokuapp.com/images/random', function (error, response, body) {
 	  if (!error && response.statusCode == 200) {
-	    console.log("original jpeg > " + JSON.parse(response.body).flickr_original_jpeg); 
-	    console.log(JSON.parse(response.body).flickr_thumb_jpeg);// Show the HTML for the Google homepage. 
-		var uri = JSON.parse(response.body).flickr_thumb_jpeg;
+	    var uri = JSON.parse(response.body).flickr_thumb_jpeg;
 		request.get({
 		    url:'https://api.imagga.com/v1/tagging?url='+ uri,
 		    auth: {
@@ -70,10 +63,7 @@ router.get('/imagga',function(req, res, next) {
 		    	password: "a5c945ee52846e612ff5705d6ce2e1a8"
 		    }
 		}, function(err, httpResponse, body) {
-		    var response = JSON.parse(body);
-		    console.log( response.results[0].tags);
 		    res.render('image', {title : 'Imagga API', url:uri, results: response.results[0].tags});
-
 		});
 	  } else {
 	  	console.log(error);
