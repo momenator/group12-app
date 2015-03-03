@@ -1,8 +1,8 @@
-<div>
+<div style="width:75%;margin:0 auto">
 	<img class="bl-logo" src="/images/bl-logo.jpg" height=75 width=100>
 	<a href="/">Home</a>
-
-	<h1>{{title}}</h1>
+	<h1>{{apiName}}</h1>
+	<h2>{{title}}</h2>
 	<img src="{{url}}" />
 	<ul>
 		{{#each results}}
@@ -13,5 +13,33 @@
 				<li> tag :: {{this.tag}} | score :: {{this.confidence}} </li>
 			{{/if}}
 		{{/each}}
+	</ul>
+	<h3>Details</h3>
+	<ul>
+		<li>release date: {{dateField}}</li>
+		<li>BL shelf :
+			<ul>
+				{{#each shelfmarks}}
+				<li>{{this}}</li>
+				{{/each}}
+			</ul>
+		</li>
+		<li>Title :
+			<ul>
+				{{#each title}}
+				<li>{{this}}</li>
+				{{/each}}
+			</ul>
+		</li>
+		<li>Edition : {{edition}}</li>
+		<li>Place : {{place}} </li>
+		<li>Issuance: {{issuance}}</li>
+		<li>Authors:
+			<ul>
+				{{#each authors.creator}}
+					<li>{{this}}</li>
+				{{/each}}
+			</ul>
+		</li>
 	</ul>
 </div>
