@@ -3,73 +3,89 @@ var alchemyapi = new AlchemyAPI();
 var request = require('request');
 var express = require('express');
 var router = express.Router();
+var mongo = require('mongodb');
+var MongoClient = mongo.MongoClient;
+var client = new MongoClient();
+var db;
+
+client.connect("mongodb://***:***@ds049171.mongolab.com:49171/bl-dataset",function(err, db) {
+    if(err) {
+    	console.log(err);
+        console.log("Connection to database failed.");
+    } else {
+        collection = db.collection("images");
+        console.log("Connection to database succeded.")
+    }
+});
 
 router.get('/', function(req, res, next) {
 	res.render('index', {});
 });
 
+router.get('/search', function(req, res, next){
+	res.render('search',{});
+});
+
+router.get('/search', function(req, res, next){
+	res.render('search',{});
+});
+
+
 router.get('/alchemy', function(req, res, next) {	
-	request('http://bldata.herokuapp.com/images/random', function (error, response, body) {
-	  if (!error && response.statusCode == 200) {
-	    var url = JSON.parse(response.body).flickr_thumb_jpeg;
-	    var originalUrl = JSON.parse(response.body).flickr_original_jpeg;
-	    var details = JSON.parse(response.body).biblioasjson;
-		alchemyapi.image_keywords('url', url, {}, function(response) {
-			res.render( 'image', { 
-				apiName:'Alchemy API' ,
-				url: originalUrl, 
-				results: response.imageKeywords,
-				dateField: details.datefield,
-				shelfmarks: details.shelfmarks,
-				publisher : details.publisher,
-				title : details.title,
-				edition : details.title,
-				place: details.place,
-				issuance : details.issuance,
-				authors :details.authors
+	collection.findOne({}, function (err, doc){
+		if (err) {
+			console.log (err);
+			res.render('error', { message:err });
+		} else {			
+			alchemyapi.image_keywords('url', doc.flickr_small_source, {}, function (response) {	
+				res.render( 'image', { 
+					apiName:'Alchemy API',
+					results: response.imageKeywords,
+					url: doc.flickr_original_source, 
+					volume: doc.volume,
+					publisher : doc.publisher,
+					imageTitle : doc.title,
+					author :doc.first_author,
+					publicationPlace: doc.pubplace,
+					bookID : doc.book_identifier,
+					year: doc.date,
+					page: doc.page
+				});
 			});
-		});
-	  } else {
-	  	console.log(error);
-	  	res.send('<h2>ERROR<h2><br>' + error);
-	  }
+		}
 	});
 });
 
 router.get('/imagga',function(req, res, next) {
-	request('http://bldata.herokuapp.com/images/random', function (error, response, body) {
-	  if (!error && response.statusCode == 200) {
-	    var uri = JSON.parse(response.body).flickr_thumb_jpeg;
-	   	var originalUrl = JSON.parse(response.body).flickr_original_jpeg;
-	    var details = JSON.parse(response.body).biblioasjson;
-		request.get({
-		    url:'https://api.imagga.com/v1/tagging?url='+ uri,
-		    auth: {
-		    	username:"acc_3a8a3280ff382f5",
-		    	password: "a5c945ee52846e612ff5705d6ce2e1a8"
-		    }
-		}, function (err, httpResponse, body) {
-			var response = JSON.parse(body);
-		    res.render('image', {
-		    	apiName : 'Imagga API', 
-		    	url:originalUrl, 
-		    	results: response.results[0].tags, 
-		    	dateField: details.datefield,
-				shelfmarks: details.shelfmarks,
-				publisher : details.publisher,
-				title : details.title,
-				edition : details.title,
-				place: details.place,
-				issuance : details.issuance,
-				authors :details.authors
-		    });
-		});
-	  } else {
-	  	console.log(error);
-	  	res.send('<h2>ERROR<h2><br>' + error);
-	  }
+	collection.findOne({}, function (err, doc){
+		if (err) {
+			console.log (err);
+			res.render('error', { message:err });
+		} else {			
+			request.get({
+			    url:'https://api.imagga.com/v1/tagging?url='+ doc.flickr_small_source,
+			    auth: {
+			    	username:"acc_3a8a3280ff382f5",
+			    	password: "a5c945ee52846e612ff5705d6ce2e1a8"
+			    }
+			}, function (err, httpResponse, body) {
+				var response = JSON.parse(body);
+			    res.render('image', {
+			    	apiName : 'Imagga API', 
+			    	results: response.results[0].tags, 
+			    	url: doc.flickr_original_source, 
+					volume: doc.volume,
+					publisher : doc.publisher,
+					imageTitle : doc.title,
+					author :doc.first_author,
+					publicationPlace: doc.pubplace,
+					bookID : doc.book_identifier,
+					year: doc.date,
+					page: doc.page
+			    });
+			});
+		}
 	});
-
 });
 
 module.exports = router;
