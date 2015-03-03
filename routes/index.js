@@ -12,11 +12,12 @@ router.get('/alchemy', function(req, res, next) {
 	request('http://bldata.herokuapp.com/images/random', function (error, response, body) {
 	  if (!error && response.statusCode == 200) {
 	    var url = JSON.parse(response.body).flickr_thumb_jpeg;
+	    var originalUrl = JSON.parse(response.body).flickr_original_jpeg;
 	    var details = JSON.parse(response.body).biblioasjson;
 		alchemyapi.image_keywords('url', url, {}, function(response) {
 			res.render( 'image', { 
 				apiName:'Alchemy API' ,
-				url: response.url, 
+				url: originalUrl, 
 				results: response.imageKeywords,
 				dateField: details.datefield,
 				shelfmarks: details.shelfmarks,
@@ -39,6 +40,7 @@ router.get('/imagga',function(req, res, next) {
 	request('http://bldata.herokuapp.com/images/random', function (error, response, body) {
 	  if (!error && response.statusCode == 200) {
 	    var uri = JSON.parse(response.body).flickr_thumb_jpeg;
+	   	var originalUrl = JSON.parse(response.body).flickr_original_jpeg;
 	    var details = JSON.parse(response.body).biblioasjson;
 		request.get({
 		    url:'https://api.imagga.com/v1/tagging?url='+ uri,
@@ -50,7 +52,7 @@ router.get('/imagga',function(req, res, next) {
 			var response = JSON.parse(body);
 		    res.render('image', {
 		    	apiName : 'Imagga API', 
-		    	url:uri, 
+		    	url:originalUrl, 
 		    	results: response.results[0].tags, 
 		    	dateField: details.datefield,
 				shelfmarks: details.shelfmarks,
