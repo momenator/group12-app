@@ -1,6 +1,5 @@
 var AlchemyAPI = require('../lib/alchemy/alchemyapi');
 var alchemyapi = new AlchemyAPI();
-var unirest = require('unirest');
 var request = require('request');
 var express = require('express');
 var router = express.Router();
@@ -13,8 +12,14 @@ router.get('/alchemy', function(req, res, next) {
 	request('http://bldata.herokuapp.com/images/random', function (error, response, body) {
 	  if (!error && response.statusCode == 200) {
 	    var url = JSON.parse(response.body).flickr_thumb_jpeg;
+	    var details = JSON.parse(response.body).biblioasjson;
 		alchemyapi.image_keywords('url', url, {}, function(response) {
-			res.render( 'image', { title:'Alchemy API' ,url: response.url, results: response.imageKeywords } );
+			res.render( 'image', { 
+				title:'Alchemy API' ,
+				url: response.url, 
+				results: response.imageKeywords,
+				details: details
+			});
 		});
 	  } else {
 	  	console.log(error);
@@ -35,7 +40,12 @@ router.get('/imagga',function(req, res, next) {
 		    }
 		}, function (err, httpResponse, body) {
 			var response = JSON.parse(body);
-		    res.render('image', {title : 'Imagga API', url:uri, results: response.results[0].tags});
+		    res.render('image', {
+		    	title : 'Imagga API', 
+		    	url:uri, 
+		    	results: response.results[0].tags, 
+		    	details: response.results.biblioasjson
+		    });
 		});
 	  } else {
 	  	console.log(error);
