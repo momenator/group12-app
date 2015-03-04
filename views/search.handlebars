@@ -1,8 +1,28 @@
 <div>
 	<h1>search page</h1>
-	<form method="post">
-		<textarea class="text" cols="80" rows ="20" name="newDocument"></textarea>
-   		<br/>
-   		<input type="submit" value="Add" class="submitButton">
+	<form action="/search" method="post">
+		<input type="text" size="80" name="query">
+   		<input type="submit" value="Search" class="submitButton">
 	</form>
+
+	<h1>{{noResults}}</h1>
+	{{#if imageResults}}
+		<h1>Your results</h1>
+		<ul>
+		{{#each imageResults}}
+			<img src={{this.flickr_original_source}} height=70>
+			<li>{{this.title}}</li>
+			<ul>
+				<li>volume : {{this.volume}}</li>
+				<li>publisher : {{this.publisher}}</li>
+				<li>title : {{this.title}}</li>
+				<li>author : {{this.first_author}}</li>
+				<li>place of publication : {{this.pubplace}}</li>
+				<li>bookID : {{this.book_identifier}}</li>
+				<li>year : {{this.year}}</li>
+				<li>page : {{this.page}}</li>
+			</ul>
+		{{/each}}
+		</ul>
+	{{/if}}
 </div>
