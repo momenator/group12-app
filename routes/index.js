@@ -4,6 +4,7 @@ var request = require('request');
 var express = require('express');
 var router = express.Router();
 var mongo = require('mongodb');
+var objectId = require('mongodb').ObjectID;
 var MongoClient = mongo.MongoClient;
 var client = new MongoClient();
 var db;
@@ -68,6 +69,30 @@ router.get('/alchemy', function(req, res, next) {
 					year: doc.date,
 					page: doc.page
 				});
+			});
+		}
+	});
+});
+
+router.get('/search/:imageid',function(req, res, next){
+	collection.findOne({'_id':new objectId(req.params.imageid)}, function (err, doc){
+		console.log(doc);
+		if (err) {
+			console.log (err);
+			res.render('error', { message:err } );
+		} else {
+				console.log(doc);
+		
+			res.render('image', { 
+				url: doc.flickr_original_source, 
+				volume: doc.volume,
+				publisher : doc.publisher,
+				imageTitle : doc.title,
+				author :doc.first_author,
+				publicationPlace: doc.pubplace,
+				bookID : doc.book_identifier,
+				year: doc.date,
+				page: doc.page
 			});
 		}
 	});
