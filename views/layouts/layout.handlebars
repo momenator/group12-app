@@ -8,8 +8,23 @@
 
     	<script type="text/javascript" src="javascripts/jquery-1.11.2.min.js"></script>
     	<script>
-    		
     		$(document).ready(function(){
+    			 $('input[type="radio"]').click(function(){
+		            if($(this).attr("value")=="title"){
+		            	console.log("title");
+		                $('#query').attr("action", "/search");
+		            }
+		            if($(this).attr("value")=="alchemy"){
+		            			            	console.log("alchemy");
+
+		                $('#query').attr("action", "/searchAlchemyTags");
+		            }
+		            if($(this).attr("value")=="imagga"){
+		            			   console.log("imagga");
+
+		                $('#query').attr("action", "/searchImaggaTags");
+		            }
+		        });
     			/*
     			var request = $.ajax({
 				  url: "http://bldata.herokuapp.com/images/random",

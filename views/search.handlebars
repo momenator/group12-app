@@ -1,42 +1,38 @@
 <div>
 	<h1>search page</h1>
-	<form action="/search" method="post">
+	<form action="">
+		<input type="radio" name="searchType" value="title" checked>By Titles | 
+		<input type="radio" name="searchType" value="alchemy">By Alchemy API |
+		<input type="radio" name="searchType" value="imagga">By Imagga API
+	</form>
+	<br>
+	<form id="query" action="/search" method="post">
 		<input type="text" size="80" name="query">
    		<input type="submit" value="Search" class="submitButton">
 	</form>
 	<br>
-	<form action="/searchImaggaTags" method="post">
-		<input type="text" size="80" name="query">
-   		<input type="submit" value="Search" class="submitButton">
-	</form>
-	<br>
-	<form action="/searchAlchemyTags" method="post">
-		<input type="text" size="80" name="query">
-   		<input type="submit" value="Search" class="submitButton">
-	</form>
-
-	<h1>{{noResults}}</h1>
-		<h1>Your results</h1>
-		<div id="wrapper">
-			<div id="columns">
-				{{#if imageResults}}
-					{{#each imageResults}}
-					<div class="pin">
-						<img src={{this.flickr_medium_source}} >
-						<a href="/search/{{this._id}}">{{this.title}}</a>
-						<hr>
-						{{!--
-							<li>volume : {{this.volume}}</li>
-							<li>publisher : {{this.publisher}}</li>
-							<li>author : {{this.first_author}}</li>
-							<li>place of publication : {{this.pubplace}}</li>
-							<li>bookID : {{this.book_identifier}}</li>
-							<li>year : {{this.year}}</li>
-							<li>page : {{this.page}}</li>
-							--}}
-					</div>
-					{{/each}}
-				{{/if}}
-			</div>
+	<h1>Search results for "{{searchQuery}}"</h1>
+	<h2>{{noResults}}</h2>
+	<div id="wrapper">
+		<div id="columns">
+			{{#if imageResults}}
+				{{#each imageResults}}
+				<div class="pin">
+					<img src={{this.flickr_medium_source}} >
+					<a href="/search/{{this._id}}">{{this.title}}</a>
+					<hr>
+					{{!--
+						<li>volume : {{this.volume}}</li>
+						<li>publisher : {{this.publisher}}</li>
+						<li>author : {{this.first_author}}</li>
+						<li>place of publication : {{this.pubplace}}</li>
+						<li>bookID : {{this.book_identifier}}</li>
+						<li>year : {{this.year}}</li>
+						<li>page : {{this.page}}</li>
+						--}}
+				</div>
+				{{/each}}
+			{{/if}}
 		</div>
+	</div>
 </div>

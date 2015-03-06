@@ -3,25 +3,16 @@
 	<h1>British Library Machine Learning Project</h1>
 	<h2>Search Collections</h2>
 	<form action="">
-		<input type="radio" name="searchType" value="title">By Titles | 
+		<input type="radio" name="searchType" value="title" checked>By Titles | 
 		<input type="radio" name="searchType" value="alchemy">By Alchemy API |
 		<input type="radio" name="searchType" value="imagga">By Imagga API
 	</form>
 	<br>
-	<form action="/search" method="post">
+	<form id="query" action="/search" method="post">
 		<input type="text" size="80" name="query">
    		<input type="submit" value="Search" class="submitButton">
 	</form>
-	<br>
-	<form action="/searchImaggaTags" method="post">
-		<input type="text" size="80" name="query">
-   		<input type="submit" value="Search" class="submitButton">
-	</form>
-	<br>
-	<form action="/searchAlchemyTags" method="post">
-		<input type="text" size="80" name="query">
-   		<input type="submit" value="Search" class="submitButton">
-	</form>
+	
 	<p>Browse APIs</p>
 	<a href="/alchemy"><button>Alchemy API</button></a>
 	<a href="/imagga"><button>Imagga API</button></a>

@@ -42,7 +42,7 @@ router.post('/search', function(req, res, next){
 				res.render('search', { noResults : "No results found" });
 			} else {
 				console.log(req.body.query);
-				res.render('search',{imageResults : docs});
+				res.render('search',{imageResults : docs, searchQuery: req.body.query});
 			}
 		}
 	});
@@ -65,7 +65,7 @@ router.post('/searchAlchemyTags', function(req, res, next){
 				res.render('search', { noResults : "No results found" });
 			} else {
 				console.log(req.body.query);
-				res.render('search',{imageResults : docs});
+				res.render('search',{imageResults : docs, searchQuery: req.body.query });
 			}
 		}
 	});
@@ -88,7 +88,7 @@ router.post('/searchImaggaTags', function(req, res, next){
 				res.render('search', { noResults : "No results found" });
 			} else {
 				console.log(req.body.query);
-				res.render('search',{imageResults : docs});
+				res.render('search',{imageResults : docs, searchQuery: req.body.query});
 			}
 		}
 	});
