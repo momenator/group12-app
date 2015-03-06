@@ -6,8 +6,12 @@
     	<meta name="viewport" content="width=device-width, initial-scale=1">
     	<title>BL Web App</title>
 
-    	<script type="text/javascript" src="javascripts/jquery-1.11.2.min.js"></script>
+    	<script type="text/javascript" src="/javascripts/jquery-1.11.2.min.js"></script>
     	<script>
+    		$(window).load(function(){
+    			$("#loading").fadeOut(1000);
+    		});
+
     		$(document).ready(function(){
     			 $('input[type="radio"]').click(function(){
 		            if($(this).attr("value")=="title"){
@@ -119,9 +123,16 @@
 				column-count: 5;
 			}
 		}
+		#loading{
+			background: url("http://www.aveva.com/Images/ajax-loader.gif") no-repeat scroll center center #fff;
+    		position: absolute;
+    		height: 100%;
+    		width: 100%;
+		}
     	</style>
 	</head>
 	<body>
+		<div id="loading"></div>
 		{{{body}}}
 	</body>
 </html>
