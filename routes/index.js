@@ -48,6 +48,25 @@ router.post('/search', function(req, res, next){
 	});
 });
 
+var getTagsAlchemyAPI = function (url){
+	alchemyapi.image_keywords('url', url, {}, function (response) {	
+		return response.imageKeywords;
+	}); 
+}
+
+
+var getTagsImaggaAPI = function (url){
+	request.get({
+	    url:'https://api.imagga.com/v1/tagging?url='+ url,
+	    auth: {
+	    	username:"acc_3a8a3280ff382f5",
+	    	password: "a5c945ee52846e612ff5705d6ce2e1a8"
+	    }
+	}, function (err, httpResponse, body) {
+		var response = JSON.parse(body);
+	    return response.results[0].tags;
+	});
+}
 
 router.get('/alchemy', function(req, res, next) {	
 	collection.findOne({}, function (err, doc){
@@ -77,12 +96,11 @@ router.get('/alchemy', function(req, res, next) {
 router.get('/search/:imageid',function(req, res, next){
 	collection.findOne({'_id':new objectId(req.params.imageid)}, function (err, doc){
 		console.log(doc);
+		var url = doc.flickr_small_source;
 		if (err) {
 			console.log (err);
 			res.render('error', { message:err } );
-		} else {
-				console.log(doc);
-		
+		} else if (doc.alchemyTags != undefined || doc.alchemyTags != undefined ){
 			res.render('image', { 
 				url: doc.flickr_original_source, 
 				volume: doc.volume,
@@ -92,8 +110,40 @@ router.get('/search/:imageid',function(req, res, next){
 				publicationPlace: doc.pubplace,
 				bookID : doc.book_identifier,
 				year: doc.date,
-				page: doc.page
+				page: doc.page,
+				alchemyTags : doc.alchemyTags,
+				imaggaTags : doc.imaggaTags
 			});
+		} else {
+			alchemyapi.image_keywords('url', url, {}, function (response) {	
+				var alchemyTags = response.imageKeywords;
+				console.log(alchemyTags);
+				request.get({
+				    url:'https://api.imagga.com/v1/tagging?url='+ url,
+				    auth: {
+				    	username:"acc_3a8a3280ff382f5",
+				    	password: "a5c945ee52846e612ff5705d6ce2e1a8"
+				    }
+				}, function (err, httpResponse, body) {
+					var imaggaTags = JSON.parse(body).results[0].tags;
+					console.log(imaggaTags);
+					collection.update({'_id':new objectId(req.params.imageid)}, {$set : {alchemyTags: alchemyTags, imaggaTags: imaggaTags}},function(){console.log('inserted tags')});
+					res.render('image', { 
+						url: doc.flickr_original_source, 
+						volume: doc.volume,
+						publisher : doc.publisher,
+						imageTitle : doc.title,
+						author :doc.first_author,
+						publicationPlace: doc.pubplace,
+						bookID : doc.book_identifier,
+						year: doc.date,
+						page: doc.page,
+						alchemyTags : alchemyTags,
+						imaggaTags : imaggaTags
+					});
+				});
+
+			}); 		
 		}
 	});
 });

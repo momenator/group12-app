@@ -4,16 +4,25 @@
 	<h1>{{apiName}}</h1>
 	<h2>{{imageTitle}}</h2>
 	<img src="{{url}}" style="max-width:50%;"/>
+	<h3>Alchemy API</h3>
 	<ul>
-		{{#each results}}
+		{{#each alchemyTags}}
 			{{#if this.text}}
 				<li> tag :: {{this.text}} | score :: {{this.score}} </li>
+			{{else}}
+				<li>tag unavailable</li>
 			{{/if}}
+		{{/each}}
+	</ul>
+	<h3>Imagga API</h3>
+	<ul>
+		{{#each imaggaTags}}
 			{{#if this.tag}}
 				<li> tag :: {{this.tag}} | score :: {{this.confidence}} </li>
 			{{/if}}
 		{{/each}}
 	</ul>
+
 	<h3>Details</h3>
 	<ul>
 		<li>volume : {{volume}}</li>
