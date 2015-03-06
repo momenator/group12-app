@@ -48,6 +48,52 @@ router.post('/search', function(req, res, next){
 	});
 });
 
+router.post('/searchAlchemyTags', function(req, res, next){
+	collection.find({
+		"alchemyTags": {
+	        "$elemMatch": {
+	            "text": req.body.query
+	        }
+	    }
+	}).limit(100).toArray(function (err, docs){
+		if (err) {
+			console.log (err);
+			console.log(req.body.query);
+			res.render('error', { message:err });
+		} else {
+			if (docs.length == 0){
+				res.render('search', { noResults : "No results found" });
+			} else {
+				console.log(req.body.query);
+				res.render('search',{imageResults : docs});
+			}
+		}
+	});
+});
+
+router.post('/searchImaggaTags', function(req, res, next){
+	collection.find({
+	    "imaggaTags": {
+	        "$elemMatch": {
+	            "tag": req.body.query
+	        }
+	    }
+	}).limit(100).toArray(function (err, docs){
+		if (err) {
+			console.log (err);
+			console.log(req.body.query);
+			res.render('error', { message:err });
+		} else {
+			if (docs.length == 0){
+				res.render('search', { noResults : "No results found" });
+			} else {
+				console.log(req.body.query);
+				res.render('search',{imageResults : docs});
+			}
+		}
+	});
+});
+
 var getTagsAlchemyAPI = function (url){
 	alchemyapi.image_keywords('url', url, {}, function (response) {	
 		return response.imageKeywords;
