@@ -39,10 +39,10 @@ router.post('/search', function(req, res, next){
 			res.render('error', { message:err });
 		} else {
 			if (docs.length == 0){
-				res.render('search', { noResults : "No results found" });
+				res.render('search', { noResults : "No results found",searchType: "title" ,searchQuery: req.body.query });
 			} else {
 				console.log(req.body.query);
-				res.render('search',{imageResults : docs, searchQuery: req.body.query});
+				res.render('search',{imageResults : docs,searchType: "title" ,searchQuery: req.body.query});
 			}
 		}
 	});
@@ -62,10 +62,10 @@ router.post('/searchAlchemyTags', function(req, res, next){
 			res.render('error', { message:err });
 		} else {
 			if (docs.length == 0){
-				res.render('search', { noResults : "No results found" });
+				res.render('search', { noResults : "No results found" ,searchType: "Alchemy API", searchQuery: req.body.query });
 			} else {
 				console.log(req.body.query);
-				res.render('search',{imageResults : docs, searchQuery: req.body.query });
+				res.render('search',{imageResults : docs, searchType: "Alchemy API", searchQuery: req.body.query });
 			}
 		}
 	});
@@ -85,10 +85,10 @@ router.post('/searchImaggaTags', function(req, res, next){
 			res.render('error', { message:err });
 		} else {
 			if (docs.length == 0){
-				res.render('search', { noResults : "No results found" });
+				res.render('search', { noResults : "No results found",searchType: "Imagga API", searchQuery: req.body.query });
 			} else {
 				console.log(req.body.query);
-				res.render('search',{imageResults : docs, searchQuery: req.body.query});
+				res.render('search',{imageResults : docs, searchType: "Imagga API", searchQuery: req.body.query});
 			}
 		}
 	});

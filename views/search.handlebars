@@ -11,7 +11,9 @@
    		<input type="submit" value="Search" class="submitButton">
 	</form>
 	<br>
-	<h1>Search results for "{{searchQuery}}"</h1>
+	{{#if searchQuery}}
+		<h1>Search results by "{{searchType}}" for "{{searchQuery}}"</h1>
+	{{/if}}
 	<h2>{{noResults}}</h2>
 	<div id="wrapper">
 		<div id="columns">
