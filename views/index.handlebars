@@ -1,22 +1,18 @@
-<div style="text-align:center">
+<div style="text-align:center;margin-top:10vh;height:85.2vh">
 	<img class="bl-logo" src="/images/bl-logo.jpg" height=150 width=200>
 	<h1>British Library Machine Learning Project</h1>
-	<h2>Search Collections</h2>
+	<h4>Browse Digital Collections</h4>
 	<form action="">
-		<input type="radio" name="searchType" value="title" checked>By Titles | 
-		<input type="radio" name="searchType" value="alchemy">By Alchemy API |
-		<input type="radio" name="searchType" value="imagga">By Imagga API
+		<input type="radio" name="searchType" value="title" checked> By Titles | 
+		<input type="radio" name="searchType" value="alchemy"> By Alchemy API |
+		<input type="radio" name="searchType" value="imagga"> By Imagga API
 	</form>
 	<br>
 	<form id="query" action="/search" method="post">
 		<input type="text" size="80" name="query">
-   		<input type="submit" value="Search" class="submitButton">
+		<br>
+		<br>
+		<input type="submit" value="Search" class="submitButton">
 	</form>
-	
-	<p>Browse APIs</p>
-	<a href="/alchemy"><button>Alchemy API</button></a>
-	<a href="/imagga"><button>Imagga API</button></a>
-	<br/>
-	<a href="http://students.cs.ucl.ac.uk/2014/group12/">Project Website</a>
-	<img style="margin-left:50px;margin-top:50px" src="http://www0.cs.ucl.ac.uk/staff/G.Roberts/images/ucl0060.gif" height=40>
+	<br>	
 </div>
