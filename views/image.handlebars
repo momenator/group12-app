@@ -1,40 +1,64 @@
-<div style="width:75%;margin:0 auto">
-	<div style="max-height:75px">
-		<a href="/"><img class="bl-logo" src="/images/bl-logo.jpg" height=75 width=100></a>
-		<a href="/search"><button>Back to search</button></a>
-	<div>
-	<hr width="100%"> 
-	<h1>{{apiName}}</h1>
-	<h2>{{imageTitle}}</h2>
-	<img src="{{url}}" style="max-width:50%;"/>
-	<h3>Alchemy API</h3>
-	<ul>
-		{{#each alchemyTags}}
-			{{#if this.text}}
-				<li> tag :: {{this.text}} | score :: {{this.score}} </li>
-			{{else}}
-				<li>tag unavailable</li>
-			{{/if}}
-		{{/each}}
-	</ul>
-	<h3>Imagga API</h3>
-	<ul>
-		{{#each imaggaTags}}
-			{{#if this.tag}}
-				<li> tag :: {{this.tag}} | score :: {{this.confidence}} </li>
-			{{/if}}
-		{{/each}}
-	</ul>
-
-	<h3>Details</h3>
-	<ul>
-		<li>volume : {{volume}}</li>
-		<li>publisher : {{publisher}}</li>
-		<li>title : {{imageTitle}}</li>
-		<li>author : {{author}}</li>
-		<li>place of publication : {{publicationPlace}}</li>
-		<li>bookID : {{bookID}}</li>
-		<li>year : {{year}}</li>
-		<li>page : {{page}}</li>
-	</ul>
+<div style="width:75%;margin:0 auto;height:100%;min-height:100vh">
+	<div class="jumbotron" style="background:#fff;padding:10px">
+	    <div class="container" style="padding:10px">
+			<div style="max-height:75px;">
+				<a href="/"><img class="bl-logo" src="/images/bl-logo.jpg" height=75 width=100></a>
+				<a href="/search">Back to search</a>
+			<div>
+			<hr width="100%">
+			<div style="width:100%;margin-bottom:40px"> 
+				<h3>{{imageTitle}}</h3>
+			</div>
+			<img src="{{url}}" style="max-width:50%;"/>
+			<div style="float:right;width:40%;margin-right:0%">
+				<div class="panel panel-default">
+		            <div class="panel-heading">
+		              <h3 class="panel-title">Image Details</h3>
+		            </div>
+		            <div class="panel-body">
+			            <ul>
+							<li><i class="fa fa-book"></i> Volume : {{volume}}</li>
+							<li><i class="fa fa-institution"></i> Publisher : {{publisher}}</li>
+							<li><i class="fa fa-pencil"></i> Title : {{imageTitle}}</li>
+							<li><i class="fa fa-user"></i> Author : {{author}}</li>
+							<li><i class="fa fa-compass"></i> Place of Publication : {{publicationPlace}}</li>
+							<li><i class="fa fa-barcode"></i> Book ID : {{bookID}}</li>
+							<li><i class="fa fa-calendar"></i> Year : {{year}}</li>
+							<li><i class="fa fa-bookmark"></i> Page : {{page}}</li>
+						</ul>
+		            </div>
+	          	</div>
+				<div class="panel panel-default">
+		            <div class="panel-heading">
+		              <h3 class="panel-title">Alchemy API</h3>
+		            </div>
+		            <div class="panel-body">
+			            <ul>
+							{{#each alchemyTags}}
+								{{#if this.text}}
+									<li> tag :: {{this.text}} | score :: {{this.score}} </li>
+								{{else}}
+									<li>tag unavailable</li>
+								{{/if}}
+							{{/each}}
+						</ul>
+		            </div>
+	          	</div>
+	          	<div class="panel panel-default">
+		            <div class="panel-heading">
+		              <h3 class="panel-title">Imagga API</h3>
+		            </div>
+		            <div class="panel-body">
+			            <ul>
+							{{#each imaggaTags}}
+								{{#if this.tag}}
+									<li> tag :: {{this.tag}} | score :: {{this.confidence}} </li>
+								{{/if}}
+							{{/each}}
+						</ul>
+		            </div>
+	          	</div>
+			</div>
+		</div>
+	</div>
 </div>
