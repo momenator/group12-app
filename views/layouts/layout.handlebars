@@ -64,7 +64,7 @@
 		}
 
 		#wrapper {
-			width: 96%;
+			width: 98%;
 			margin: 20px auto;
 		}
 
@@ -130,16 +130,83 @@
 		}
 		#loading{
 			background: url("http://www.aveva.com/Images/ajax-loader.gif") no-repeat scroll center center #fff;
-    		position: absolute;
+    		position: fixed;
     		height: 100%;
     		width: 100%;
+		}
+		.tags a {
+			display: inline-block;
+			height: 21px;
+			margin: 10px 10px 0 0;
+			padding: 0 7px 0 14px;
+			white-space: nowrap;
+			position: relative;
+
+			background: -moz-linear-gradient(top, #fed970 0%, #febc4a 100%);
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fed970), color-stop(100%,#febc4a));
+			background: -webkit-linear-gradient(top, #fed970 0%,#febc4a 100%);
+			background: -o-linear-gradient(top, #fed970 0%,#febc4a 100%);
+			background: linear-gradient(to bottom, #fed970 0%,#febc4a 100%);
+			background-color: #FEC95B;
+
+			color: #963;
+			font: bold 11px/21px Arial, Tahoma, sans-serif;
+			text-decoration: none;
+			text-shadow: 0 1px rgba(255,255,255,0.4);
+
+			border-top: 1px solid #EDB14A;
+			border-bottom: 1px solid #CE922E;
+			border-right: 1px solid #DCA03B;
+			border-radius: 1px 3px 3px 1px;
+			box-shadow: inset 0 1px #FEE395, 0 1px 2px rgba(0,0,0,0.21);
+		}
+		a.tag:before {
+			content: '';
+			position: absolute;
+			top: 5px;
+			left: -6px;
+			width: 10px;
+			height: 10px;
+
+			background: -moz-linear-gradient(45deg, #fed970 0%, #febc4a 100%);
+			background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#fed970), color-stop(100%,#febc4a));
+			background: -webkit-linear-gradient(-45deg, #fed970 0%,#febc4a 100%);
+			background: -o-linear-gradient(45deg, #fed970 0%,#febc4a 100%);
+			background: linear-gradient(135deg, #fed970 0%,#febc4a 100%);
+			background-color: #FEC95B;
+
+			border-left: 1px solid #EDB14A;
+			border-bottom: 1px solid #CE922E;
+			border-radius: 0 0 0 2px;
+			box-shadow: inset 1px 0 #FEDB7C, 0 2px 2px -2px rgba(0,0,0,0.33);
+		}
+		a.tag:before {
+			-webkit-transform: scale(1, 1.5) rotate(45deg);
+			-moz-transform: scale(1, 1.5) rotate(45deg);
+			-ms-transform: scale(1, 1.5) rotate(45deg);
+			transform: scale(1, 1.5) rotate(45deg);
+		}
+		a:after {
+			content: '';
+			position: absolute;
+			top: 7px;
+			left: 1px;
+			width: 5px;
+			height: 5px;
+			background: #FFF;
+			border-radius: 4px;
+			border: 1px solid #DCA03B;
+			box-shadow: 0 1px 0 rgba(255,255,255,0.2), inset 0 1px 1px rgba(0,0,0,0.21);
+		}
+		.tags a:hover {
+			color: #FFF;
+			text-shadow: -1px -1px 0 rgba(153,102,51,0.3);
 		}
     	</style>
 	</head>
 	<body>
 		<div id="loading"></div>
 		{{{body}}}
-		<br>
 		<div style="width:100%;height:30px;bottom:0px;position:relative;background-color:#000">
 			<img src='http://www.ucl.ac.uk/visual-identity/logos/standalone.png' height=30 style="float:right"/>
 			<a href="http:/students.cs.ucl.ac.uk/2014/group12" style="float:right;padding-top:10px">About</a>

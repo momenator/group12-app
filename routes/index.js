@@ -2,6 +2,7 @@ var AlchemyAPI = require('../lib/alchemy/alchemyapi');
 var alchemyapi = new AlchemyAPI();
 var request = require('request');
 var express = require('express');
+var exphbs  = require('express-handlebars');
 var router = express.Router();
 var mongo = require('mongodb');
 var objectId = require('mongodb').ObjectID;
@@ -132,7 +133,7 @@ router.get('/alchemy', function(req, res, next) {
 					publicationPlace: doc.pubplace,
 					bookID : doc.book_identifier,
 					year: doc.date,
-					page: doc.page
+					page: doc.page,
 				});
 			});
 		}
@@ -158,7 +159,11 @@ router.get('/search/:imageid',function(req, res, next){
 				year: doc.date,
 				page: doc.page,
 				alchemyTags : doc.alchemyTags,
-				imaggaTags : doc.imaggaTags
+				imaggaTags : doc.imaggaTags,
+				helpers: {
+		            shortenDecimal: function (num) { return Number(num).toFixed(2); },
+		            convertToPercentage : function (num) { return Number(num*100).toFixed(2); }
+		        }
 			});
 		} else {
 			alchemyapi.image_keywords('url', url, {}, function (response) {	
@@ -185,7 +190,11 @@ router.get('/search/:imageid',function(req, res, next){
 						year: doc.date,
 						page: doc.page,
 						alchemyTags : alchemyTags,
-						imaggaTags : imaggaTags
+						imaggaTags : imaggaTags,
+						helpers: {
+		            		shortenDecimal: function (num) { return Number(num).toFixed(2); },
+		            		convertToPercentage : function (num) { return Number(num).toFixed(2)*100.00; }
+				        }
 					});
 				});
 
