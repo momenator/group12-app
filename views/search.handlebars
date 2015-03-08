@@ -27,8 +27,8 @@
 			{{#if imageResults}}
 				{{#each imageResults}}
 				<div class="pin">
-					<img src={{this.flickr_medium_source}} >
-					<a href="/search/{{this._id}}">{{this.title}}</a>
+					<a href="/search/{{this._id}}"><img src={{this.flickr_medium_source}} ></a>
+					<a href="/search/{{this._id}}">{{shortenString this.title}}</a>
 					<hr>
 					{{!--
 						<li>volume : {{this.volume}}</li>

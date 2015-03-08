@@ -33,17 +33,31 @@ router.post('/search', function(req, res, next){
 		"$text" : {
 			"$search" : req.body.query
 		}
-	}).limit(100).toArray(function (err, docs){
+	}).limit(250).toArray(function (err, docs){
 		if (err) {
 			console.log (err);
 			console.log(req.body.query);
 			res.render('error', { message:err });
 		} else {
 			if (docs.length == 0){
-				res.render('search', { noResults : "No results found",searchType: "title" ,searchQuery: req.body.query });
+				res.render('search', {
+					noResults : "No results found",
+					searchType: "title" ,
+					searchQuery: req.body.query,
+					helpers:{
+						shortenString : function (string) {return String(string).substring(0, 35) + "..."} 
+					} 
+				});
 			} else {
 				console.log(req.body.query);
-				res.render('search',{imageResults : docs,searchType: "title" ,searchQuery: req.body.query});
+				res.render('search',{
+					imageResults : docs,
+					searchType: "title" ,
+					searchQuery: req.body.query,
+					helpers:{
+						shortenString : function (string) {return String(string).substring(0, 35) + "..."} 
+					} 
+				});
 			}
 		}
 	});
@@ -56,17 +70,31 @@ router.post('/searchAlchemyTags', function(req, res, next){
 	            "text": req.body.query
 	        }
 	    }
-	}).limit(100).toArray(function (err, docs){
+	}).limit(250).toArray(function (err, docs){
 		if (err) {
 			console.log (err);
 			console.log(req.body.query);
 			res.render('error', { message:err });
 		} else {
 			if (docs.length == 0){
-				res.render('search', { noResults : "No results found" ,searchType: "Alchemy API", searchQuery: req.body.query });
+				res.render('search', { 
+					noResults : "No results found" ,
+					searchType: "Alchemy API", 
+					searchQuery: req.body.query,
+					helpers:{
+						shortenString : function (string) {return String(string).substring(0, 35) + "..."} 
+					}  
+				});
 			} else {
 				console.log(req.body.query);
-				res.render('search',{imageResults : docs, searchType: "Alchemy API", searchQuery: req.body.query });
+				res.render('search',{
+					imageResults : docs, 
+					searchType: "Alchemy API", 
+					searchQuery: req.body.query,
+					helpers:{
+						shortenString : function (string) {return String(string).substring(0, 35) + "..."} 
+					}  
+				});
 			}
 		}
 	});
@@ -79,17 +107,31 @@ router.post('/searchImaggaTags', function(req, res, next){
 	            "tag": req.body.query
 	        }
 	    }
-	}).limit(100).toArray(function (err, docs){
+	}).limit(250).toArray(function (err, docs){
 		if (err) {
 			console.log (err);
 			console.log(req.body.query);
 			res.render('error', { message:err });
 		} else {
 			if (docs.length == 0){
-				res.render('search', { noResults : "No results found",searchType: "Imagga API", searchQuery: req.body.query });
+				res.render('search', {
+					noResults : "No results found",
+					searchType: "Imagga API", 
+					searchQuery: req.body.query,
+					helpers:{
+						shortenString : function (string) {return String(string).substring(0, 35) + "..."} 
+					}  
+				});
 			} else {
 				console.log(req.body.query);
-				res.render('search',{imageResults : docs, searchType: "Imagga API", searchQuery: req.body.query});
+				res.render('search',{
+					imageResults : docs, 
+					searchType: "Imagga API",
+					searchQuery: req.body.query,
+					helpers:{
+						shortenString : function (string) {return String(string).substring(0, 35) + "..."} 
+					} 
+				});
 			}
 		}
 	});
@@ -114,31 +156,6 @@ var getTagsImaggaAPI = function (url){
 	    return response.results[0].tags;
 	});
 }
-
-router.get('/alchemy', function(req, res, next) {	
-	collection.findOne({}, function (err, doc){
-		if (err) {
-			console.log (err);
-			res.render('error', { message:err });
-		} else {			
-			alchemyapi.image_keywords('url', doc.flickr_small_source, {}, function (response) {	
-				res.render( 'image', { 
-					apiName:'Alchemy API',
-					results: response.imageKeywords,
-					url: doc.flickr_original_source, 
-					volume: doc.volume,
-					publisher : doc.publisher,
-					imageTitle : doc.title,
-					author :doc.first_author,
-					publicationPlace: doc.pubplace,
-					bookID : doc.book_identifier,
-					year: doc.date,
-					page: doc.page,
-				});
-			});
-		}
-	});
-});
 
 router.get('/search/:imageid',function(req, res, next){
 	collection.findOne({'_id':new objectId(req.params.imageid)}, function (err, doc){
@@ -203,36 +220,59 @@ router.get('/search/:imageid',function(req, res, next){
 	});
 });
 
-router.get('/imagga',function(req, res, next) {
-	collection.findOne({}, function (err, doc){
+/* 
+
+// This is the script to automate the tagging process.. currently under maintenance
+
+router.get('/analyse/:keyword', function(req, res, next){
+	collection.find({
+		"$text" : {
+			"$search" : req.params.keyword
+		}
+	}).toArray(function (err, docs){
 		if (err) {
 			console.log (err);
+			console.log(req.body.query);
 			res.render('error', { message:err });
-		} else {			
+		} else {
+			if (docs.length == 0){
+				res.send('no results found');
+			} else {
+				console.log(req.body.keyword);
+				res.send("analysis in process");
+				//for (var i = 0; i < (docs.length - 1); i++){
+					analyseDocsFromQuery(docs);
+				//}
+			}
+		}
+	});
+});
+
+analyseDocsFromQuery = function(docs){
+	for (var i = 0; i < docs.length; ){
+		var url = docs[i].flickr_small_source;
+		var currId = docs[i]._id;
+		console.log("current url " + url);
+		console.log("current ID: " + currId );
+		alchemyapi.image_keywords('url', url, {}, function (response) {	
+			var alchemyTags = response.imageKeywords;
+			//console.log(alchemyTags);
 			request.get({
-			    url:'https://api.imagga.com/v1/tagging?url='+ doc.flickr_small_source,
+			    url:'https://api.imagga.com/v1/tagging?url='+ url,
 			    auth: {
 			    	username:"acc_3a8a3280ff382f5",
 			    	password: "a5c945ee52846e612ff5705d6ce2e1a8"
 			    }
 			}, function (err, httpResponse, body) {
-				var response = JSON.parse(body);
-			    res.render('image', {
-			    	apiName : 'Imagga API', 
-			    	results: response.results[0].tags, 
-			    	url: doc.flickr_original_source, 
-					volume: doc.volume,
-					publisher : doc.publisher,
-					imageTitle : doc.title,
-					author :doc.first_author,
-					publicationPlace: doc.pubplace,
-					bookID : doc.book_identifier,
-					year: doc.date,
-					page: doc.page
-			    });
+				if (JSON.parse(body).results[0].tags != undefined){
+					var imaggaTags = JSON.parse(body).results[0].tags;
+					collection.update({'_id':new objectId(currId) }, {$set : {alchemyTags: alchemyTags, imaggaTags: imaggaTags}}, function(){ i++; console.log("tags inserted. Analysis progress: " + i + "of " + docs.length + " done." )});
+				}
+				//console.log(imaggaTags);
 			});
-		}
-	});
-});
 
+		});
+	}
+}
+*/
 module.exports = router;
