@@ -1,28 +1,26 @@
 <div style="min-height:96.9vh">
-	<div style="padding:10px">
-		<a href="/"><img class="bl-logo" src="/images/bl-logo.jpg" height=75 width=100></a>
-		<h2 style="display:inline;margin-left:20px;">Search page</h2>
-		<br>
-		<br>
-		<form action="">
-			<input type="radio" name="searchType" value="title" checked> By Titles | 
-			<input type="radio" name="searchType" value="alchemy"> By Alchemy API |
-			<input type="radio" name="searchType" value="imagga"> By Imagga API
-		</form>
-		<br>
-		<form id="query" action="/search" method="post">
-			<input value="{{searchQuery}}" type="text" size="80" name="query">
-   			<input type="submit" value="Search" class="submitButton">
-		</form>
-		<div style="height:54px">
+	<div style="padding:5px;display:inline;position:fixed;background:#fff;height:120px;width:100%;border-bottom:solid black 1px">
+		<a style="float:left;margin:10px" href="/"><img class="bl-logo" src="/images/bl-logo.jpg" height=75 width=100></a>
+		<div style="float:left;padding:10px">
+			<form action="">
+				<input type="radio" name="searchType" value="title" checked> By Titles | 
+				<input type="radio" name="searchType" value="alchemy"> By Alchemy API |
+				<input type="radio" name="searchType" value="imagga"> By Imagga API
+			</form>
+			<br>
+			<form id="query" action="/search" method="post">
+				<input value="{{searchQuery}}" type="text" size="80" name="query">
+	   			<input type="submit" value="Search" class="submitButton">
+			</form>
 			{{#if searchQuery}}
-				<h4>Search results by "{{searchType}}" for "{{searchQuery}}"</h4>
+			<h4>Search results by "{{searchType}}" for "{{searchQuery}}"</h4>
 			{{/if}}
-			<h5>{{noResults}}</h5>
 		</div>
 	</div>
-	<div style="background: url(http://subtlepatterns.com/patterns/swirl_pattern.png) ;height:100%;min-height:71.5vh;border-top:solid black 2px">
+	<div style="height:100%;min-height:71.5vh;padding-top:130px">
 	<div id="wrapper">
+		<h4 style="text-align:center">{{noResults}}</h4>
+
 		<div id="columns">
 			{{#if imageResults}}
 				{{#each imageResults}}
