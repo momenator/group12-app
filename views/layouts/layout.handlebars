@@ -8,38 +8,21 @@
     	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css"></link>
     	<link rel="stylesheet" href="/stylesheets/font-awesome.min.css"></link>
     	<link rel="stylesheet" href="/stylesheets/style.css"></link>
+
+    	<script type="text/javascript" src="/javascripts/pace.min.js"></script>
+
+
 	</head>
 	<body>
-		<div id="loading"></div>
 		{{{body}}}
 		<div id="footer">
 			<img src='http://www.ucl.ac.uk/visual-identity/logos/standalone.png' height=30 id="ucl-logo"/>
 			<a href="http:/students.cs.ucl.ac.uk/2014/group12" class="link-corner" >About</a>
 		</div>
 	</body>
+
 	<script type="text/javascript" src="/javascripts/jquery-1.11.2.min.js"></script>
 	<script type="text/javascript" src="/javascripts/bootstrap.min.js"></script>
-	<script>
-		$(window).load(function(){
-			$("#loading").fadeOut(1000);
-		});
-		$(document).ready(function(){
-			 $('input[type="radio"]').click(function(){
-	            if($(this).attr("value")=="title"){
-	            	console.log("title");
-	                $('#query').attr("action", "/search");
-	            }
-	            if($(this).attr("value")=="alchemy"){
-	            			            	console.log("alchemy");
+	<script type="text/javascript" src="/javascripts/util.js"></script>
 
-	                $('#query').attr("action", "/searchAlchemyTags");
-	            }
-	            if($(this).attr("value")=="imagga"){
-	            			   console.log("imagga");
-
-	                $('#query').attr("action", "/searchImaggaTags");
-	            }
-	        });
-		});
-	</script>
 </html>

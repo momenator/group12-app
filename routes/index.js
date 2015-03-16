@@ -16,11 +16,11 @@ var shortenStringHelper = function (string) {
 
 var shortenDecimalHelper = function (num) { 
 	return Number(num).toFixed(2); 
-}
+};
 
 var convertToPercentageHelper = function (num) { 
 	return Number(num*100).toFixed(2);
-}
+};
 
 
 client.connect("mongodb://***:***@ds049171.mongolab.com:49171/bl-dataset",function(err, db) {
@@ -42,6 +42,7 @@ router.get('/search', function(req, res, next){
 });
 
 router.post('/search', function(req, res, next){
+	console.log("searched for title : " + req.body.query);
 	collection.find({
 		"$text" : {
 			"$search" : req.body.query
@@ -49,7 +50,6 @@ router.post('/search', function(req, res, next){
 	}).limit(250).toArray(function (err, docs){
 		if (err) {
 			console.log (err);
-			console.log("searched " + req.body.query);
 			res.render('error', { message:err });
 		} else {
 			if (docs.length == 0){
@@ -62,7 +62,6 @@ router.post('/search', function(req, res, next){
 					} 
 				});
 			} else {
-				console.log("searched " + req.body.query);
 				res.render('search',{
 					imageResults : docs,
 					searchType: "title" ,
@@ -77,6 +76,7 @@ router.post('/search', function(req, res, next){
 });
 
 router.post('/searchAlchemyTags', function(req, res, next){
+	console.log("searched for AlchemyAPI tag : " + req.body.query);
 	collection.find({
 		"alchemyTags": {
 	        "$elemMatch": {
@@ -86,7 +86,6 @@ router.post('/searchAlchemyTags', function(req, res, next){
 	}).limit(250).toArray(function (err, docs){
 		if (err) {
 			console.log (err);
-			console.log("searched " + req.body.query);
 			res.render('error', { message:err });
 		} else {
 			if (docs.length == 0){
@@ -99,7 +98,6 @@ router.post('/searchAlchemyTags', function(req, res, next){
 					}  
 				});
 			} else {
-				console.log("searched " + req.body.query);
 				res.render('search',{
 					imageResults : docs, 
 					searchType: "Alchemy API", 
@@ -114,6 +112,7 @@ router.post('/searchAlchemyTags', function(req, res, next){
 });
 
 router.post('/searchImaggaTags', function(req, res, next){
+	console.log("searched for Imagga tag : " + req.body.query);
 	collection.find({
 	    "imaggaTags": {
 	        "$elemMatch": {
@@ -123,7 +122,6 @@ router.post('/searchImaggaTags', function(req, res, next){
 	}).limit(250).toArray(function (err, docs){
 		if (err) {
 			console.log (err);
-			console.log(req.body.query);
 			res.render('error', { message:err });
 		} else {
 			if (docs.length == 0){
@@ -136,7 +134,6 @@ router.post('/searchImaggaTags', function(req, res, next){
 					}  
 				});
 			} else {
-				console.log(req.body.query);
 				res.render('search',{
 					imageResults : docs, 
 					searchType: "Imagga API",
@@ -151,9 +148,9 @@ router.post('/searchImaggaTags', function(req, res, next){
 });
 
 router.get('/search/:imageid',function(req, res, next){
+	console.log("visited image id : " + req.params.imageid);
 	collection.findOne({'_id':new objectId(req.params.imageid)}, function (err, doc){
 		var url = doc.flickr_small_source;
-		console.log ("Searched " + req.params.imageid);
 		if (err) {
 			console.log (err);
 			res.render('error', { message:err } );
