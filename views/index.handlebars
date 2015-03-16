@@ -1,7 +1,7 @@
-<div style="text-align:center;margin-top:10vh;height:86.9vh">
+<div class="page center-text" id="index-page">
 	<img class="bl-logo" src="/images/bl-logo.jpg" height=150 width=200>
 	<h1>British Library Machine Learning Project</h1>
-	<h4>Browse Digital Collections</h4>
+	<h4>Collections From Early 16th To Mid 19th Century</h4>
 	<form action="">
 		<input type="radio" name="searchType" value="title" checked> By Titles | 
 		<input type="radio" name="searchType" value="alchemy"> By Alchemy API |
@@ -10,7 +10,7 @@
 	<br>
 	{{foo}}
 	<form id="query" action="/search" method="post" class="form-group">
-		<input type="text" name="query" class="form-control" style="width:50%;margin:0 auto;border-radius:0px">
+		<input placeholder="Browse Collection" type="text" name="query" class="form-control search-bar">
 		<br>
 		<input type="submit" value="Search" class="submitButton">
 	</form>

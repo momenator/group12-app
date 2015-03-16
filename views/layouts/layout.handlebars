@@ -7,213 +7,39 @@
     	<title>BL Web App</title>
     	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css"></link>
     	<link rel="stylesheet" href="/stylesheets/font-awesome.min.css"></link>
-    	<script type="text/javascript" src="/javascripts/jquery-1.11.2.min.js"></script>
-    	<script type="text/javascript" src="/javascripts/bootstrap.min.js"></script>
-    	<script>
-    		$(window).load(function(){
-    			$("#loading").fadeOut(1000);
-    		});
-
-    		$(document).ready(function(){
-    			 $('input[type="radio"]').click(function(){
-		            if($(this).attr("value")=="title"){
-		            	console.log("title");
-		                $('#query').attr("action", "/search");
-		            }
-		            if($(this).attr("value")=="alchemy"){
-		            			            	console.log("alchemy");
-
-		                $('#query').attr("action", "/searchAlchemyTags");
-		            }
-		            if($(this).attr("value")=="imagga"){
-		            			   console.log("imagga");
-
-		                $('#query').attr("action", "/searchImaggaTags");
-		            }
-		        });
-    			/*
-    			var request = $.ajax({
-				  url: "http://bldata.herokuapp.com/images/random",
-				  type: "GET",
-				  dataType: "json"
-				}).done(function(data){
-					$("#image-here").append('<img src="' + data.flickr_thumb_jpeg+'" />');
-					console.log(data);
-				});
-				*/
-    		});
-			
-    	</script>
-
-    	<style>
-    	body{
-    		font-family:verdana;
-    	}
-    	@-webkit-keyframes thumb {
-			0% { -webkit-transform: scale(1); }
-			50% { -webkit-transform: scale(0.95); }
-			100% { -webkit-transform: scale(1); }
-		}
-
-		.bl-logo {
-			-webkit-animation-name: thumb;
-			-webkit-animation-duration: 5000ms;
-			-webkit-transform-origin:50% 50%;
-			-webkit-animation-iteration-count:99999999;
-			-webkit-animation-timing-function: linear;
-		}
-
-		#wrapper {
-			width: 98%;
-			margin: 20px auto;
-		}
-
-		#columns {
-			-webkit-column-count: 3;
-			-webkit-column-gap: 10px;
-			-webkit-column-fill: auto;
-			-moz-column-count: 3;
-			-moz-column-gap: 10px;
-			-moz-column-fill: auto;
-			column-count: 3;
-			column-gap: 15px;
-			column-fill: auto;
-		}
-
-		.pin {
-			display: inline-block;
-			background: #FEFEFE;
-			border: 2px solid #FAFAFA;
-			box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);
-			margin: 0 2px 15px;
-			-webkit-column-break-inside: avoid;
-			-moz-column-break-inside: avoid;
-			column-break-inside: avoid;
-			padding: 15px;
-			padding-bottom: 5px;
-			background: -webkit-linear-gradient(45deg, #FFF, #F9F9F9);
-			opacity: 1;
-			
-			-webkit-transition: all .2s ease;
-			-moz-transition: all .2s ease;
-			-o-transition: all .2s ease;
-			transition: all .2s ease;
-		}
-
-		.pin img {
-			width: 100%;
-			border-bottom: 1px solid #ccc;
-			padding-bottom: 15px;
-			margin-bottom: 5px;
-		}
-
-		.pin p {
-			font: 12px/18px Arial, sans-serif;
-			color: #333;
-			margin: 0;
-		}
-
-		@media (min-width: 960px) {
-			#columns {
-				-webkit-column-count: 4;
-				-moz-column-count: 4;
-				column-count: 4;
-			}
-		}
-
-		@media (min-width: 1100px) {
-			#columns {
-				-webkit-column-count: 5;
-				-moz-column-count: 5;
-				column-count: 5;
-			}
-		}
-		#loading{
-			background: url("http://www.aveva.com/Images/ajax-loader.gif") no-repeat scroll center center #fff;
-    		position: fixed;
-    		height: 100%;
-    		width: 100%;
-		}
-		.panel-body{
-			padding-top:2px;
-		}
-		.tags a {
-			display: inline-block;
-			height: 21px;
-			margin: 10px 10px 0 0;
-			padding: 0 7px 0 14px;
-			white-space: nowrap;
-			position: relative;
-
-			background: -moz-linear-gradient(top, #fed970 0%, #febc4a 100%);
-			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fed970), color-stop(100%,#febc4a));
-			background: -webkit-linear-gradient(top, #fed970 0%,#febc4a 100%);
-			background: -o-linear-gradient(top, #fed970 0%,#febc4a 100%);
-			background: linear-gradient(to bottom, #fed970 0%,#febc4a 100%);
-			background-color: #FEC95B;
-
-			color: #963;
-			font: bold 11px/21px Arial, Tahoma, sans-serif;
-			text-decoration: none;
-			text-shadow: 0 1px rgba(255,255,255,0.4);
-
-			border-top: 1px solid #EDB14A;
-			border-bottom: 1px solid #CE922E;
-			border-right: 1px solid #DCA03B;
-			border-radius: 1px 3px 3px 1px;
-			box-shadow: inset 0 1px #FEE395, 0 1px 2px rgba(0,0,0,0.21);
-		}
-		a.tag:before {
-			content: '';
-			position: absolute;
-			top: 5px;
-			left: -6px;
-			width: 10px;
-			height: 10px;
-
-			background: -moz-linear-gradient(45deg, #fed970 0%, #febc4a 100%);
-			background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#fed970), color-stop(100%,#febc4a));
-			background: -webkit-linear-gradient(-45deg, #fed970 0%,#febc4a 100%);
-			background: -o-linear-gradient(45deg, #fed970 0%,#febc4a 100%);
-			background: linear-gradient(135deg, #fed970 0%,#febc4a 100%);
-			background-color: #FEC95B;
-
-			border-left: 1px solid #EDB14A;
-			border-bottom: 1px solid #CE922E;
-			border-radius: 0 0 0 2px;
-			box-shadow: inset 1px 0 #FEDB7C, 0 2px 2px -2px rgba(0,0,0,0.33);
-		}
-		a.tag:before {
-			-webkit-transform: scale(1, 1.5) rotate(45deg);
-			-moz-transform: scale(1, 1.5) rotate(45deg);
-			-ms-transform: scale(1, 1.5) rotate(45deg);
-			transform: scale(1, 1.5) rotate(45deg);
-		}
-		a:after {
-			content: '';
-			position: absolute;
-			top: 7px;
-			left: 1px;
-			width: 5px;
-			height: 5px;
-			background: #FFF;
-			border-radius: 4px;
-			border: 1px solid #DCA03B;
-			box-shadow: 0 1px 0 rgba(255,255,255,0.2), inset 0 1px 1px rgba(0,0,0,0.21);
-		}
-		.tags a:hover {
-			color: #FFF;
-			text-shadow: -1px -1px 0 rgba(153,102,51,0.3);
-		}
-    	</style>
+    	<link rel="stylesheet" href="/stylesheets/style.css"></link>
 	</head>
 	<body>
 		<div id="loading"></div>
 		{{{body}}}
-		<div style="width:100%;height:30px;bottom:0px;position:relative;background-color:#000">
-			<img src='http://www.ucl.ac.uk/visual-identity/logos/standalone.png' height=30 style="float:right"/>
-			<a href="http:/students.cs.ucl.ac.uk/2014/group12" style="float:right;padding-top:10px">About</a>
+		<div id="footer">
+			<img src='http://www.ucl.ac.uk/visual-identity/logos/standalone.png' height=30 id="ucl-logo"/>
+			<a href="http:/students.cs.ucl.ac.uk/2014/group12" class="link-corner" >About</a>
 		</div>
-		
 	</body>
+	<script type="text/javascript" src="/javascripts/jquery-1.11.2.min.js"></script>
+	<script type="text/javascript" src="/javascripts/bootstrap.min.js"></script>
+	<script>
+		$(window).load(function(){
+			$("#loading").fadeOut(1000);
+		});
+		$(document).ready(function(){
+			 $('input[type="radio"]').click(function(){
+	            if($(this).attr("value")=="title"){
+	            	console.log("title");
+	                $('#query').attr("action", "/search");
+	            }
+	            if($(this).attr("value")=="alchemy"){
+	            			            	console.log("alchemy");
+
+	                $('#query').attr("action", "/searchAlchemyTags");
+	            }
+	            if($(this).attr("value")=="imagga"){
+	            			   console.log("imagga");
+
+	                $('#query').attr("action", "/searchImaggaTags");
+	            }
+	        });
+		});
+	</script>
 </html>

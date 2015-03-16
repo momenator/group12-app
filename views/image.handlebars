@@ -1,30 +1,25 @@
-<div style="width:80%;margin:0 auto;margin-bottom:40px;height:100%;">
-	<div style="max-height:75px;padding:10px">
+<div class="page" id="image-page">
+	<div id="image-page-header">
 		<a href="/"><img class="bl-logo" src="/images/bl-logo.jpg" height=75 width=100></a>
 		<a href="javascript:history.go(-1)">Back to search</a>
 	</div>
-	<hr width="100%">
-	<div style="min-height:1400px">
-	<div style="width:100%;margin-bottom:40px"> 
-		<h3>{{imageTitle}}</h3>
-	</div>
-	<img src="{{url}}" style="max-width:50%;"/>
-	<div style="float:right;width:48%;">
+	<hr>
+	<h3 class="center-text">{{imageTitle}}</h3>
+	<img src="{{url}}" id="image-size"/>
+	<div id="desc-panel">
 		<div class="panel panel-default">
             <div class="panel-heading">
               <h3 class="panel-title">Image Details</h3>
             </div>
             <div class="panel-body">
-	            <ul>
-					<li><i class="fa fa-book"></i> Volume : {{volume}}</li>
-					<li><i class="fa fa-institution"></i> Publisher : {{publisher}}</li>
-					<li><i class="fa fa-pencil"></i> Title : {{imageTitle}}</li>
-					<li><i class="fa fa-user"></i> Author : {{author}}</li>
-					<li><i class="fa fa-compass"></i> Place of Publication : {{publicationPlace}}</li>
-					<li><i class="fa fa-barcode"></i> Book ID : {{bookID}}</li>
-					<li><i class="fa fa-calendar"></i> Year : {{year}}</li>
-					<li><i class="fa fa-bookmark"></i> Page : {{page}}</li>
-				</ul>
+				<i class="fa fa-book"></i> Volume : {{volume}}<br>
+				<i class="fa fa-institution"></i> Publisher : {{publisher}}<br>
+				<i class="fa fa-pencil"></i> Title : {{imageTitle}}<br>
+				<i class="fa fa-user"></i> Author : {{author}}<br>
+				<i class="fa fa-compass"></i> Place of Publication : {{publicationPlace}}<br>
+				<i class="fa fa-barcode"></i> Book ID : {{bookID}}<br>
+				<i class="fa fa-calendar"></i> Year : {{year}}<br>
+				<i class="fa fa-bookmark"></i> Page : {{page}}<br>
             </div>
       	</div>
 		<div class="panel panel-default">
@@ -56,6 +51,5 @@
 				</div>
             </div>
       	</div>
-	</div>
 	</div>
 </div>

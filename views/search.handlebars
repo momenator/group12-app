@@ -1,13 +1,12 @@
-<div style="min-height:96.9vh">
-	<div style="padding:5px;display:inline;position:fixed;background:#fff;height:120px;width:100%;border-bottom:solid black 1px">
-		<a style="float:left;margin:10px" href="/"><img class="bl-logo" src="/images/bl-logo.jpg" height=75 width=100></a>
-		<div style="float:left;padding:10px">
+<div class="page">
+	<div id="search-page-top">
+		<a class="bl-top-logo" href="/"><img class="bl-logo" src="/images/bl-logo.jpg" height=75 width=100></a>
+		<div id="search-bar-top">
 			<form action="">
 				<input type="radio" name="searchType" value="title" checked> By Titles | 
 				<input type="radio" name="searchType" value="alchemy"> By Alchemy API |
 				<input type="radio" name="searchType" value="imagga"> By Imagga API
 			</form>
-			<br>
 			<form id="query" action="/search" method="post">
 				<input value="{{searchQuery}}" type="text" size="80" name="query">
 	   			<input type="submit" value="Search" class="submitButton">
@@ -17,30 +16,24 @@
 			{{/if}}
 		</div>
 	</div>
-	<div style="height:100%;min-height:71.5vh;padding-top:130px">
-	<div id="wrapper">
-		<h4 style="text-align:center">{{noResults}}</h4>
-
-		<div id="columns">
-			{{#if imageResults}}
-				{{#each imageResults}}
-				<div class="pin">
-					<a href="/search/{{this._id}}"><img src={{this.flickr_medium_source}} ></a>
-					<a href="/search/{{this._id}}">{{shortenString this.title}}</a>
-					<hr>
-					{{!--
-						<li>volume : {{this.volume}}</li>
-						<li>publisher : {{this.publisher}}</li>
-						<li>author : {{this.first_author}}</li>
-						<li>place of publication : {{this.pubplace}}</li>
-						<li>bookID : {{this.book_identifier}}</li>
-						<li>year : {{this.year}}</li>
-						<li>page : {{this.page}}</li>
-						--}}
-				</div>
-				{{/each}}
-			{{/if}}
+	<div id="search-results-container">
+		<div id="wrapper">
+			<h4 class="center-text">{{noResults}}</h4>
+			<div id="columns">
+				{{#if imageResults}}
+					{{#each imageResults}}
+					<div class="pin">
+						<a href="/search/{{this._id}}">
+							<img src={{this.flickr_medium_source}} >
+						</a>
+						<a href="/search/{{this._id}}">
+							{{shortenString this.title}}
+						</a>
+						<hr>
+					</div>
+					{{/each}}
+				{{/if}}
+			</div>
 		</div>
-	</div>
 	</div>
 </div>
