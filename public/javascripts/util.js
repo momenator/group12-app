@@ -1,5 +1,5 @@
 $(window).load(function(){
-	$("#search-results-container,#image-page-result").fadeIn(1000);
+	$("#search-results-container,#image-page,#index-page").fadeIn(1000);
 });
 
 $(document).ready(function(){

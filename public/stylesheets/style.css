@@ -176,6 +176,7 @@ a:hover{
 
 #index-page{
 	margin-top: 10vh;
+	display: none;
 }
 
 .search-bar{
