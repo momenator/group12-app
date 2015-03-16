@@ -8,15 +8,10 @@ $(document).ready(function(){
         	console.log("title");
             $('#query').attr("action", "/search");
         }
-        if($(this).attr("value")=="alchemy"){
-        			            	console.log("alchemy");
+        if($(this).attr("value")=="tags"){
+                       console.log("tags");
 
-            $('#query').attr("action", "/searchAlchemyTags");
-        }
-        if($(this).attr("value")=="imagga"){
-        			   console.log("imagga");
-
-            $('#query').attr("action", "/searchImaggaTags");
+            $('#query').attr("action", "/searchTags");
         }
     });
 });

@@ -75,6 +75,59 @@ router.post('/search', function(req, res, next){
 	});
 });
 
+router.post('/searchTags', function(req, res, next){
+	console.log("searched for tag : " + req.body.query);
+	var result = [];
+	collection.find({
+		"alchemyTags": {
+	        "$elemMatch": {
+	            "text": req.body.query
+	        }
+	    }
+	}).limit(250).toArray(function (err, docs){
+		if (err) {
+			console.log(err);
+			res.render('error', { message:err });
+		} else {
+			result.push.apply(result, docs);
+			collection.find({
+			    "imaggaTags": {
+			        "$elemMatch": {
+			            "tag": req.body.query
+			        }
+			    }
+			}).limit(250).toArray(function (err, docs){
+				if (err) {
+					console.log(err);
+					res.render('error', { message:err });
+				} else {
+					result.push.apply(result, docs);
+					console.log("result tags : " + result);
+					if (result.length == 0){
+						res.render('search', { 
+							noResults : "No results found" ,
+							searchType: "tags", 
+							searchQuery: req.body.query,
+							helpers:{
+								shortenString : shortenStringHelper 
+							}  
+						});
+					} else {
+						res.render('search',{
+							imageResults : result, 
+							searchType: "tags", 
+							searchQuery: req.body.query,
+							helpers:{
+								shortenString : shortenStringHelper
+							}  
+						});
+					}
+				}
+			});
+		}
+	});
+});
+
 router.post('/searchAlchemyTags', function(req, res, next){
 	console.log("searched for AlchemyAPI tag : " + req.body.query);
 	collection.find({

@@ -4,11 +4,10 @@
 		<div id="search-bar-top">
 			<form action="">
 				<input type="radio" name="searchType" value="title" checked> By Titles | 
-				<input type="radio" name="searchType" value="alchemy"> By Alchemy API |
-				<input type="radio" name="searchType" value="imagga"> By Imagga API
+				<input type="radio" name="searchType" value="tags"> By Tags
 			</form>
 			<form id="query" action="/search" method="post">
-				<input value="{{searchQuery}}" type="text" size="80" name="query">
+				<input placeholder="Browse Collection" value="{{searchQuery}}" type="text" size="80" name="query">
 	   			<input type="submit" value="Search" class="submitButton">
 			</form>
 			{{#if searchQuery}}
