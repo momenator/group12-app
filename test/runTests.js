@@ -130,7 +130,7 @@ describe('group12-app-test', function () {
 		});
 	});
 
-	it('invalid image search id should redirect to error 404 page', 
+	it('invalid image search id should redirect to error page', 
 	function (done) {
 		client.connect(mongodbHost,function(err, db) {
 		  if(err) {
@@ -142,9 +142,9 @@ describe('group12-app-test', function () {
 		    console.log("> Connection to database succeded.");
 		    supertest(app)
 			.get('/search/54f615fb4bdf80530b0201dd')
-			.expect(404)
+			.expect(302)
 			.end(function (err, res) {
-				res.status.should.equal(404);
+				res.status.should.equal(302);
 				done();
 			});
 		  }

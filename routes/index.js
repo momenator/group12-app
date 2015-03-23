@@ -190,14 +190,15 @@ module.exports = function (collection){
 		});
 	});	
 	*/
-	
 	functions.getImagePage = function(req, res, next){
 		console.log("visited image id : " + req.params.imageid);
 		collection.findOne({'_id':new objectId(req.params.imageid)}, function (err, doc){
-			var url = doc.flickr_small_source;
 			if (err) {
 				console.log (err);
 				res.render('error', { message:err } );
+			} else if (doc == undefined){ 
+				console.log ('Image Not found, redirecting to error 404 page');
+				res.redirect('/invalid-image-id');
 			} else if (doc.alchemyTags != undefined || doc.alchemyTags != undefined ){
 				res.render('image', { 
 					url: doc.flickr_original_source, 
@@ -217,6 +218,7 @@ module.exports = function (collection){
 			        }
 				});
 			} else {
+				var url = doc.flickr_small_source;
 				alchemyapi.image_keywords('url', url, {}, function (response) {	
 					var alchemyTags = response.imageKeywords;
 					request.get({
