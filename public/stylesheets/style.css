@@ -81,6 +81,11 @@ body{
 	}
 }
 
+#random-btn{
+	text-decoration: none;
+	color:#333;
+}
+
 .panel-body{
 	padding-top:2px;
 }

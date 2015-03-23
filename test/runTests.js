@@ -153,6 +153,7 @@ describe('group12-app-test', function () {
 
 	it('should successfully retrieve random image', 
 	function (done) {
+		this.timeout(10000);
 		client.connect(mongodbHost,function(err, db) {
 		  if(err) {
 		    console.log(err);

@@ -29,6 +29,7 @@ module.exports = function (collection){
     app.post('/search', routes.postSearchByTitlePage );
     app.post('/searchTags', routes.postSearchByTagPage );
     app.get('/search/:imageid', routes.getImagePage);
+    app.get('/search/random', routes.getImagePage);
 
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {

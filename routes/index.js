@@ -192,7 +192,19 @@ module.exports = function (collection){
 	*/
 	functions.getImagePage = function(req, res, next){
 		console.log("visited image id : " + req.params.imageid);
-		collection.findOne({'_id':new objectId(req.params.imageid)}, function (err, doc){
+		var query;
+		var options;
+		if (req.params.imageid == 'random'){
+			query = {};
+			options = {
+				"limit": 1,
+            	"skip": Math.floor(Math.random()*(169999))
+			}
+		} else {
+			query = {'_id':new objectId(req.params.imageid)};
+			options = {};
+		}
+		collection.findOne(query, {}, options, function (err, doc){
 			if (err) {
 				console.log (err);
 				res.render('error', { message:err } );
@@ -229,7 +241,7 @@ module.exports = function (collection){
 					    }
 					}, function (err, httpResponse, body) {
 						var imaggaTags = JSON.parse(body).results[0].tags;
-						collection.update({'_id':new objectId(req.params.imageid)}, {$set : {alchemyTags: alchemyTags, imaggaTags: imaggaTags}},function(){console.log('inserted tags')});
+						collection.update({'_id':new objectId(doc._id)}, {$set : {alchemyTags: alchemyTags, imaggaTags: imaggaTags}},function(){console.log('inserted tags')});
 						res.render('image', { 
 							url: doc.flickr_original_source, 
 							volume: doc.volume,
