@@ -1,10 +1,28 @@
 var app = require('./helpers/app');
+var should = require('should');
+var supertest = require('supertest');
+var mongo = require('mongodb');
+var MongoClient = mongo.MongoClient;
+var client = new MongoClient();
 
-var should = require('should'),
-	supertest = require('supertest');
 
-describe('group12-app', function () {
+describe('group12-app-test', function () {
+	
 	/* test all the end points */
+
+	it('should connect to the database successfully', 
+	function (done) {
+		client.connect("mongodb://***:***@ds049171.mongolab.com:49171/bl-dataset",function(err, db) {
+		  if(err) {
+		    console.log(err);
+		    console.log("> Connection to database failed.");
+		  } else {
+		    console.log("> Connection to database succeded.");
+		    done();
+		  }
+		});
+	});
+	
 	it('should successfully calls the home page', 
 	function (done) {
 		supertest(app)
@@ -44,5 +62,7 @@ describe('group12-app', function () {
 			done();
 		});
 	});
+
+
 });
 
