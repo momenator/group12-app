@@ -62,7 +62,5 @@ describe('group12-app-test', function () {
 			done();
 		});
 	});
-
-
 });
 
