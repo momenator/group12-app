@@ -33,10 +33,19 @@ describe('group12-app-test', function () {
 		});
 	});
 
-	it('should successfully calls the search page', 
+	it('should successfully calls (GET) the search page', 
 	function (done) {
 		supertest(app)
 		.get('/search')
+		.expect(200)
+		.end(function (err, res) {
+			done();
+		});
+	});
+	it('should successfully calls (POST) the search page', 
+	function (done) {
+		supertest(app)
+		.post('/search')
 		.expect(200)
 		.end(function (err, res) {
 			done();
