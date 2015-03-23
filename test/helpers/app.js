@@ -1,3 +1,4 @@
+var app = require('../../app');
 var mongo = require('mongodb');
 var MongoClient = mongo.MongoClient;
 var client = new MongoClient();
@@ -13,3 +14,5 @@ client.connect("mongodb://***:***@ds049171.mongolab.com:49171/bl-dataset",functi
       console.log("> Connection to database succeded.");
   }
 });
+
+module.exports = app(collection);
