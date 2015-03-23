@@ -15,5 +15,10 @@
     "morgan": "~1.5.1",
     "request": "^2.53.0",
     "serve-favicon": "~2.2.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.2.1",
+    "should": "^5.2.0",
+    "supertest": "^0.15.0"
   }
 }
