@@ -66,11 +66,12 @@ module.exports = function (collection){
 
 	functions.postSearchByTagPage = function(req, res, next){
 		console.log("searched for tag : " + req.body.query);
+		var query = (req.params.query == undefined) ? req.body.query : req.params.query;
 		var result = [];
 		collection.find({
 			"alchemyTags": {
 		        "$elemMatch": {
-		            "text": req.body.query
+		            "text": query
 		        }
 		    }
 		}).limit(250).toArray(function (err, docs){
@@ -82,7 +83,7 @@ module.exports = function (collection){
 				collection.find({
 				    "imaggaTags": {
 				        "$elemMatch": {
-				            "tag": req.body.query
+				            "tag": query
 				        }
 				    }
 				}).limit(250).toArray(function (err, docs){
@@ -96,7 +97,7 @@ module.exports = function (collection){
 							res.render('search', { 
 								noResults : "No results found" ,
 								searchType: "tags", 
-								searchQuery: req.body.query,
+								searchQuery: query,
 								helpers:{
 									shortenString : shortenStringHelper 
 								}  
@@ -105,7 +106,7 @@ module.exports = function (collection){
 							res.render('search',{
 								imageResults : result, 
 								searchType: "tags", 
-								searchQuery: req.body.query,
+								searchQuery: query,
 								helpers:{
 									shortenString : shortenStringHelper
 								}  

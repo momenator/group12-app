@@ -27,7 +27,9 @@ module.exports = function (collection){
     app.get('/', routes.getHomePage);
     app.get('/search', routes.getSearchPage);
     app.post('/search', routes.postSearchByTitlePage );
+    app.get('/searchTags', routes.getSearchPage );
     app.post('/searchTags', routes.postSearchByTagPage );
+    app.get('/searchTags/:query', routes.postSearchByTagPage );
     app.get('/search/:imageid', routes.getImagePage);
     app.get('/search/random', routes.getImagePage);
 

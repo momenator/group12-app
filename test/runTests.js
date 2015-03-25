@@ -110,6 +110,50 @@ describe('group12-app-test', function () {
 		});
 	});
 
+	it('should successfully calls (GET) the search by tags by query in parameter page', 
+	function (done) {
+		this.timeout(5000);
+		client.connect(mongodbHost,function(err, db) {
+		  if(err) {
+		    console.log(err);
+		    console.log("> Connection to database failed.");
+		  } else {
+		  	collection = db.collection('images');
+		  	var app = require('../app')(collection)
+		    console.log("> Connection to database succeded.");
+		    supertest(app)
+			.get('/searchTags/animal')
+			.expect(200)
+			.end(function (err, res) {
+				res.status.should.equal(200);
+				done();
+			});
+		  }
+		});
+	});
+
+	it('should successfully calls (GET) the search by tags by query in body page', 
+	function (done) {
+		this.timeout(5000);
+		client.connect(mongodbHost,function(err, db) {
+		  if(err) {
+		    console.log(err);
+		    console.log("> Connection to database failed.");
+		  } else {
+		  	collection = db.collection('images');
+		  	var app = require('../app')(collection)
+		    console.log("> Connection to database succeded.");
+		    supertest(app)
+			.get('/searchTags')
+			.expect(200)
+			.end(function (err, res) {
+				res.status.should.equal(200);
+				done();
+			});
+		  }
+		});
+	});
+
 	it('should successfully calls the image with id 54f615fb4bdf80530b020176 page', 
 	function (done) {
 		client.connect(mongodbHost,function(err, db) {
