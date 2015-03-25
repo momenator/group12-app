@@ -67,7 +67,7 @@ describe('group12-app-test', function () {
 		});
 	});
 
-	it('should successfully calls (POST) the search page', 
+	it('should successfully calls (POST) the search by title page', 
 	function (done) {
 		client.connect(mongodbHost,function(err, db) {
 		  if(err) {
@@ -79,6 +79,28 @@ describe('group12-app-test', function () {
 		    console.log("> Connection to database succeded.");
 		    supertest(app)
 			.post('/search')
+			.expect(200)
+			.end(function (err, res) {
+				res.status.should.equal(200);
+				done();
+			});
+		  }
+		});
+	});
+
+	it('should successfully calls (POST) the search by tags page', 
+	function (done) {
+		this.timeout(5000);
+		client.connect(mongodbHost,function(err, db) {
+		  if(err) {
+		    console.log(err);
+		    console.log("> Connection to database failed.");
+		  } else {
+		  	collection = db.collection('images');
+		  	var app = require('../app')(collection)
+		    console.log("> Connection to database succeded.");
+		    supertest(app)
+			.post('/searchTags')
 			.expect(200)
 			.end(function (err, res) {
 				res.status.should.equal(200);
