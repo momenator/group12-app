@@ -43,6 +43,7 @@ module.exports = function (collection){
 			} else {
 				if (docs.length == 0){
 					res.render('search', {
+						searchByTitle: 'checked',
 						noResults : "No results found",
 						searchType: "title" ,
 						searchQuery: req.body.query,
@@ -52,6 +53,7 @@ module.exports = function (collection){
 					});
 				} else {
 					res.render('search',{
+						searchByTitle: 'checked',
 						imageResults : docs,
 						searchType: "title" ,
 						searchQuery: req.body.query,
@@ -95,6 +97,7 @@ module.exports = function (collection){
 						console.log("result tags : " + result);
 						if (result.length == 0){
 							res.render('search', { 
+								searchByTags: 'checked',
 								noResults : "No results found" ,
 								searchType: "tags", 
 								searchQuery: query,
@@ -104,6 +107,7 @@ module.exports = function (collection){
 							});
 						} else {
 							res.render('search',{
+								searchByTags: 'checked',
 								imageResults : result, 
 								searchType: "tags", 
 								searchQuery: query,

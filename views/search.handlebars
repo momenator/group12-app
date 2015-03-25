@@ -3,8 +3,8 @@
 		<a class="bl-top-logo" href="/"><img class="bl-logo" src="/images/bl-logo.jpg" height=75 width=100></a>
 		<div id="search-bar-top">
 			<form action="">
-				<input type="radio" name="searchType" value="title" checked> By Titles | 
-				<input type="radio" name="searchType" value="tags"> By Tags
+				<input type="radio" name="searchType" value="title" {{searchByTitle}}> By Titles | 
+				<input type="radio" name="searchType" value="tags" {{searchByTags}}> By Tags
 			</form>
 			<form id="query" action="/search" method="post">
 				<input placeholder="Browse Collection" value="{{searchQuery}}" type="text" size="80" name="query">
