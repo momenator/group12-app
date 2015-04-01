@@ -122,79 +122,6 @@ module.exports = function (collection){
 		});
 	};
 	
-	/*
-	router.post('/searchAlchemyTags', function(req, res, next){
-		console.log("searched for AlchemyAPI tag : " + req.body.query);
-		collection.find({
-			"alchemyTags": {
-		        "$elemMatch": {
-		            "text": req.body.query
-		        }
-		    }
-		}).limit(250).toArray(function (err, docs){
-			if (err) {
-				console.log (err);
-				res.render('error', { message:err });
-			} else {
-				if (docs.length == 0){
-					res.render('search', { 
-						noResults : "No results found" ,
-						searchType: "Alchemy API", 
-						searchQuery: req.body.query,
-						helpers:{
-							shortenString : shortenStringHelper 
-						}  
-					});
-				} else {
-					res.render('search',{
-						imageResults : docs, 
-						searchType: "Alchemy API", 
-						searchQuery: req.body.query,
-						helpers:{
-							shortenString : shortenStringHelper
-						}  
-					});
-				}
-			}
-		});
-	});
-
-	router.post('/searchImaggaTags', function(req, res, next){
-		console.log("searched for Imagga tag : " + req.body.query);
-		collection.find({
-		    "imaggaTags": {
-		        "$elemMatch": {
-		            "tag": req.body.query
-		        }
-		    }
-		}).limit(250).toArray(function (err, docs){
-			if (err) {
-				console.log (err);
-				res.render('error', { message:err });
-			} else {
-				if (docs.length == 0){
-					res.render('search', {
-						noResults : "No results found",
-						searchType: "Imagga API", 
-						searchQuery: req.body.query,
-						helpers:{
-							shortenString : shortenStringHelper
-						}  
-					});
-				} else {
-					res.render('search',{
-						imageResults : docs, 
-						searchType: "Imagga API",
-						searchQuery: req.body.query,
-						helpers:{
-							shortenString : shortenStringHelper 
-						} 
-					});
-				}
-			}
-		});
-	});	
-	*/
 	functions.getImagePage = function(req, res, next){
 		console.log("visited image id : " + req.params.imageid);
 		var query;
@@ -245,7 +172,7 @@ module.exports = function (collection){
 					    	password: "a5c945ee52846e612ff5705d6ce2e1a8"
 					    }
 					}, function (err, httpResponse, body) {
-						var imaggaTags = JSON.parse(body).results[0].tags;
+						var imaggaTags = (JSON.parse(body).results == undefined) ? [] : JSON.parse(body).results[0].tags;
 						collection.update({'_id':new objectId(doc._id)}, {$set : {alchemyTags: alchemyTags, imaggaTags: imaggaTags}},function(){console.log('inserted tags')});
 						res.render('image', { 
 							url: doc.flickr_original_source, 

@@ -1,4 +1,4 @@
-body{
+html, body{
 	font: bold 13px/21px Arial, Tahoma, sans-serif;
 }
 @-webkit-keyframes thumb {
@@ -159,6 +159,7 @@ a:after {
 }
 .page {
 	min-height: 100vh;
+	height: 100%;
 	margin:0 auto;
 }
 
@@ -218,6 +219,9 @@ a:hover{
 
 #image-page{
 	width:80%;
+	min-height: 800px;
+	height: 100%;
+	padding-bottom: 50px;
 }
 
 #image-page-header{

@@ -22,9 +22,10 @@
 				<i class="fa fa-bookmark"></i> Page : {{page}}<br>
             </div>
       	</div>
+      	{{#if alchemyTags}}
 		<div class="panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title">Alchemy API</h3>
+              <h3 class="panel-title">Generated Tags : Alchemy</h3>
             </div>
             <div class="panel-body">
             	<div class="tags">
@@ -36,9 +37,11 @@
 				</div>
             </div>
       	</div>
+      	{{/if}}
+      	{{#if imaggaTags}}
       	<div class="panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title">Imagga API</h3>
+              <h3 class="panel-title">Generated Tags : Imagga</h3>
             </div>
             <div class="panel-body">
             	<div class="tags">
@@ -51,5 +54,6 @@
 				</div>
             </div>
       	</div>
+      	{{/if}}
 	</div>
 </div>
