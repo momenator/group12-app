@@ -19,7 +19,7 @@ client.connect("mongodb://muhammad:bigdata@ds049171.mongolab.com:49171/bl-datase
        * Module dependencies.
        */
 
-      var app = require('../app')(db.collection("images"));
+      var app = require('./app')(db.collection("images"));
       var debug = require('debug')('group12-app:server');
       var http = require('http');
 
