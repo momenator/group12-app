@@ -31,7 +31,7 @@
             	<div class="tags">
             		{{#each alchemyTags}}
 						{{#if this.text}}
-							<a class="tag" href="http://localhost:3000/searchTags/{{this.tag}}">{{this.text}} : {{convertToPercentage this.score}} </a>
+							<a class="tag" href="https://group12-app.herokuapp.com/searchTags/{{this.tag}}">{{this.text}} : {{convertToPercentage this.score}} </a>
 						{{/if}}
 					{{/each}}
 				</div>
@@ -47,7 +47,7 @@
             	<div class="tags">
             		{{#each imaggaTags}}
 						{{#if this.tag}}
-							<a class="tag" href="http://localhost:3000/searchTags/{{this.tag}}">{{this.tag}} : {{shortenDecimal this.confidence}} 
+							<a class="tag" href="https://group12-app.herokuapp.com/searchTags/{{this.tag}}">{{this.tag}} : {{shortenDecimal this.confidence}} 
 							</a>
 						{{/if}}
 					{{/each}}
