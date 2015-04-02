@@ -172,14 +172,7 @@ module.exports = function (collection){
 					    	password: "a5c945ee52846e612ff5705d6ce2e1a8"
 					    }
 					}, function (err, httpResponse, body) {
-						var buffImaggaTags = (JSON.parse(body).results == undefined) ? [] : JSON.parse(body).results[0].tags;
-						var imaggaTags = [];
-						if (buffImaggaTags != [] || buffImaggaTags.length > 0){
-							for (var i = 0; i < imaggaTags.length; i++){
-								imaggaTags[i]['text'] = buffImaggaTags[i]['tag'];
-								imaggaTags[i]['score'] = buffImaggaTags[i]['confidence'];
-							}
-						}
+						var imaggaTags = (JSON.parse(body).results == undefined) ? [] : JSON.parse(body).results[0].tags;
 						collection.update({'_id':new objectId(doc._id)}, {$set : {alchemyTags: alchemyTags, imaggaTags: imaggaTags}},function(){console.log('inserted tags')});
 						res.render('image', { 
 							url: doc.flickr_original_source, 
