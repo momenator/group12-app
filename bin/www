@@ -8,20 +8,18 @@ var mongo = require('mongodb');
 var MongoClient = mongo.MongoClient;
 var client = new MongoClient();
 var db;
-var collection;
 
-client.connect("mongodb://muhammad:bigdata@ds049171.mongolab.com:49171/bl-dataset",function(err, db) {
+client.connect("mongodb://insert db url here",function(err, db) {
   if(err) {
     console.log(err);
       console.log("> Connection to database failed.");
   } else {
-      collection = db.collection("images");
       console.log("> Connection to database succeded.");
       /**
        * Module dependencies.
        */
 
-      var app = require('../app')(collection);
+      var app = require('./app')(db.collection("images"));
       var debug = require('debug')('group12-app:server');
       var http = require('http');
 

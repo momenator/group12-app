@@ -9,7 +9,7 @@ var MongoClient = mongo.MongoClient;
 var client = new MongoClient();
 var db;
 
-client.connect("mongodb://muhammad:bigdata@ds049171.mongolab.com:49171/bl-dataset",function(err, db) {
+client.connect("mongodb://insert db url here",function(err, db) {
   if(err) {
     console.log(err);
       console.log("> Connection to database failed.");
