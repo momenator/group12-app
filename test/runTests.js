@@ -217,7 +217,7 @@ describe('group12-app-test', function () {
 		});
 	});
 
-	it('should successfully retrieve random image', 
+	it('should successfully (GET) retrieve random image', 
 	function (done) {
 		this.timeout(10000);
 		client.connect(mongodbHost,function(err, db) {
@@ -230,6 +230,28 @@ describe('group12-app-test', function () {
 		    console.log("> Connection to database succeded.");
 		    supertest(app)
 			.get('/search/random')
+			.expect(200)
+			.end(function (err, res) {
+				res.status.should.equal(200);
+				done();
+			});
+		  }
+		});
+	});
+
+	it('should successfully (GET) retrieve statistics page', 
+	function (done) {
+		this.timeout(10000);
+		client.connect(mongodbHost,function(err, db) {
+		  if(err) {
+		    console.log(err);
+		    console.log("> Connection to database failed.");
+		  } else {
+		  	collection = db.collection('images');
+		  	var app = require('../app')(collection)
+		    console.log("> Connection to database succeded.");
+		    supertest(app)
+			.get('/stats')
 			.expect(200)
 			.end(function (err, res) {
 				res.status.should.equal(200);
