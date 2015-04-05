@@ -55,5 +55,12 @@
             </div>
       	</div>
       	{{/if}}
+      	{{#unless imaggaTags}}
+      		{{#unless alchemyTags}}
+      			<div class="alert alert-warning" role="alert">
+  					<a class="alert-link">No tags are available for this image</a>
+				</div>
+      		{{/unless}}
+      	{{/unless}}
 	</div>
 </div>
