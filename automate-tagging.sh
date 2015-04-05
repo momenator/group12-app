@@ -1,5 +1,5 @@
 #!/bin/bash
-for i in {1..960}
+for i in {1..900}
 do
    curl localhost:3000/search/random
    echo "\n"

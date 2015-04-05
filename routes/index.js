@@ -126,7 +126,7 @@ module.exports = function (collection){
 		collection.count(function (err, count){
 			var collectionSize = count;
 			console.log(collectionSize);
-			var query = {
+			var query1 = {
 			    "$or": [
 			        {
 			            "imaggaTags": {
@@ -140,12 +140,64 @@ module.exports = function (collection){
 			        }
 			    ]
 			};
-			collection.find(query).toArray(function (err, taggedDocs){
+			collection.find(query1).toArray(function (err, taggedDocs){
 				var taggedImages = taggedDocs.length;
 				console.log(taggedImages);
-				res.render('stats', {
-					collectionSize : collectionSize,
-					taggedImages : taggedImages 
+				var query2 = {
+				    "$and": [
+				        {
+				            "imaggaTags":  {
+				                "$ne": null
+				            }
+				        },
+				        {
+				            "alchemyTags":  {
+				                "$ne": null
+				            }
+				        }
+				    ]
+				}
+				collection.find(query2).toArray(function (err, nullTags1){
+					var bothTags = nullTags1.length;
+					var query3 = {
+					    "$and": [
+					        {
+					            "imaggaTags": []
+					        },
+					        {
+					            "alchemyTags": []
+					        }
+					    ]
+					}
+					collection.find(query3).toArray(function (err, nullTags2){
+						var bothNullTags = nullTags2.length;
+						collection.aggregate(
+							[
+								{ "$unwind" : "$imaggaTags" },
+								{ "$group" : { "_id" : "$imaggaTags.tag" , "number" : { "$sum" : 1 } } },
+								{ "$sort" : { "number" : -1 } },
+								{ "$limit" : 10 }
+							],function (err, topTenImaggaTags){
+								collection.aggregate(
+									[
+										{ "$unwind" : "$alchemyTags" },
+										{ "$group" : { "_id" : "$alchemyTags.text" , "number" : { "$sum" : 1 } } },
+										{ "$sort" : { "number" : -1 } },
+										{ "$limit" : 10 }
+									], function (err, topTenAlchemyTags ){
+										res.render('stats', {
+											collectionSize : collectionSize,
+											taggedImages : taggedImages,
+											eitherNullTags : taggedImages,
+											bothTags : bothTags,
+											bothNullTags : bothNullTags,
+											topTenImaggaTags : topTenImaggaTags,
+											topTenAlchemyTags : topTenAlchemyTags
+										});
+								});
+						});
+						
+					});
 				});
 			});
 		});
@@ -202,7 +254,16 @@ module.exports = function (collection){
 					    }
 					}, function (err, httpResponse, body) {
 						var imaggaTags = (JSON.parse(body).results == undefined) ? [] : JSON.parse(body).results[0].tags;
-						collection.update({'_id':new objectId(doc._id)}, {$set : {alchemyTags: alchemyTags, imaggaTags: imaggaTags}},function(){console.log('inserted tags')});
+						collection.update({
+							'_id':new objectId(doc._id)
+						}, {
+							$set : {
+								alchemyTags: alchemyTags, 
+								imaggaTags: imaggaTags
+							}
+						},function(){ 
+							console.log('inserted tags') 
+						});
 						res.render('image', { 
 							url: doc.flickr_original_source, 
 							volume: doc.volume,

@@ -1,34 +1,61 @@
 <div class="page" id="image-page">
 	<div id="image-page-header">
 		<a href="/"><img class="bl-logo" src="/images/bl-logo.jpg" height=75 width=100></a>
-		<a class="back-search"><i class="fa fa-bar-chart"></i> Statistics</a>
+		<a href="javascript:history.go(-1)" class="back-search"><i class="fa fa-arrow-left"></i> Back</a>
 	</div>
 	<hr>
-    <div class="panel panel-default" style="width:50%;margin:50px auto">
+    <div class="panel panel-primary" style="margin:50px auto">
         <div class="panel-heading">
-          <h3 class="panel-title">Latest Statistics</h3>
+          <h3 class="panel-title"><i class="fa fa-bar-chart"></i> Latest Statistics</h3>
         </div>
         <div class="panel-body">
-            <div class="tags">
-                Collection size : {{collectionSize}} images
-                <br>
-                Number of Machine Tagged images : {{taggedImages}} images
-                <br>
-                Top 10 tags: 
-                <ol>
-                    <li>tag</li>
-                    <li>tag</li>
-                    <li>tag</li>
-                    <li>tag</li>
-                    <li>tag</li>
-                    <li>tag</li>
-                    <li>tag</li>
-                    <li>tag</li>
-                    <li>tag</li>
-                    <li>tag</li>
-                <ol>
-                <br>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <td>Collection size
+                                </td>
+                                <td>Number of Machine Tagged images
+                                </td>
+                                <td>Number of images with either imagga and alchemy tags
+                                </td>
+                                <td>Number of images with both imagga and alchemy tags
+                                </td>
+                                <td>*Number of images with inconclusive results
+                                </td>
+                                <td>Top 10 most occurring alchemy tags
+                                </td>
+                                <td>Top 10 most occurring imagga tags
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{collectionSize}}</td>
+                                <td>{{taggedImages}}</td>
+                                <td>{{eitherNullTags}}</td>
+                                <td>{{bothTags}}</td>
+                                <td>{{bothNullTags}}</td>
+                                <td>
+                                    {{#each topTenImaggaTags}}
+                                        <strong>{{this._id}}</strong> - <span class="badge badge-info">{{this.number}}</span>
+                                        <hr style="margin-top:5px;margin-bottom:5px">
+                                    {{/each}}
+                                </td>
+                                <td>
+                                    {{#each topTenAlchemyTags}}
+                                        <strong>{{this._id}}</strong> - <span class="badge badge-info">{{this.number}} </span>
+                                        <hr style="margin-top:5px;margin-bottom:5px">
+                                    {{/each}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
+            <p>*These images do not produce any results after they have been analysed
+            </p>
         </div>
     </div>
 </div>
