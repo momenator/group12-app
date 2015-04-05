@@ -36,7 +36,7 @@ module.exports = function (collection){
 			"$text" : {
 				"$search" : req.body.query
 			}
-		}).limit(250).toArray(function (err, docs){
+		}).limit(50).toArray(function (err, docs){
 			if (err) {
 				console.log (err);
 				res.render('error', { message:err });
@@ -76,7 +76,7 @@ module.exports = function (collection){
 		            "text": query
 		        }
 		    }
-		}).limit(250).toArray(function (err, docs){
+		}).limit(50).toArray(function (err, docs){
 			if (err) {
 				console.log(err);
 				res.render('error', { message:err });
@@ -88,7 +88,7 @@ module.exports = function (collection){
 				            "tag": query
 				        }
 				    }
-				}).limit(250).toArray(function (err, docs){
+				}).limit(50).toArray(function (err, docs){
 					if (err) {
 						console.log(err);
 						res.render('error', { message:err });
@@ -121,6 +121,35 @@ module.exports = function (collection){
 			}
 		});
 	};
+
+	functions.getStatsPage = function (req, res, next){
+		collection.count(function (err, count){
+			var collectionSize = count;
+			console.log(collectionSize);
+			var query = {
+			    "$or": [
+			        {
+			            "imaggaTags": {
+			                "$exists": "true"
+			            }
+			        },
+			        {
+			            "alchemyTags": {
+			                "$exists": "true"
+			            }
+			        }
+			    ]
+			};
+			collection.find(query).toArray(function (err, taggedDocs){
+				var taggedImages = taggedDocs.length;
+				console.log(taggedImages);
+				res.render('stats', {
+					collectionSize : collectionSize,
+					taggedImages : taggedImages 
+				});
+			});
+		});
+	}
 	
 	functions.getImagePage = function(req, res, next){
 		console.log("visited image id : " + req.params.imageid);

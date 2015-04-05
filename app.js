@@ -32,7 +32,7 @@ module.exports = function (collection){
     app.get('/searchTags/:query', routes.postSearchByTagPage );
     app.get('/search/:imageid', routes.getImagePage);
     app.get('/search/random', routes.getImagePage);
-
+    app.get('/stats' , routes.getStatsPage);
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {
         var err = new Error('Not Found');

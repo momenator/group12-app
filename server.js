@@ -29,7 +29,6 @@ client.connect("mongodb://insert db url here",function(err, db) {
 
       var port = normalizePort(process.env.PORT || '3000');
       app.set('port', port);
-
       /**
        * Create HTTP server.
        */
@@ -43,6 +42,7 @@ client.connect("mongodb://insert db url here",function(err, db) {
       server.listen(port);
       server.on('error', onError);
       server.on('listening', onListening);
+      console.log("> App is deployed on port " + port);
 
       /**
        * Normalize a port into a number, string, or false.
