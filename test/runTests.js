@@ -5,7 +5,7 @@ var supertest = require('supertest');
 var mongo = require('mongodb');
 var MongoClient = mongo.MongoClient;
 var client = new MongoClient();
-var mongodbHost = "mongodb://***:***@ds049171.mongolab.com:49171/bl-dataset";
+var mongodbHost = "mongodb://insert db url here";
 
 
 describe('group12-app-test', function () {
@@ -241,7 +241,7 @@ describe('group12-app-test', function () {
 
 	it('should successfully (GET) retrieve statistics page', 
 	function (done) {
-		this.timeout(10000);
+		this.timeout(60000);
 		client.connect(mongodbHost,function(err, db) {
 		  if(err) {
 		    console.log(err);

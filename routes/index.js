@@ -211,7 +211,7 @@ module.exports = function (collection){
 			query = {};
 			options = {
 				"limit": 1,
-            	"skip": Math.floor(Math.random()*(169999))
+            	"skip": Math.floor(Math.random()*(25699))
 			}
 		} else {
 			query = {'_id':new objectId(req.params.imageid)};
