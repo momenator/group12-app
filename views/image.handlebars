@@ -31,7 +31,7 @@
             	<div class="tags">
             		{{#each alchemyTags}}
 						{{#if this.text}}
-							<a class="tag" href="https://group12-app.herokuapp.com/searchTags/{{this.tag}}">{{this.text}} : {{convertToPercentage this.score}} </a>
+							<a class="tag" href="javascript:void(0)"  data-toggle="modal" data-target="#myModal">{{this.text}} : {{convertToPercentage this.score}} </a>
 						{{/if}}
 					{{/each}}
 				</div>
@@ -47,7 +47,7 @@
             	<div class="tags">
             		{{#each imaggaTags}}
 						{{#if this.tag}}
-							<a class="tag" href="https://group12-app.herokuapp.com/searchTags/{{this.tag}}">{{this.tag}} : {{shortenDecimal this.confidence}} 
+							<a class="tag" href="javascript:void(0)" data-toggle="modal" data-target="#myModal">{{this.tag}} : {{shortenDecimal this.confidence}} 
 							</a>
 						{{/if}}
 					{{/each}}
@@ -62,5 +62,24 @@
 				</div>
       		{{/unless}}
       	{{/unless}}
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			    <h4 class="modal-title" id="myModalLabel">Details for tag : <span class="tag-name"><span></h4>
+			  </div>
+			  <div class="modal-body">
+			    Most frequently co-occuring tags
+			    <br>
+			  </div>
+			  <div class="modal-footer">
+			    <a class="search-tag-btn"><button type="button" class="btn btn-default">More results of this tag</button>
+			    </a>
+			  </div>
+			</div>
+		</div>
 	</div>
 </div>

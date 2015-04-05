@@ -287,6 +287,6 @@ module.exports = function (collection){
 			}
 		});
 	};
-
+	
 	return functions;
 }
