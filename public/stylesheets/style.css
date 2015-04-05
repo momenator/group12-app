@@ -174,10 +174,12 @@ a:after {
 
 }
 a{
+	text-decoration:none;
 	color:#cc0000;
 }
 
 a:hover{
+	text-decoration:none;
 	color:red;
 }
 
@@ -248,11 +250,19 @@ a:hover{
 }
 .link-corner{
 	float:right;
+	color: white;
+	text-decoration: none;
+	font-size: 18px;
 	padding-top:10px;
+	margin-left: 20px;
 }
 
 #image-page-result{
 	display: none;
+}
+
+#bl-blog-info{
+	margin-top: 50px;
 }
 
 .pace {
