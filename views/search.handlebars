@@ -1,6 +1,6 @@
 <div class="page">
 	<div id="search-page-top">
-		<a class="bl-top-logo" href="/"><img class="bl-logo" src="/images/bl-logo.jpg" height=75 width=100></a>
+		<a class="bl-top-logo" href="http://www.bl.uk/" target=blank><img class="bl-logo" src="/images/bl-logo.jpg" height=75 width=100></a>
 		<div id="search-bar-top">
 			<form action="">
 				<input type="radio" name="searchType" value="title" {{searchByTitle}}> By Titles | 
@@ -14,6 +14,7 @@
 			<h4>Search results by "{{searchType}}" for "{{searchQuery}}"</h4>
 			{{/if}}
 		</div>
+		<a href="/" class="back-search"  style="padding-top:40px;margin-right:20px;"> <i class="fa fa-home"></i>Home</a>
 	</div>
 	<div id="search-results-container">
 		<div id="wrapper">

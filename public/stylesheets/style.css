@@ -1,5 +1,9 @@
+@font-face {
+    font-family: Syntax;
+    src: url(/fonts/Syntax-LT-Std-Roman_43363.ttf);
+}
 html, body{
-	font: bold 13px/21px Arial, Tahoma, sans-serif;
+	font: bold 13px/21px Syntax;
 }
 @-webkit-keyframes thumb {
 	0% { -webkit-transform: scale(1); }
@@ -250,7 +254,7 @@ a:hover{
 }
 .back-search{
 	font-size: 25px;
-	padding-top: 50px;
+	margin-top: 10px;
 	float:right;
 }
 .link-corner{
@@ -270,6 +274,12 @@ a:hover{
 	margin-top: 50px;
 }
 
+.cc-license{
+	margin-top:1px;margin-left:1px;
+}
+.cc-stmt{
+	margin-left:5px;color:#fff;
+}
 .pace {
   -webkit-pointer-events: none;
   pointer-events: none;
