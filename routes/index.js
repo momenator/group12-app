@@ -20,6 +20,11 @@ module.exports = function (collection){
 		return Number(num*100).toFixed(2);
 	};
 
+	var addTrailingZero = function (str, max) {
+  		str = str.toString();
+  		return str.length < max ? addTrailingZero("0" + str, max) : str;
+	}
+
 	var functions = {};
 
 	functions.getHomePage = function(req, res, next) {
@@ -232,7 +237,7 @@ module.exports = function (collection){
 					imageTitle : doc.title,
 					author :doc.first_author,
 					publicationPlace: doc.pubplace,
-					bookID : doc.book_identifier,
+					bookID : addTrailingZero(doc.book_identifier, 9),
 					year: doc.date,
 					page: doc.page,
 					alchemyTags : doc.alchemyTags,
@@ -271,7 +276,7 @@ module.exports = function (collection){
 							imageTitle : doc.title,
 							author :doc.first_author,
 							publicationPlace: doc.pubplace,
-							bookID : doc.book_identifier,
+							bookID : addTrailingZero(doc.book_identifier, 9),
 							year: doc.date,
 							page: doc.page,
 							alchemyTags : alchemyTags,
