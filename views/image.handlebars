@@ -34,7 +34,7 @@
             	<div class="tags">
             		{{#each alchemyTags}}
 						{{#if this.text}}
-							<a class="tag" href="javascript:void(0)"  data-toggle="modal" data-target="#myModal">{{this.text}} : {{convertToPercentage this.score}} </a>
+							<a class="tag" href="javascript:void(0)"  data-toggle="modal" data-target="#myModal">{{this.text}} : {{convertToPercentage this.score}}% </a>
 						{{/if}}
 					{{/each}}
 				</div>
@@ -50,7 +50,7 @@
             	<div class="tags">
             		{{#each imaggaTags}}
 						{{#if this.tag}}
-							<a class="tag" href="javascript:void(0)" data-toggle="modal" data-target="#myModal">{{this.tag}} : {{shortenDecimal this.confidence}} 
+							<a class="tag" href="javascript:void(0)" data-toggle="modal" data-target="#myModal">{{this.tag}} : {{shortenDecimal this.confidence}} % 
 							</a>
 						{{/if}}
 					{{/each}}

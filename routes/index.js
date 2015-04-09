@@ -9,7 +9,7 @@ module.exports = function (collection){
 	var objectId = require('mongodb').ObjectID;
 
 	var shortenStringHelper = function (string) {
-		return String(string).substring(0, 35) + "..."
+		return String(string).substring(0, 50) + "..."
 	}; 
 
 	var shortenDecimalHelper = function (num) { 
@@ -23,6 +23,16 @@ module.exports = function (collection){
 	var addTrailingZero = function (str, max) {
   		str = str.toString();
   		return str.length < max ? addTrailingZero("0" + str, max) : str;
+	}
+
+	var sortByRank = function (a,b) {
+		if (a.rank < b.rank){
+			return 1;
+		}
+		if (a.rank > b.rank) {
+			return -1;
+		}
+		return 0;
 	}
 
 	var functions = {};
@@ -86,6 +96,13 @@ module.exports = function (collection){
 				console.log(err);
 				res.render('error', { message:err });
 			} else {
+				for (var i = 0; i < docs.length; i++){
+					for (var j = 0; j < docs[i]['alchemyTags'].length; j++){
+						if (docs[i]['alchemyTags'][j]['text'] == query){
+							docs[i]['rank'] = parseFloat(docs[i]['alchemyTags'][j]['score']);
+						}
+					}
+				}
 				result.push.apply(result, docs);
 				collection.find({
 				    "imaggaTags": {
@@ -98,7 +115,24 @@ module.exports = function (collection){
 						console.log(err);
 						res.render('error', { message:err });
 					} else {
+						for (var i = 0; i < docs.length; i++){
+							for (var j = 0; j < docs[i]['imaggaTags'].length; j++){
+								if (docs[i]['imaggaTags'][j]['tag'] == query){
+									docs[i]['rank'] = parseFloat(docs[i]['imaggaTags'][j]['confidence']);
+								}
+							}
+						}
 						result.push.apply(result, docs);
+						result.sort(sortByRank);
+						/*
+						console.log('-- tags --\n');
+						if (result.length > 0){
+							for (var i = 0;i < result.length; i++){
+								console.log(result[i]['title']);
+								console.log(result[i]['rank']);
+							}
+						}
+						*/
 						console.log("result tags : " + result);
 						if (result.length == 0){
 							res.render('search', { 
