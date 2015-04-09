@@ -27,10 +27,10 @@ module.exports = function (collection){
 
 	var sortByRank = function (a,b) {
 		if (a.rank < b.rank){
-			return 1;
+			return -1;
 		}
 		if (a.rank > b.rank) {
-			return -1;
+			return 1;
 		}
 		return 0;
 	}
