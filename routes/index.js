@@ -326,6 +326,34 @@ module.exports = function (imageCollection, tagCollection){
 			}
 		});
 	};
+
+	functions.getCoOccurringTags = function (req, res, next){
+		console.log('get tag : ' + req.params.tagName);
+		var tagQuery = req.params.tagName;
+		var query = {
+			tag : tagQuery
+		};
+
+		if (tagQuery == undefined){
+			res.jsonp({});
+		} else {
+			tagCollection.findOne(query, function (err, doc) {
+				if (err) {
+					console.log(err);
+					res.jsonp({error : err, message : 'an error has occured'});
+				}
+				if (doc == undefined) {
+					res.jsonp('{}');
+				} else {
+					var coOccuringTags = doc['coOccuringTags'].split(',');
+					res.jsonp({
+						tag : tagQuery, 
+						coOccuringTags : coOccuringTags
+					});
+				}
+			});
+		}
+	}
 	
 	return functions;
 }
