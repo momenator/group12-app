@@ -6,7 +6,7 @@ $(window).load(function(){
     } else {
         $('#query').attr("action", "/searchTags");
     }
-    if (document.URL.indexOf('searchTags') < 0){
+    if (document.URL.indexOf('searchTags') > 0){
         var container = document.querySelector('#columns');
         var msnry = new Masonry( container, {
             // options
@@ -39,7 +39,7 @@ $(document).ready(function(){
         
         $.ajax({
             method : "GET",
-            url : "http://localhost:3000/api/getCoOccuringTags/" + tagName
+            url : "https://group12-app.herokuapp.com/api/getCoOccuringTags/" + tagName
         }).done(function (data){
             console.log(data['coOccuringTags']);
             $('#tags-in-modal').empty();
