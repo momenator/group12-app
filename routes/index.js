@@ -355,7 +355,7 @@ module.exports = function (imageCollection, tagCollection){
 		}
 	};
 
-	functions.RestAPIpostSearchByTitle = function(req, res, next){
+	functions.RestAPIgetSearchByTitle = function(req, res, next){
 		console.log("Rest API : searched for title : " + req.params.title);
 		imageCollection.find({
 			"$text" : {
@@ -379,9 +379,9 @@ module.exports = function (imageCollection, tagCollection){
 		});
 	};
 
-	functions.RestAPIpostSearchByTag = function(req, res, next){
-		console.log("Rest API : searched for tag : " + req.params.query);
-		var query = req.params.query;
+	functions.RestAPIgetSearchByTag = function(req, res, next){
+		console.log("Rest API : searched for tag : " + req.params.tag);
+		var query = req.params.tag;
 		var result = [];
 		imageCollection.find({
 			"alchemyTags": {
@@ -422,7 +422,6 @@ module.exports = function (imageCollection, tagCollection){
 						}
 						result.push.apply(result, docs);
 						result.sort(sortByRank);
-						
 						if (result.length == 0){
 							res.jsonp('{}');
 						} else {

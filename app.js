@@ -37,9 +37,9 @@ module.exports = function (imageCollection, tagCollection){
 
     // Restful APIs
     app.get('/api/getCoOccuringTags/:tagName', routes.RestAPIgetCoOccurringTags);
-    app.get('/api/getImagesByTitle/:title', routes.RestAPIpostSearchByTitle);
-    app.get('/api/getImagesByTag/:tag', routes.RestAPIpostSearchByTag);
-    app.get('/api/getImagesByID/:imageid', routes.RestAPIpostSearchByTag);
+    app.get('/api/getImagesByTitle/:title', routes.RestAPIgetSearchByTitle);
+    app.get('/api/getImagesByTag/:tag', routes.RestAPIgetSearchByTag);
+    app.get('/api/getImagesByID/:imageid', routes.RestAPIgetImageDetails);
     app.get('/api/getStatistics', routes.RestAPIgetStatistics);
 
     // catch 404 and forward to error handler
