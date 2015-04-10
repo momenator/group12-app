@@ -327,8 +327,8 @@ module.exports = function (imageCollection, tagCollection){
 		});
 	};
 
-	functions.getCoOccurringTags = function (req, res, next){
-		console.log('get tag : ' + req.params.tagName);
+	functions.RestAPIgetCoOccurringTags = function (req, res, next){
+		console.log('Rest API : get tag : ' + req.params.tagName);
 		var tagQuery = req.params.tagName;
 		var query = {
 			tag : tagQuery
@@ -353,7 +353,31 @@ module.exports = function (imageCollection, tagCollection){
 				}
 			});
 		}
-	}
-	
+	};
+
+	functions.RestAPIpostSearchByTitle = function(req, res, next){
+		console.log("Rest API : searched for title : " + req.params.title);
+		imageCollection.find({
+			"$text" : {
+				"$search" : req.params.title
+			}
+		}).limit(50).toArray(function (err, docs){
+			if (err) {
+				console.log (err);
+				res.render('error', { message:err });
+			} else {
+				if (docs.length == 0){
+					res.jsonp('{}');
+				} else {
+					res.jsonp({
+						imageResults : docs,
+						searchType: "title" ,
+						searchQuery: req.params.title
+					});
+				}
+			}
+		});
+	};
+
 	return functions;
 }

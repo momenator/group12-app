@@ -311,9 +311,9 @@ describe('group12-app-test', function () {
 		    console.log("> Connection to database succeded.");
 		    supertest(app)
 			.get('/api/getCoOccuringTags/thistagdoesntexists')
-			.expect(404)
+			.expect(200)
 			.end(function (err, res) {
-				res.status.should.equal(404);
+				res.status.should.equal(200);
 				res.body.should.equal('{}');
 				done();
 			});

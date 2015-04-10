@@ -35,8 +35,10 @@ module.exports = function (imageCollection, tagCollection){
     app.get('/search/random', routes.getImagePage);
     app.get('/stats' , routes.getStatsPage);
 
-    app.get('/api/getCoOccuringTags/:tagName', routes.getCoOccurringTags);
-    
+    // Restful APIs
+    app.get('/api/getCoOccuringTags/:tagName', routes.RestAPIgetCoOccurringTags);
+    app.get('/api/getImagesByTitle/:title', routes.RestAPIpostSearchByTitle);
+
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {
         var err = new Error('Not Found');
