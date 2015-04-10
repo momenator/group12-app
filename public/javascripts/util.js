@@ -6,13 +6,14 @@ $(window).load(function(){
     } else {
         $('#query').attr("action", "/searchTags");
     }
-
-    var container = document.querySelector('#columns');
-    var msnry = new Masonry( container, {
-        // options
-        columnWidth: 20,
-        itemSelector: '.pin'
-    });
+    if (document.URL.indexOf('searchTags') < 0){
+        var container = document.querySelector('#columns');
+        var msnry = new Masonry( container, {
+            // options
+            columnWidth: 20,
+            itemSelector: '.pin'
+        });
+    }   
 });
 
 $(document).ready(function(){
