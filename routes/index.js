@@ -437,6 +437,83 @@ module.exports = function (imageCollection, tagCollection){
 			}
 		});
 	};
+
+	functions.RestAPIgetImageDetails = function(req, res, next){
+		console.log("Rest API : visited image id : " + req.params.imageid);
+		var query;
+		var options;
+		if (req.params.imageid == 'random'){
+			query = {};
+			options = {
+				"limit": 1,
+            	"skip": Math.floor(Math.random()*(25699))
+			}
+		} else {
+			query = {'_id':new objectId(req.params.imageid)};
+			options = {};
+		}
+		imageCollection.findOne(query, {}, options, function (err, doc){
+			if (err) {
+				console.log (err);
+				res.render('error', { message:err } );
+			} else if (doc == undefined){ 
+				console.log ('Image Not found, redirecting to error 404 page');
+				res.jsonp('{}');
+			} else if (doc.alchemyTags != undefined || doc.alchemyTags != undefined ){
+				res.jsonp({ 
+					url: doc.flickr_original_source, 
+					volume: doc.volume,
+					publisher : doc.publisher,
+					imageTitle : doc.title,
+					author :doc.first_author,
+					publicationPlace: doc.pubplace,
+					bookID : addTrailingZero(doc.book_identifier, 9),
+					year: doc.date,
+					page: doc.page,
+					alchemyTags : doc.alchemyTags,
+					imaggaTags : doc.imaggaTags
+				});
+			} else {
+				var url = doc.flickr_small_source;
+				alchemyapi.image_keywords('url', url, {}, function (response) {	
+					var alchemyTags = response.imageKeywords;
+					request.get({
+					    url:'https://api.imagga.com/v1/tagging?url='+ url,
+					    auth: {
+					    	username:"acc_3a8a3280ff382f5",
+					    	password: "a5c945ee52846e612ff5705d6ce2e1a8"
+					    }
+					}, function (err, httpResponse, body) {
+						var imaggaTags = (JSON.parse(body).results == undefined) ? [] : JSON.parse(body).results[0].tags;
+						imageCollection.update({
+							'_id':new objectId(doc._id)
+						}, {
+							$set : {
+								alchemyTags: alchemyTags, 
+								imaggaTags: imaggaTags
+							}
+						},function(){ 
+							console.log('inserted tags') 
+						});
+						res.jsonp({ 
+							url: doc.flickr_original_source, 
+							volume: doc.volume,
+							publisher : doc.publisher,
+							imageTitle : doc.title,
+							author :doc.first_author,
+							publicationPlace: doc.pubplace,
+							bookID : addTrailingZero(doc.book_identifier, 9),
+							year: doc.date,
+							page: doc.page,
+							alchemyTags : alchemyTags,
+							imaggaTags : imaggaTags
+						});
+					});
+
+				}); 		
+			}
+		});
+	};
 	
 	return functions;
 }

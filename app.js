@@ -38,6 +38,8 @@ module.exports = function (imageCollection, tagCollection){
     // Restful APIs
     app.get('/api/getCoOccuringTags/:tagName', routes.RestAPIgetCoOccurringTags);
     app.get('/api/getImagesByTitle/:title', routes.RestAPIpostSearchByTitle);
+    app.get('/api/getImagesByTag/:tag', routes.RestAPIpostSearchByTag);
+    app.get('/api/getImagesByID/:imageid', routes.RestAPIpostSearchByTag);
 
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {

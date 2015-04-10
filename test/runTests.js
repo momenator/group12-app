@@ -451,7 +451,7 @@ describe('group12-app-test', function () {
 		  	var app = require('../app')(collection,collection2);
 		    console.log("> Connection to database succeded.");
 		    supertest(app)
-			.get('/api/getImagesByID/')
+			.get('/api/getImagesByID/54f6184e4bdf80530b03901a')
 			.expect(200)
 			.end(function (err, res) {
 				res.status.should.equal(200);
@@ -475,7 +475,7 @@ describe('group12-app-test', function () {
 		  	var app = require('../app')(collection,collection2);
 		    console.log("> Connection to database succeded.");
 		    supertest(app)
-			.get('/api/getImagesByID/this')
+			.get('/api/getImagesByID/nonexistenid')
 			.expect(200)
 			.end(function (err, res) {
 				res.status.should.equal(200);
