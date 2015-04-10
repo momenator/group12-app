@@ -7,9 +7,10 @@
 var mongo = require('mongodb');
 var MongoClient = mongo.MongoClient;
 var client = new MongoClient();
+var config = require('./config/config.js');
 var db;
 
-client.connect("mongodb://insert db url here",function(err, db) {
+client.connect("mongodb://" + config.mongoUrl ,function(err, db) {
   if(err) {
     console.log(err);
       console.log("> Connection to database failed.");
@@ -27,7 +28,7 @@ client.connect("mongodb://insert db url here",function(err, db) {
        * Get port from environment and store in Express.
        */
 
-      var port = normalizePort(process.env.PORT || '3000');
+      var port = normalizePort(process.env.PORT || config.port);
       app.set('port', port);
       /**
        * Create HTTP server.

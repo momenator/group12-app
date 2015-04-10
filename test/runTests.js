@@ -5,7 +5,8 @@ var supertest = require('supertest');
 var mongo = require('mongodb');
 var MongoClient = mongo.MongoClient;
 var client = new MongoClient();
-var mongodbHost = "mongodb://insert db url here";
+var config = require('../config/config.js');
+var mongodbHost = config.mongoUrl;
 
 
 describe('group12-app-test', function () {
