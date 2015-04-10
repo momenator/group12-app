@@ -379,5 +379,64 @@ module.exports = function (imageCollection, tagCollection){
 		});
 	};
 
+	functions.RestAPIpostSearchByTag = function(req, res, next){
+		console.log("Rest API : searched for tag : " + req.params.query);
+		var query = req.params.query;
+		var result = [];
+		imageCollection.find({
+			"alchemyTags": {
+		        "$elemMatch": {
+		            "text": query
+		        }
+		    }
+		}).limit(50).toArray(function (err, docs){
+			if (err) {
+				console.log(err);
+				res.render('error', { message:err });
+			} else {
+				for (var i = 0; i < docs.length; i++){
+					for (var j = 0; j < docs[i]['alchemyTags'].length; j++){
+						if (docs[i]['alchemyTags'][j]['text'] == query){
+							docs[i]['rank'] = parseFloat(docs[i]['alchemyTags'][j]['score']);
+						}
+					}
+				}
+				result.push.apply(result, docs);
+				imageCollection.find({
+				    "imaggaTags": {
+				        "$elemMatch": {
+				            "tag": query
+				        }
+				    }
+				}).limit(50).toArray(function (err, docs){
+					if (err) {
+						console.log(err);
+						res.render('error', { message:err });
+					} else {
+						for (var i = 0; i < docs.length; i++){
+							for (var j = 0; j < docs[i]['imaggaTags'].length; j++){
+								if (docs[i]['imaggaTags'][j]['tag'] == query){
+									docs[i]['rank'] = parseFloat(docs[i]['imaggaTags'][j]['confidence']);
+								}
+							}
+						}
+						result.push.apply(result, docs);
+						result.sort(sortByRank);
+						
+						if (result.length == 0){
+							res.jsonp('{}');
+						} else {
+							res.jsonp({
+								imageResults : result, 
+								searchType: "tags", 
+								searchQuery: query, 
+							});
+						}
+					}
+				});
+			}
+		});
+	};
+	
 	return functions;
 }
