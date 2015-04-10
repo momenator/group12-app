@@ -253,6 +253,11 @@ a:hover{
 	margin-left: 20px;
 }
 
+#tags-in-modal{
+	width:98%;
+	margin:0 auto;
+}
+
 #image-page-result{
 	display: none;
 }

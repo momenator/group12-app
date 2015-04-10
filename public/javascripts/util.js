@@ -14,13 +14,30 @@ $(document).ready(function(){
             $('#query').attr("action", "/searchTags");
         }
     });
-    $('.tag').click(function(){
+    $(document.body).on('click', '.tag', function(){
         var keywords = String($(this).html()).split(" ");
         var tagName = keywords[0];
-        if (keywords[1] != ':' && keywords[1] != ' '){
+        if (keywords[1] != ':' && keywords[1] != ' ' & keywords[1] != undefined){
             tagName = keywords[0] + ' ' + keywords[1];
         }
+
         $('.tag-name').html('"' + tagName + '"');
+        
+        $.ajax({
+            method : "GET",
+            url : "http://localhost:3000/api/getCoOccuringTags/" + tagName
+        }).done(function (data){
+            console.log(data['coOccuringTags']);
+            $('#tags-in-modal').empty();
+            for(var i = 0; i < data['coOccuringTags'].length; i++){
+                console.log('inserting tags');
+                $('#tags-in-modal').append(
+                    '<a class="tag modal-tags" href="javascript:void(0)">'
+                    + data['coOccuringTags'][i] 
+                    + '</a>');
+            }
+        });
+        
         $('.search-tag-btn').attr("href", "/searchTags/" + tagName);
     });
 });

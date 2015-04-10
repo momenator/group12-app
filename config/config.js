@@ -1,5 +1,5 @@
 var config = {
-	mongoUrl : "insert db url here",
+	mongoUrl : "insert mongodb url here",
 	port : "3000"
 }
 
