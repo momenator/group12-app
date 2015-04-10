@@ -33,7 +33,8 @@ describe('group12-app-test', function () {
 		    console.log("> Connection to database failed.");
 		  } else {
 		  	collection = db.collection('images');
-		  	var app = require('../app')(collection)
+		  	collection2 = db.collection('tags');
+		  	var app = require('../app')(collection,collection2);
 		    console.log("> Connection to database succeded.");
 		    supertest(app)
 			.get('/')
@@ -54,7 +55,8 @@ describe('group12-app-test', function () {
 		    console.log("> Connection to database failed.");
 		  } else {
 		  	collection = db.collection('images');
-		  	var app = require('../app')(collection)
+		  	collection2 = db.collection('tags');
+		  	var app = require('../app')(collection,collection2);
 		    console.log("> Connection to database succeded.");
 		    supertest(app)
 			.get('/search')
@@ -75,7 +77,8 @@ describe('group12-app-test', function () {
 		    console.log("> Connection to database failed.");
 		  } else {
 		  	collection = db.collection('images');
-		  	var app = require('../app')(collection)
+		  	collection2 = db.collection('tags');
+		  	var app = require('../app')(collection,collection2);
 		    console.log("> Connection to database succeded.");
 		    supertest(app)
 			.post('/search')
@@ -97,7 +100,8 @@ describe('group12-app-test', function () {
 		    console.log("> Connection to database failed.");
 		  } else {
 		  	collection = db.collection('images');
-		  	var app = require('../app')(collection)
+		  	collection2 = db.collection('tags');
+		  	var app = require('../app')(collection,collection2);
 		    console.log("> Connection to database succeded.");
 		    supertest(app)
 			.post('/searchTags')
@@ -119,7 +123,8 @@ describe('group12-app-test', function () {
 		    console.log("> Connection to database failed.");
 		  } else {
 		  	collection = db.collection('images');
-		  	var app = require('../app')(collection)
+		  	collection2 = db.collection('tags');
+		  	var app = require('../app')(collection,collection2);
 		    console.log("> Connection to database succeded.");
 		    supertest(app)
 			.get('/searchTags/animal')
@@ -141,7 +146,8 @@ describe('group12-app-test', function () {
 		    console.log("> Connection to database failed.");
 		  } else {
 		  	collection = db.collection('images');
-		  	var app = require('../app')(collection)
+		  	collection2 = db.collection('tags');
+		  	var app = require('../app')(collection,collection2);
 		    console.log("> Connection to database succeded.");
 		    supertest(app)
 			.get('/searchTags')
@@ -162,7 +168,8 @@ describe('group12-app-test', function () {
 		    console.log("> Connection to database failed.");
 		  } else {
 		  	collection = db.collection('images');
-		  	var app = require('../app')(collection)
+		  	collection2 = db.collection('tags');
+		  	var app = require('../app')(collection,collection2);
 		    console.log("> Connection to database succeded.");
 		    supertest(app)
 			.get('/search/54f615fb4bdf80530b020176')
@@ -183,7 +190,8 @@ describe('group12-app-test', function () {
 		    console.log("> Connection to database failed.");
 		  } else {
 		  	collection = db.collection('images');
-		  	var app = require('../app')(collection)
+		  	collection2 = db.collection('tags');
+		  	var app = require('../app')(collection,collection2);
 		    console.log("> Connection to database succeded.");
 		    supertest(app)
 			.get('/randompagethatdoesntexist')
@@ -204,7 +212,8 @@ describe('group12-app-test', function () {
 		    console.log("> Connection to database failed.");
 		  } else {
 		  	collection = db.collection('images');
-		  	var app = require('../app')(collection)
+		  	collection2 = db.collection('tags');
+		  	var app = require('../app')(collection,collection2);
 		    console.log("> Connection to database succeded.");
 		    supertest(app)
 			.get('/search/54f615fb4bdf80530b0201dd')
@@ -226,7 +235,8 @@ describe('group12-app-test', function () {
 		    console.log("> Connection to database failed.");
 		  } else {
 		  	collection = db.collection('images');
-		  	var app = require('../app')(collection)
+		  	collection2 = db.collection('tags');
+		  	var app = require('../app')(collection,collection2);
 		    console.log("> Connection to database succeded.");
 		    supertest(app)
 			.get('/search/random')
@@ -248,7 +258,8 @@ describe('group12-app-test', function () {
 		    console.log("> Connection to database failed.");
 		  } else {
 		  	collection = db.collection('images');
-		  	var app = require('../app')(collection)
+		  	collection2 = db.collection('tags');
+		  	var app = require('../app')(collection,collection2);
 		    console.log("> Connection to database succeded.");
 		    supertest(app)
 			.get('/stats')
@@ -260,5 +271,220 @@ describe('group12-app-test', function () {
 		  }
 		});
 	});
+
+
+	it('Restful API : should successfully (GET) the cooccuring tags given a tag', 
+	function (done) {
+		this.timeout(10000);
+		client.connect(mongodbHost,function(err, db) {
+		  if(err) {
+		    console.log(err);
+		    console.log("> Connection to database failed.");
+		  } else {
+		  	collection = db.collection('images');
+		  	collection2 = db.collection('tags');
+		  	var app = require('../app')(collection,collection2);
+		    console.log("> Connection to database succeded.");
+		    supertest(app)
+			.get('/api/getCoOccuringTags/coin')
+			.expect(200)
+			.end(function (err, res) {
+				res.status.should.equal(200);
+				res.body.should.not.equal(undefined);
+				done();
+			});
+		  }
+		});
+	});
+
+	it('Restful API : should return {} given a null or nonexistent tag', 
+	function (done) {
+		this.timeout(10000);
+		client.connect(mongodbHost,function(err, db) {
+		  if(err) {
+		    console.log(err);
+		    console.log("> Connection to database failed.");
+		  } else {
+		  	collection = db.collection('images');
+		  	collection2 = db.collection('tags');
+		  	var app = require('../app')(collection,collection2);
+		    console.log("> Connection to database succeded.");
+		    supertest(app)
+			.get('/api/getCoOccuringTags/thistagdoesntexists')
+			.expect(404)
+			.end(function (err, res) {
+				res.status.should.equal(404);
+				res.body.should.equal('{}');
+				done();
+			});
+		  }
+		});
+	});
+
+	it('Restful API : should successfully (GET) the statistics api', 
+	function (done) {
+		this.timeout(10000);
+		client.connect(mongodbHost,function(err, db) {
+		  if(err) {
+		    console.log(err);
+		    console.log("> Connection to database failed.");
+		  } else {
+		  	collection = db.collection('images');
+		  	collection2 = db.collection('tags');
+		  	var app = require('../app')(collection,collection2);
+		    console.log("> Connection to database succeded.");
+		    supertest(app)
+			.get('/api/getStatistics')
+			.expect(200)
+			.end(function (err, res) {
+				res.status.should.equal(200);
+				done();
+			});
+		  }
+		});
+	});
+
+	it('Restful API : should successfully (GET) search by title resources', 
+	function (done) {
+		this.timeout(10000);
+		client.connect(mongodbHost,function(err, db) {
+		  if(err) {
+		    console.log(err);
+		    console.log("> Connection to database failed.");
+		  } else {
+		  	collection = db.collection('images');
+		  	collection2 = db.collection('tags');
+		  	var app = require('../app')(collection,collection2);
+		    console.log("> Connection to database succeded.");
+		    supertest(app)
+			.get('/api/getImagesByTitle/money')
+			.expect(200)
+			.end(function (err, res) {
+				res.status.should.equal(200);
+				done();
+			});
+		  }
+		});
+	});
+
+	it('Restful API : should return {} given no result from search by title', 
+	function (done) {
+		this.timeout(10000);
+		client.connect(mongodbHost,function(err, db) {
+		  if(err) {
+		    console.log(err);
+		    console.log("> Connection to database failed.");
+		  } else {
+		  	collection = db.collection('images');
+		  	collection2 = db.collection('tags');
+		  	var app = require('../app')(collection,collection2);
+		    console.log("> Connection to database succeded.");
+		    supertest(app)
+			.get('/api/getImagesByTitle/nonexistenttitlethatdoesntexist')
+			.expect(200)
+			.end(function (err, res) {
+				res.status.should.equal(200);
+				res.body.should.equal('{}');
+				done();
+			});
+		  }
+		});
+	});
+
+	it('Restful API : should successfully (GET) the search by tag resources', 
+	function (done) {
+		this.timeout(10000);
+		client.connect(mongodbHost,function(err, db) {
+		  if(err) {
+		    console.log(err);
+		    console.log("> Connection to database failed.");
+		  } else {
+		  	collection = db.collection('images');
+		  	collection2 = db.collection('tags');
+		  	var app = require('../app')(collection,collection2);
+		    console.log("> Connection to database succeded.");
+		    supertest(app)
+			.get('/api/getImagesByTag/coin')
+			.expect(200)
+			.end(function (err, res) {
+				res.status.should.equal(200);
+				done();
+			});
+		  }
+		});
+	});
+
+	it('Restful API : should return {} given no result from search by tag', 
+	function (done) {
+		this.timeout(10000);
+		client.connect(mongodbHost,function(err, db) {
+		  if(err) {
+		    console.log(err);
+		    console.log("> Connection to database failed.");
+		  } else {
+		  	collection = db.collection('images');
+		  	collection2 = db.collection('tags');
+		  	var app = require('../app')(collection,collection2);
+		    console.log("> Connection to database succeded.");
+		    supertest(app)
+			.get('/api/getImagesByTag/nonexistenttagthatdoesntexist')
+			.expect(200)
+			.end(function (err, res) {
+				res.status.should.equal(200);
+				res.body.should.equal('{}');
+				done();
+			});
+		  }
+		});
+	});
+
+	it('Restful API : should successfully (GET) the details of image given the id', 
+	function (done) {
+		this.timeout(10000);
+		client.connect(mongodbHost,function(err, db) {
+		  if(err) {
+		    console.log(err);
+		    console.log("> Connection to database failed.");
+		  } else {
+		  	collection = db.collection('images');
+		  	collection2 = db.collection('tags');
+		  	var app = require('../app')(collection,collection2);
+		    console.log("> Connection to database succeded.");
+		    supertest(app)
+			.get('/api/getImagesByID/')
+			.expect(200)
+			.end(function (err, res) {
+				res.status.should.equal(200);
+				res.body.should.equal('{}');
+				done();
+			});
+		  }
+		});
+	});
+
+	it('Restful API : should return {} when image id is not found', 
+	function (done) {
+		this.timeout(10000);
+		client.connect(mongodbHost,function(err, db) {
+		  if(err) {
+		    console.log(err);
+		    console.log("> Connection to database failed.");
+		  } else {
+		  	collection = db.collection('images');
+		  	collection2 = db.collection('tags');
+		  	var app = require('../app')(collection,collection2);
+		    console.log("> Connection to database succeded.");
+		    supertest(app)
+			.get('/api/getImagesByID/this')
+			.expect(200)
+			.end(function (err, res) {
+				res.status.should.equal(200);
+				res.body.should.equal('{}');
+				done();
+			});
+		  }
+		});
+	});
 });
+
 

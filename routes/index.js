@@ -1,4 +1,4 @@
-module.exports = function (collection){
+module.exports = function (imageCollection, tagCollection){
 
 	var AlchemyAPI = require('../lib/alchemy/alchemyapi');
 	var alchemyapi = new AlchemyAPI();
@@ -47,7 +47,7 @@ module.exports = function (collection){
 
 	functions.postSearchByTitlePage = function(req, res, next){
 		console.log("searched for title : " + req.body.query);
-		collection.find({
+		imageCollection.find({
 			"$text" : {
 				"$search" : req.body.query
 			}
@@ -85,7 +85,7 @@ module.exports = function (collection){
 		console.log("searched for tag : " + req.body.query);
 		var query = (req.params.query == undefined) ? req.body.query : req.params.query;
 		var result = [];
-		collection.find({
+		imageCollection.find({
 			"alchemyTags": {
 		        "$elemMatch": {
 		            "text": query
@@ -104,7 +104,7 @@ module.exports = function (collection){
 					}
 				}
 				result.push.apply(result, docs);
-				collection.find({
+				imageCollection.find({
 				    "imaggaTags": {
 				        "$elemMatch": {
 				            "tag": query
@@ -162,7 +162,7 @@ module.exports = function (collection){
 	};
 
 	functions.getStatsPage = function (req, res, next){
-		collection.count(function (err, count){
+		imageCollection.count(function (err, count){
 			var collectionSize = count;
 			console.log(collectionSize);
 			var query1 = {
@@ -179,7 +179,7 @@ module.exports = function (collection){
 			        }
 			    ]
 			};
-			collection.find(query1).toArray(function (err, taggedDocs){
+			imageCollection.find(query1).toArray(function (err, taggedDocs){
 				var taggedImages = taggedDocs.length;
 				console.log(taggedImages);
 				var query2 = {
@@ -196,7 +196,7 @@ module.exports = function (collection){
 				        }
 				    ]
 				}
-				collection.find(query2).toArray(function (err, nullTags1){
+				imageCollection.find(query2).toArray(function (err, nullTags1){
 					var bothTags = nullTags1.length;
 					var query3 = {
 					    "$and": [
@@ -208,16 +208,16 @@ module.exports = function (collection){
 					        }
 					    ]
 					}
-					collection.find(query3).toArray(function (err, nullTags2){
+					imageCollection.find(query3).toArray(function (err, nullTags2){
 						var bothNullTags = nullTags2.length;
-						collection.aggregate(
+						imageCollection.aggregate(
 							[
 								{ "$unwind" : "$imaggaTags" },
 								{ "$group" : { "_id" : "$imaggaTags.tag" , "number" : { "$sum" : 1 } } },
 								{ "$sort" : { "number" : -1 } },
 								{ "$limit" : 10 }
 							],function (err, topTenImaggaTags){
-								collection.aggregate(
+								imageCollection.aggregate(
 									[
 										{ "$unwind" : "$alchemyTags" },
 										{ "$group" : { "_id" : "$alchemyTags.text" , "number" : { "$sum" : 1 } } },
@@ -256,7 +256,7 @@ module.exports = function (collection){
 			query = {'_id':new objectId(req.params.imageid)};
 			options = {};
 		}
-		collection.findOne(query, {}, options, function (err, doc){
+		imageCollection.findOne(query, {}, options, function (err, doc){
 			if (err) {
 				console.log (err);
 				res.render('error', { message:err } );
@@ -293,7 +293,7 @@ module.exports = function (collection){
 					    }
 					}, function (err, httpResponse, body) {
 						var imaggaTags = (JSON.parse(body).results == undefined) ? [] : JSON.parse(body).results[0].tags;
-						collection.update({
+						imageCollection.update({
 							'_id':new objectId(doc._id)
 						}, {
 							$set : {

@@ -19,7 +19,7 @@ client.connect("mongodb://insert db url here",function(err, db) {
        * Module dependencies.
        */
 
-      var app = require('./app')(db.collection("images"));
+      var app = require('./app')(db.collection("images"), db.collection("tags"));
       var debug = require('debug')('group12-app:server');
       var http = require('http');
 

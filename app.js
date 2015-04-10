@@ -1,4 +1,5 @@
-module.exports = function (collection){
+module.exports = function (imageCollection, tagCollection){
+    
     var express = require('express');
     var path = require('path');
     var favicon = require('serve-favicon');
@@ -6,7 +7,7 @@ module.exports = function (collection){
     var cookieParser = require('cookie-parser');
     var bodyParser = require('body-parser');
     var exphbs  = require('express-handlebars');
-    var routes = require('./routes/index')(collection);
+    var routes = require('./routes/index')(imageCollection, tagCollection);
 
     var app = express();
 
@@ -33,6 +34,9 @@ module.exports = function (collection){
     app.get('/search/:imageid', routes.getImagePage);
     app.get('/search/random', routes.getImagePage);
     app.get('/stats' , routes.getStatsPage);
+
+    app.get('/api/getCoOccuringTags/:tagName', routes.getCoOccurringTags);
+    
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {
         var err = new Error('Not Found');
