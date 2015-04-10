@@ -27,10 +27,10 @@ module.exports = function (imageCollection, tagCollection){
 
 	var sortByRank = function (a,b) {
 		if (a.rank < b.rank){
-			return -1;
+			return 1;
 		}
 		if (a.rank > b.rank) {
-			return 1;
+			return -1;
 		}
 		return 0;
 	}
@@ -99,7 +99,8 @@ module.exports = function (imageCollection, tagCollection){
 				for (var i = 0; i < docs.length; i++){
 					for (var j = 0; j < docs[i]['alchemyTags'].length; j++){
 						if (docs[i]['alchemyTags'][j]['text'] == query){
-							docs[i]['rank'] = parseFloat(docs[i]['alchemyTags'][j]['score']);
+							console.log('score::' + docs[i]['alchemyTags'][j]['score']);
+							docs[i]['rank'] = parseFloat(convertToPercentageHelper(docs[i]['alchemyTags'][j]['score']));
 						}
 					}
 				}
@@ -124,7 +125,7 @@ module.exports = function (imageCollection, tagCollection){
 						}
 						result.push.apply(result, docs);
 						result.sort(sortByRank);
-						/*
+						
 						console.log('-- tags --\n');
 						if (result.length > 0){
 							for (var i = 0;i < result.length; i++){
@@ -132,7 +133,7 @@ module.exports = function (imageCollection, tagCollection){
 								console.log(result[i]['rank']);
 							}
 						}
-						*/
+						
 						console.log("result tags : " + result);
 						if (result.length == 0){
 							res.render('search', { 
@@ -257,31 +258,15 @@ module.exports = function (imageCollection, tagCollection){
 			options = {};
 		}
 		imageCollection.findOne(query, {}, options, function (err, doc){
+			console.log(doc);
+			console.log('Is there alchemy' + doc.alchemyTags == undefined && doc.imaggaTags == undefined );
 			if (err) {
 				console.log (err);
 				res.render('error', { message:err } );
 			} else if (doc == undefined){ 
 				console.log ('Image Not found, redirecting to error 404 page');
 				res.redirect('/invalid-image-id');
-			} else if (doc.alchemyTags != undefined || doc.alchemyTags != undefined ){
-				res.render('image', { 
-					url: doc.flickr_original_source, 
-					volume: doc.volume,
-					publisher : doc.publisher,
-					imageTitle : doc.title,
-					author :doc.first_author,
-					publicationPlace: doc.pubplace,
-					bookID : addTrailingZero(doc.book_identifier, 9),
-					year: doc.date,
-					page: doc.page,
-					alchemyTags : doc.alchemyTags,
-					imaggaTags : doc.imaggaTags,
-					helpers: {
-			            shortenDecimal: shortenDecimalHelper,
-			            convertToPercentage : convertToPercentageHelper
-			        }
-				});
-			} else {
+			} else if (doc.alchemyTags == undefined && doc.imaggaTags == undefined ){
 				var url = doc.flickr_small_source;
 				alchemyapi.image_keywords('url', url, {}, function (response) {	
 					var alchemyTags = response.imageKeywords;
@@ -322,6 +307,25 @@ module.exports = function (imageCollection, tagCollection){
 						});
 					});
 
+				});
+			} else {
+				console.log('retrieve only - no analysis!');
+				res.render('image', { 
+					url: doc.flickr_original_source, 
+					volume: doc.volume,
+					publisher : doc.publisher,
+					imageTitle : doc.title,
+					author :doc.first_author,
+					publicationPlace: doc.pubplace,
+					bookID : addTrailingZero(doc.book_identifier, 9),
+					year: doc.date,
+					page: doc.page,
+					alchemyTags : doc.alchemyTags,
+					imaggaTags : doc.imaggaTags,
+					helpers: {
+			            shortenDecimal: shortenDecimalHelper,
+			            convertToPercentage : convertToPercentageHelper
+			        }
 				}); 		
 			}
 		});

@@ -1,5 +1,11 @@
 $(window).load(function(){
 	$("#search-results-container,#image-page,#index-page").fadeIn(1000);
+    if($('#by-title').is(':checked')) { 
+        //alert("it's checked"); 
+        $('#query').attr("action", "/search");
+    } else {
+        $('#query').attr("action", "/searchTags");
+    }
 });
 
 $(document).ready(function(){
