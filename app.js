@@ -40,6 +40,7 @@ module.exports = function (imageCollection, tagCollection){
     app.get('/api/getImagesByTitle/:title', routes.RestAPIpostSearchByTitle);
     app.get('/api/getImagesByTag/:tag', routes.RestAPIpostSearchByTag);
     app.get('/api/getImagesByID/:imageid', routes.RestAPIpostSearchByTag);
+    app.get('/api/getStatistics', routes.RestAPIgetStatistics);
 
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {

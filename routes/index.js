@@ -240,7 +240,7 @@ module.exports = function (imageCollection, tagCollection){
 				});
 			});
 		});
-	}
+	};
 	
 	functions.getImagePage = function(req, res, next){
 		console.log("visited image id : " + req.params.imageid);
@@ -512,6 +512,87 @@ module.exports = function (imageCollection, tagCollection){
 
 				}); 		
 			}
+		});
+	};
+
+	functions.RestAPIgetStatistics = function (req, res, next){
+		console.log("Rest API : get statistics");
+		imageCollection.count(function (err, count){
+			var collectionSize = count;
+			console.log(collectionSize);
+			var query1 = {
+			    "$or": [
+			        {
+			            "imaggaTags": {
+			                "$exists": "true"
+			            }
+			        },
+			        {
+			            "alchemyTags": {
+			                "$exists": "true"
+			            }
+			        }
+			    ]
+			};
+			imageCollection.find(query1).toArray(function (err, taggedDocs){
+				var taggedImages = taggedDocs.length;
+				console.log(taggedImages);
+				var query2 = {
+				    "$and": [
+				        {
+				            "imaggaTags":  {
+				                "$ne": null
+				            }
+				        },
+				        {
+				            "alchemyTags":  {
+				                "$ne": null
+				            }
+				        }
+				    ]
+				}
+				imageCollection.find(query2).toArray(function (err, nullTags1){
+					var bothTags = nullTags1.length;
+					var query3 = {
+					    "$and": [
+					        {
+					            "imaggaTags": []
+					        },
+					        {
+					            "alchemyTags": []
+					        }
+					    ]
+					}
+					imageCollection.find(query3).toArray(function (err, nullTags2){
+						var bothNullTags = nullTags2.length;
+						imageCollection.aggregate(
+							[
+								{ "$unwind" : "$imaggaTags" },
+								{ "$group" : { "_id" : "$imaggaTags.tag" , "number" : { "$sum" : 1 } } },
+								{ "$sort" : { "number" : -1 } },
+								{ "$limit" : 10 }
+							],function (err, topTenImaggaTags){
+								imageCollection.aggregate(
+									[
+										{ "$unwind" : "$alchemyTags" },
+										{ "$group" : { "_id" : "$alchemyTags.text" , "number" : { "$sum" : 1 } } },
+										{ "$sort" : { "number" : -1 } },
+										{ "$limit" : 10 }
+									], function (err, topTenAlchemyTags ){
+										res.jsonp({
+											collectionSize : collectionSize,
+											taggedImages : taggedImages,
+											eitherNullTags : taggedImages,
+											bothTags : bothTags,
+											bothNullTags : bothNullTags,
+											topTenImaggaTags : topTenImaggaTags,
+											topTenAlchemyTags : topTenAlchemyTags
+										});
+								});
+						});
+					});
+				});
+			});
 		});
 	};
 	

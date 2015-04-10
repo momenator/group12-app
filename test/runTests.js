@@ -5,7 +5,7 @@ var supertest = require('supertest');
 var mongo = require('mongodb');
 var MongoClient = mongo.MongoClient;
 var client = new MongoClient();
-var mongodbHost = "mongodb://insert db url here";
+var mongodbHost = "mongodb://bigdatabl:comp2014bl@ds049171.mongolab.com:49171/bl-dataset";
 
 
 describe('group12-app-test', function () {
