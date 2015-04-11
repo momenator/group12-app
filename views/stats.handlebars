@@ -11,43 +11,47 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table table-striped">
+                    <table class="table table-condensed">
                         <thead>
-                            <tr>
-                                <td>Collection size
-                                </td>
-                                <td>Number of Machine Tagged images
-                                </td>
-                                <td>Number of images with either imagga and alchemy tags
-                                </td>
-                                <td>Number of images with both imagga and alchemy tags
-                                </td>
-                                <td>*Number of images with inconclusive results
-                                </td>
-                                <td>Top 10 most occurring alchemy tags
-                                </td>
-                                <td>Top 10 most occurring imagga tags
-                                </td>
+                            <tr class="info">
+                                <td>Attributes</td>
+                                <td>Number of Images</td>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>{{collectionSize}}</td>
-                                <td>{{taggedImages}}</td>
-                                <td>{{eitherNullTags}}</td>
-                                <td>{{bothTags}}</td>
-                                <td>{{bothNullTags}}</td>
-                                <td>
-                                    {{#each topTenAlchemyTags}}
-                                        <strong>{{this._id}}</strong> - <span class="badge badge-info">{{this.number}} </span>
-                                        <hr style="margin-top:5px;margin-bottom:5px">
-                                    {{/each}}
+                                <td>Collection size
                                 </td>
-                                <td>
-                                    {{#each topTenImaggaTags}}
-                                        <strong>{{this._id}}</strong> - <span class="badge badge-info">{{this.number}}</span>
-                                        <hr style="margin-top:5px;margin-bottom:5px">
-                                    {{/each}}
+                                <td id="stat1"></td>
+                            </tr>
+                            <tr>
+                                <td>Number of Machine Tagged images
+                                </td>
+                                <td id="stat2"></td>
+                            </tr>
+                            <tr>
+                                <td>Number of images with either imagga and alchemy tags
+                                </td>
+                                <td id="stat3"></td>
+                            </tr>
+                            <tr>
+                                <td>Number of images with both imagga and alchemy tags
+                                </td>
+                                <td id="stat4"></td>
+                            </tr>
+                            <tr>
+                                <td>*Number of images with inconclusive results
+                                </td>
+                                <td id="stat5"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div id="alchemy-tags" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div id="imagga-tags" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
                                 </td>
                             </tr>
                         </tbody>

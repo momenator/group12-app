@@ -13,7 +13,96 @@ $(window).load(function(){
             columnWidth: 20,
             itemSelector: '.pin'
         });
-    }   
+    }  
+
+    if (document.URL.indexOf('stats') > 0){
+        $('#image-page').css('visibility', 'hidden');
+        console.log('dfagrefrgaegrwgrwagarw');
+        var genGraph = function (selector, data, seriesName, title, titleYAxis, pointFormat) {
+            console.log('creating charts..');
+            $(selector).highcharts({
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: title
+                },
+                xAxis: {
+                    type: 'category',
+                    labels: {
+                        rotation: -45,
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: titleYAxis
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                tooltip: {
+                    pointFormat: pointFormat
+                },
+                series: [{
+                    name: seriesName,
+                    data: data,
+                    dataLabels: {
+                        enabled: true,
+                        rotation: -90,
+                        color: '#FFFFFF',
+                        align: 'right',
+                        format: '{point.y:,.0f}', // one decimal
+                        y: 10, // 10 pixels down from the top
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                }]
+            });
+        };
+
+        $.ajax({
+            method: 'GET',
+            url : 'http://localhost:3000/api/getStatistics'
+        }).done(function (data){
+            console.log('..finished with ajax call..');
+
+            var alchemyData = [];
+            var imaggaData = [];
+            var topAlchemyTags = data['topTenAlchemyTags'];
+            var topImaggaTags = data['topTenImaggaTags'];
+            console.log(data);
+            $('#stat1').html(data['collectionSize']);
+            $('#stat2').html(data['taggedImages']);
+            $('#stat3').html(data['eitherNullTags']);
+            $('#stat4').html(data['bothTags']);
+            $('#stat5').html(data['bothNullTags']);
+
+            if (topAlchemyTags != undefined && topAlchemyTags.length > 0){
+
+                for (var i = 0; i < topAlchemyTags.length; i++){
+                    alchemyData.push([topAlchemyTags[i]['_id'],topAlchemyTags[i]['number']]);
+                }
+                genGraph('#alchemy-tags',alchemyData, 'Images', 'Top 10 Alchemy Tags', 'Number of Images', 'Tag occurrences : <b>{point.y:,.0f}</b>');
+            }
+
+            if (topImaggaTags != undefined && topImaggaTags.length > 0) {
+
+                for (var i = 0;i<  topImaggaTags.length; i++ ){
+                    imaggaData.push([topImaggaTags[i]['_id'], topImaggaTags[i]['number']] );
+                }
+                genGraph('#imagga-tags',imaggaData,'Images', 'Top 10 Imagga Tags', 'Number of Images', 'Tag occurrences : <b>{point.y:,.0f}</b>');
+            }
+            $('#image-page').css('visibility', 'visible');
+        });
+    } 
 });
 
 $(document).ready(function(){

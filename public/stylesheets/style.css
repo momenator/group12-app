@@ -73,7 +73,15 @@ html, body{
 	text-decoration: none;
 	color:#333;
 }
+#imagga-chart{
 
+}
+#alchemy-chart{
+
+}
+tr.info td {
+    background-color: #ccc;
+}
 .panel-body{
 	padding-top:2px;
 }
