@@ -1,5 +1,5 @@
 $(window).load(function(){
-	$("#search-results-container,#image-page,#index-page").fadeIn(1000);
+    $("#search-results-container,#image-page,#index-page").fadeIn(1000);
     if($('#by-title').is(':checked')) { 
         //alert("it's checked"); 
         $('#query').attr("action", "/search");
@@ -52,7 +52,6 @@ $(window).load(function(){
                     name: seriesName,
                     data: data,
                     dataLabels: {
-                        enabled: true,
                         rotation: -90,
                         color: '#FFFFFF',
                         align: 'right',
@@ -66,10 +65,12 @@ $(window).load(function(){
                 }]
             });
         };
+        var url = window.location.href.split('/');
+        var APIUrl = url[0] + '//' + url[2];
 
         $.ajax({
             method: 'GET',
-            url : window.location.protocol + window.location.hostname + '/api/getStatistics'
+            url : APIUrl + '/api/getStatistics'
         }).done(function (data){
 
             var alchemyData = [];
@@ -100,10 +101,11 @@ $(window).load(function(){
             $('#image-page').css('visibility', 'visible');
         });
     } 
+
 });
 
 $(document).ready(function(){
-	$('input[type="radio"]').click(function(){
+    $('input[type="radio"]').click(function(){
         if($(this).attr("value")=="title"){
             $('#query').attr("action", "/search");
         }
@@ -113,6 +115,8 @@ $(document).ready(function(){
         }
     });
     $(document.body).on('click', '.tag', function(){
+        var url = window.location.href.split('/');
+        var APIUrl = url[0] + '//' + url[2];
         var keywords = String($(this).html()).split(" ");
         var tagName = keywords[0];
         if (keywords[1] != ':' && keywords[1] != ' ' & keywords[1] != undefined){
@@ -123,7 +127,7 @@ $(document).ready(function(){
         
         $.ajax({
             method : "GET",
-            url :window.location.protocol + window.location.hostname + "/api/getCoOccuringTags/" + tagName
+            url :APIUrl + "/api/getCoOccuringTags/" + tagName
         }).done(function (data){
             $('#tags-in-modal').empty();
             for(var i = 0; i < data['coOccuringTags'].length; i++){
