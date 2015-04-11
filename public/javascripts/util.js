@@ -17,9 +17,8 @@ $(window).load(function(){
 
     if (document.URL.indexOf('stats') > 0){
         $('#image-page').css('visibility', 'hidden');
-        console.log('dfagrefrgaegrwgrwagarw');
+
         var genGraph = function (selector, data, seriesName, title, titleYAxis, pointFormat) {
-            console.log('creating charts..');
             $(selector).highcharts({
                 chart: {
                     type: 'column'
@@ -70,15 +69,13 @@ $(window).load(function(){
 
         $.ajax({
             method: 'GET',
-            url : 'http://localhost:3000/api/getStatistics'
+            url : window.location.protocol + window.location.hostname + '/api/getStatistics'
         }).done(function (data){
-            console.log('..finished with ajax call..');
 
             var alchemyData = [];
             var imaggaData = [];
             var topAlchemyTags = data['topTenAlchemyTags'];
             var topImaggaTags = data['topTenImaggaTags'];
-            console.log(data);
             $('#stat1').html(data['collectionSize']);
             $('#stat2').html(data['taggedImages']);
             $('#stat3').html(data['eitherNullTags']);
@@ -108,11 +105,9 @@ $(window).load(function(){
 $(document).ready(function(){
 	$('input[type="radio"]').click(function(){
         if($(this).attr("value")=="title"){
-        	console.log("title");
             $('#query').attr("action", "/search");
         }
         if($(this).attr("value")=="tags"){
-                       console.log("tags");
 
             $('#query').attr("action", "/searchTags");
         }
@@ -128,12 +123,10 @@ $(document).ready(function(){
         
         $.ajax({
             method : "GET",
-            url : "https://group12-app.herokuapp.com/api/getCoOccuringTags/" + tagName
+            url :window.location.protocol + window.location.hostname + "/api/getCoOccuringTags/" + tagName
         }).done(function (data){
-            console.log(data['coOccuringTags']);
             $('#tags-in-modal').empty();
             for(var i = 0; i < data['coOccuringTags'].length; i++){
-                console.log('inserting tags');
                 $('#tags-in-modal').append(
                     '<a class="tag modal-tags" href="javascript:void(0)">'
                     + data['coOccuringTags'][i] 
