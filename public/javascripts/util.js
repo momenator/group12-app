@@ -6,7 +6,7 @@ $(window).load(function(){
     } else {
         $('#query').attr("action", "/searchTags");
     }
-    if (document.URL.indexOf('searchTags') > 0){
+    if (document.URL.indexOf('search') > 0){
         var container = document.querySelector('#columns');
         var msnry = new Masonry( container, {
             // options
