@@ -1,5 +1,7 @@
 var config = {
-	mongoUrl : "insert mongodb url here",
+	mongoUrl : "insert mongo db url",
+	imaggaUsername: "...",
+	imaggaPassword: "...",
 	port : "3000"
 }
 

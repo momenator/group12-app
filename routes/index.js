@@ -7,6 +7,7 @@ module.exports = function (imageCollection, tagCollection){
 	var exphbs  = require('express-handlebars');
 	var router = express.Router();
 	var objectId = require('mongodb').ObjectID;
+	var config = require('../config/config.js');
 
 	var shortenStringHelper = function (string) {
 		return String(string).substring(0, 50) + "..."
@@ -216,8 +217,8 @@ module.exports = function (imageCollection, tagCollection){
 					request.get({
 					    url:'https://api.imagga.com/v1/tagging?url='+ url,
 					    auth: {
-					    	username:"acc_3a8a3280ff382f5",
-					    	password: "a5c945ee52846e612ff5705d6ce2e1a8"
+					    	username:config.imaggaUsername,
+					    	password: config.imaggaPassword
 					    }
 					}, function (err, httpResponse, body) {
 						var imaggaTags = (JSON.parse(body).results == undefined) ? [] : JSON.parse(body).results[0].tags;
@@ -449,8 +450,8 @@ module.exports = function (imageCollection, tagCollection){
 					request.get({
 					    url:'https://api.imagga.com/v1/tagging?url='+ url,
 					    auth: {
-					    	username:"acc_3a8a3280ff382f5",
-					    	password: "a5c945ee52846e612ff5705d6ce2e1a8"
+					    	username:config.imaggaUsername,
+					    	password: config.imaggaPassword
 					    }
 					}, function (err, httpResponse, body) {
 						var imaggaTags = (JSON.parse(body).results == undefined) ? [] : JSON.parse(body).results[0].tags;
