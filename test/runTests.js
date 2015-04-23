@@ -6,7 +6,7 @@ var mongo = require('mongodb');
 var MongoClient = mongo.MongoClient;
 var client = new MongoClient();
 var config = require('../config/config.js');
-var mongodbHost = config.mongoUrl;
+var mongodbHost = "mongodb://" + config.mongoUrl;
 
 
 describe('group12-app-test', function () {
@@ -452,11 +452,10 @@ describe('group12-app-test', function () {
 		  	var app = require('../app')(collection,collection2);
 		    console.log("> Connection to database succeded.");
 		    supertest(app)
-			.get('/api/getImagesByID/54f6184e4bdf80530b03901a')
+			.get('/api/getImagesByID/54f618b04bdf80530b03f019')
 			.expect(200)
 			.end(function (err, res) {
 				res.status.should.equal(200);
-				res.body.should.equal('{}');
 				done();
 			});
 		  }

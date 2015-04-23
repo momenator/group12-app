@@ -46,14 +46,14 @@ module.exports = function (imageCollection, tagCollection){
 	};
 
 	functions.postSearchByTitlePage = function(req, res, next){
-		console.log("searched for title : " + req.body.query);
+		//console.log("searched for title : " + req.body.query);
 		imageCollection.find({
 			"$text" : {
 				"$search" : req.body.query
 			}
 		}).limit(50).toArray(function (err, docs){
 			if (err) {
-				console.log (err);
+				//console.log (err);
 				res.render('error', { message:err });
 			} else {
 				if (docs.length == 0){
@@ -82,7 +82,7 @@ module.exports = function (imageCollection, tagCollection){
 	};
 
 	functions.postSearchByTagPage = function(req, res, next){
-		console.log("searched for tag : " + req.body.query);
+		//console.log("searched for tag : " + req.body.query);
 		var query = (req.params.query == undefined) ? req.body.query : req.params.query;
 		var result = [];
 		imageCollection.find({
@@ -93,13 +93,13 @@ module.exports = function (imageCollection, tagCollection){
 		    }
 		}).limit(50).toArray(function (err, docs){
 			if (err) {
-				console.log(err);
+				//console.log(err);
 				res.render('error', { message:err });
 			} else {
 				for (var i = 0; i < docs.length; i++){
 					for (var j = 0; j < docs[i]['alchemyTags'].length; j++){
 						if (docs[i]['alchemyTags'][j]['text'] == query){
-							console.log('score::' + docs[i]['alchemyTags'][j]['score']);
+							//console.log('score::' + docs[i]['alchemyTags'][j]['score']);
 							docs[i]['rank'] = parseFloat(convertToPercentageHelper(docs[i]['alchemyTags'][j]['score']));
 						}
 					}
@@ -113,7 +113,7 @@ module.exports = function (imageCollection, tagCollection){
 				    }
 				}).limit(50).toArray(function (err, docs){
 					if (err) {
-						console.log(err);
+						//console.log(err);
 						res.render('error', { message:err });
 					} else {
 						for (var i = 0; i < docs.length; i++){
@@ -124,38 +124,59 @@ module.exports = function (imageCollection, tagCollection){
 							}
 						}
 						result.push.apply(result, docs);
-						result.sort(sortByRank);
-						
-						console.log('-- tags --\n');
-						if (result.length > 0){
-							for (var i = 0;i < result.length; i++){
-								console.log(result[i]['title']);
-								console.log(result[i]['rank']);
+						imageCollection.find({
+						    "machineTags": {
+						        "$elemMatch": {
+						            "tag": query
+						        }
+						    }
+						}).limit(50).toArray(function (err, docs){
+							if (err) {
+								//console.log(err);
+								res.render('error', { message:err });
+							} else {
+								for (var i = 0; i < docs.length; i++){
+									for (var j = 0; j < docs[i]['machineTags'].length; j++){
+										if (docs[i]['machineTags'][j]['tag'] == query){
+											docs[i]['rank'] = parseFloat(docs[i]['machineTags'][j]['confidence']);
+										}
+									}
+								}
+								result.push.apply(result, docs);
+								result.sort(sortByRank);
+								//console.log('-- tags --\n');
+								if (result.length > 0){
+									for (var i = 0;i < result.length; i++){
+										//console.log(result[i]['title']);
+										//console.log(result[i]['rank']);
+									}
+								}
+								
+								//console.log("result tags : " + result);
+								if (result.length == 0){
+									res.render('search', { 
+										searchByTags: 'checked',
+										noResults : "No results found" ,
+										searchType: "tags", 
+										searchQuery: query,
+										helpers:{
+											shortenString : shortenStringHelper 
+										}  
+									});
+								} else {
+									res.render('search',{
+										searchByTags: 'checked',
+										imageResults : result, 
+										searchType: "tags", 
+										searchQuery: query,
+										helpers:{
+											shortenString : shortenStringHelper
+										}  
+									});
+								}
 							}
-						}
-						
-						console.log("result tags : " + result);
-						if (result.length == 0){
-							res.render('search', { 
-								searchByTags: 'checked',
-								noResults : "No results found" ,
-								searchType: "tags", 
-								searchQuery: query,
-								helpers:{
-									shortenString : shortenStringHelper 
-								}  
-							});
-						} else {
-							res.render('search',{
-								searchByTags: 'checked',
-								imageResults : result, 
-								searchType: "tags", 
-								searchQuery: query,
-								helpers:{
-									shortenString : shortenStringHelper
-								}  
-							});
-						}
+							
+						});
 					}
 				});
 			}
@@ -167,7 +188,7 @@ module.exports = function (imageCollection, tagCollection){
 	};
 	
 	functions.getImagePage = function(req, res, next){
-		console.log("visited image id : " + req.params.imageid);
+		//console.log("visited image id : " + req.params.imageid);
 		var query;
 		var options;
 		if (req.params.imageid == 'random'){
@@ -181,13 +202,12 @@ module.exports = function (imageCollection, tagCollection){
 			options = {};
 		}
 		imageCollection.findOne(query, {}, options, function (err, doc){
-			console.log(doc);
-			console.log('Is there alchemy' + doc.alchemyTags == undefined && doc.imaggaTags == undefined );
+			//console.log(doc);
 			if (err) {
-				console.log (err);
+				//console.log (err);
 				res.render('error', { message:err } );
 			} else if (doc == undefined){ 
-				console.log ('Image Not found, redirecting to error 404 page');
+				//console.log ('Image Not found, redirecting to error 404 page');
 				res.redirect('/invalid-image-id');
 			} else if (doc.alchemyTags == undefined && doc.imaggaTags == undefined ){
 				var url = doc.flickr_small_source;
@@ -209,7 +229,7 @@ module.exports = function (imageCollection, tagCollection){
 								imaggaTags: imaggaTags
 							}
 						},function(){ 
-							console.log('inserted tags') 
+							//console.log('inserted tags') 
 						});
 						res.render('image', { 
 							url: doc.flickr_original_source, 
@@ -221,6 +241,7 @@ module.exports = function (imageCollection, tagCollection){
 							bookID : addTrailingZero(doc.book_identifier, 9),
 							year: doc.date,
 							page: doc.page,
+							machineTags : doc.machineTags,
 							alchemyTags : alchemyTags,
 							imaggaTags : imaggaTags,
 							helpers: {
@@ -232,7 +253,6 @@ module.exports = function (imageCollection, tagCollection){
 
 				});
 			} else {
-				console.log('retrieve only - no analysis!');
 				res.render('image', { 
 					url: doc.flickr_original_source, 
 					volume: doc.volume,
@@ -243,6 +263,7 @@ module.exports = function (imageCollection, tagCollection){
 					bookID : addTrailingZero(doc.book_identifier, 9),
 					year: doc.date,
 					page: doc.page,
+					machineTags : doc.machineTags,
 					alchemyTags : doc.alchemyTags,
 					imaggaTags : doc.imaggaTags,
 					helpers: {
@@ -255,7 +276,7 @@ module.exports = function (imageCollection, tagCollection){
 	};
 
 	functions.RestAPIgetCoOccurringTags = function (req, res, next){
-		console.log('Rest API : get tag : ' + req.params.tagName);
+		//console.log('Rest API : get tag : ' + req.params.tagName);
 		var tagQuery = req.params.tagName;
 		var query = {
 			tag : tagQuery
@@ -266,7 +287,7 @@ module.exports = function (imageCollection, tagCollection){
 		} else {
 			tagCollection.findOne(query, function (err, doc) {
 				if (err) {
-					console.log(err);
+					//console.log(err);
 					res.jsonp({error : err, message : 'an error has occured'});
 				}
 				if (doc == undefined) {
@@ -283,14 +304,14 @@ module.exports = function (imageCollection, tagCollection){
 	};
 
 	functions.RestAPIgetSearchByTitle = function(req, res, next){
-		console.log("Rest API : searched for title : " + req.params.title);
+		//console.log("Rest API : searched for title : " + req.params.title);
 		imageCollection.find({
 			"$text" : {
 				"$search" : req.params.title
 			}
 		}).limit(50).toArray(function (err, docs){
 			if (err) {
-				console.log (err);
+				//console.log (err);
 				res.render('error', { message:err });
 			} else {
 				if (docs.length == 0){
@@ -307,7 +328,7 @@ module.exports = function (imageCollection, tagCollection){
 	};
 
 	functions.RestAPIgetSearchByTag = function(req, res, next){
-		console.log("Rest API : searched for tag : " + req.params.tag);
+		//console.log("Rest API : searched for tag : " + req.params.tag);
 		var query = req.params.tag;
 		var result = [];
 		imageCollection.find({
@@ -318,7 +339,7 @@ module.exports = function (imageCollection, tagCollection){
 		    }
 		}).limit(50).toArray(function (err, docs){
 			if (err) {
-				console.log(err);
+				//console.log(err);
 				res.render('error', { message:err });
 			} else {
 				for (var i = 0; i < docs.length; i++){
@@ -337,7 +358,7 @@ module.exports = function (imageCollection, tagCollection){
 				    }
 				}).limit(50).toArray(function (err, docs){
 					if (err) {
-						console.log(err);
+						//console.log(err);
 						res.render('error', { message:err });
 					} else {
 						for (var i = 0; i < docs.length; i++){
@@ -348,16 +369,37 @@ module.exports = function (imageCollection, tagCollection){
 							}
 						}
 						result.push.apply(result, docs);
-						result.sort(sortByRank);
-						if (result.length == 0){
-							res.jsonp('{}');
-						} else {
-							res.jsonp({
-								imageResults : result, 
-								searchType: "tags", 
-								searchQuery: query, 
-							});
-						}
+						imageCollection.find({
+						    "machineTags": {
+						        "$elemMatch": {
+						            "tag": query
+						        }
+						    }
+						}).limit(50).toArray(function (err, docs){
+							if (err) {
+								//console.log(err);
+								res.render('error', { message:err });
+							} else {
+								for (var i = 0; i < docs.length; i++){
+									for (var j = 0; j < docs[i]['machineTags'].length; j++){
+										if (docs[i]['machineTags'][j]['tag'] == query){
+											docs[i]['rank'] = parseFloat(docs[i]['machineTags'][j]['confidence']);
+										}
+									}
+								}
+								result.push.apply(result, docs);
+								result.sort(sortByRank);
+								if (result.length == 0){
+									res.jsonp('{}');
+								} else {
+									res.jsonp({
+										imageResults : result, 
+										searchType: "tags", 
+										searchQuery: query, 
+									});
+								}
+							}
+						});
 					}
 				});
 			}
@@ -365,7 +407,7 @@ module.exports = function (imageCollection, tagCollection){
 	};
 
 	functions.RestAPIgetImageDetails = function(req, res, next){
-		console.log("Rest API : visited image id : " + req.params.imageid);
+		//console.log("Rest API : visited image id : " + req.params.imageid);
 		var query;
 		var options;
 		if (req.params.imageid == 'random'){
@@ -380,10 +422,10 @@ module.exports = function (imageCollection, tagCollection){
 		}
 		imageCollection.findOne(query, {}, options, function (err, doc){
 			if (err) {
-				console.log (err);
+				//console.log (err);
 				res.render('error', { message:err } );
 			} else if (doc == undefined){ 
-				console.log ('Image Not found, redirecting to error 404 page');
+				//console.log ('Image Not found, redirecting to error 404 page');
 				res.jsonp('{}');
 			} else if (doc.alchemyTags != undefined || doc.alchemyTags != undefined ){
 				res.jsonp({ 
@@ -396,6 +438,7 @@ module.exports = function (imageCollection, tagCollection){
 					bookID : addTrailingZero(doc.book_identifier, 9),
 					year: doc.date,
 					page: doc.page,
+					machineTags : doc.machineTags,
 					alchemyTags : doc.alchemyTags,
 					imaggaTags : doc.imaggaTags
 				});
@@ -419,7 +462,7 @@ module.exports = function (imageCollection, tagCollection){
 								imaggaTags: imaggaTags
 							}
 						},function(){ 
-							console.log('inserted tags') 
+							//console.log('inserted tags') 
 						});
 						res.jsonp({ 
 							url: doc.flickr_original_source, 
@@ -431,6 +474,7 @@ module.exports = function (imageCollection, tagCollection){
 							bookID : addTrailingZero(doc.book_identifier, 9),
 							year: doc.date,
 							page: doc.page,
+							machineTags : doc.machineTags,
 							alchemyTags : alchemyTags,
 							imaggaTags : imaggaTags
 						});
@@ -442,41 +486,51 @@ module.exports = function (imageCollection, tagCollection){
 	};
 
 	functions.RestAPIgetStatistics = function (req, res, next){
-		console.log("Rest API : get statistics");
+		//console.log("Rest API : get statistics");
 		imageCollection.count(function (err, count){
 			var collectionSize = count;
-			console.log(collectionSize);
+			//console.log(collectionSize);
 			var query1 = {
 			    "$or": [
 			        {
 			            "imaggaTags": {
-			                "$exists": "true"
+			                "$ne": "null"
 			            }
 			        },
 			        {
 			            "alchemyTags": {
-			                "$exists": "true"
+			                "$ne": "null"
+			            }
+			        },
+			        {
+			            "machineTags": {
+			                "$ne": "null"
 			            }
 			        }
 			    ]
 			};
 			imageCollection.find(query1).toArray(function (err, taggedDocs){
 				var taggedImages = taggedDocs.length;
-				console.log(taggedImages);
+				//console.log(taggedImages);
 				var query2 = {
 				    "$and": [
 				        {
-				            "imaggaTags":  {
-				                "$ne": null
+				            "imaggaTags": {
+				                "$exists": "true"
 				            }
 				        },
 				        {
-				            "alchemyTags":  {
-				                "$ne": null
+				            "alchemyTags": {
+				                "$exists": "true"
+				            }
+				        },
+				        {
+				            "machineTags": {
+				                "$exists": "true"
 				            }
 				        }
 				    ]
-				}
+				};
 				imageCollection.find(query2).toArray(function (err, nullTags1){
 					var bothTags = nullTags1.length;
 					var query3 = {
@@ -505,15 +559,24 @@ module.exports = function (imageCollection, tagCollection){
 										{ "$sort" : { "number" : -1 } },
 										{ "$limit" : 10 }
 									], function (err, topTenAlchemyTags ){
-										res.jsonp({
-											collectionSize : collectionSize,
-											taggedImages : taggedImages,
-											eitherNullTags : taggedImages,
-											bothTags : bothTags,
-											bothNullTags : bothNullTags,
-											topTenImaggaTags : topTenImaggaTags,
-											topTenAlchemyTags : topTenAlchemyTags
-										});
+										imageCollection.aggregate(
+											[
+												{ "$unwind" : "$machineTags" },
+												{ "$group" : { "_id" : "$machineTags.tag" , "number" : { "$sum" : 1 } } },
+												{ "$sort" : { "number" : -1 } },
+												{ "$limit" : 10 }
+											],function (err, topTenMachineTags){
+												res.jsonp({
+													collectionSize : collectionSize,
+													taggedImages : taggedImages,
+													eitherNullTags : taggedImages,
+													bothTags : bothTags,
+													bothNullTags : bothNullTags,
+													topTenImaggaTags : topTenImaggaTags,
+													topTenAlchemyTags : topTenAlchemyTags,
+													topTenMachineTags : topTenMachineTags
+												});
+											});
 								});
 						});
 					});

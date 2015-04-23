@@ -75,8 +75,10 @@ $(window).load(function(){
 
             var alchemyData = [];
             var imaggaData = [];
+            var machineData = [];
             var topAlchemyTags = data['topTenAlchemyTags'];
             var topImaggaTags = data['topTenImaggaTags'];
+            var topMachineTags = data['topTenMachineTags'];
             $('#stat1').html(data['collectionSize']);
             $('#stat2').html(data['taggedImages']);
             $('#stat3').html(data['eitherNullTags']);
@@ -97,6 +99,14 @@ $(window).load(function(){
                     imaggaData.push([topImaggaTags[i]['_id'], topImaggaTags[i]['number']] );
                 }
                 genGraph('#imagga-tags',imaggaData,'Images', 'Top 10 Imagga Tags', 'Number of Images', 'Tag occurrences : <b>{point.y:,.0f}</b>');
+            }
+
+            if (topMachineTags != undefined && topMachineTags.length > 0) {
+
+                for (var i = 0;i<  topMachineTags.length; i++ ){
+                    machineData.push([topMachineTags[i]['_id'], topMachineTags[i]['number']] );
+                }
+                genGraph('#machine-tags',machineData,'Images', 'Top 10 Machine Tags', 'Number of Images', 'Tag occurrences : <b>{point.y:,.0f}</b>');
             }
             $('#image-page').css('visibility', 'visible');
         });

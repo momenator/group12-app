@@ -25,6 +25,23 @@
 				<i class="fa fa-bookmark"></i> Page : {{page}}<br>
             </div>
       	</div>
+      	{{#if machineTags}}
+      	<div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Generated Machine Tags</h3>
+            </div>
+            <div class="panel-body">
+            	<div class="tags">
+            		{{#each machineTags}}
+						{{#if this.tag}}
+							<a class="tag" href="javascript:void(0)" data-toggle="modal" data-target="#myModal">{{this.tag}} : {{shortenDecimal this.confidence}} % 
+							</a>
+						{{/if}}
+					{{/each}}
+				</div>
+            </div>
+      	</div>
+      	{{/if}}
       	{{#if alchemyTags}}
 		<div class="panel panel-info">
             <div class="panel-heading">
@@ -60,9 +77,11 @@
       	{{/if}}
       	{{#unless imaggaTags}}
       		{{#unless alchemyTags}}
-      			<div class="alert alert-warning" role="alert">
-  					<a class="alert-link">No tags are available for this image</a>
-				</div>
+      			{{#unless machineTags}}
+	      			<div class="alert alert-warning" role="alert">
+	  					<a class="alert-link">No tags are available for this image</a>
+					</div>
+				{{/unless}}
       		{{/unless}}
       	{{/unless}}
 	</div>
