@@ -92,18 +92,52 @@ module.exports = function (imageCollection, tagCollection){
 		            "text": query
 		        }
 		    }
-		}).limit(50).toArray(function (err, docs){
+		}).sort({"alchemyTags.score" : -1}).limit(100).toArray(function (err, docs){
+			console.log("AlchemyAPI :: " + docs.length);
 			if (err) {
 				//console.log(err);
 				res.render('error', { message:err });
 			} else {
 				for (var i = 0; i < docs.length; i++){
-					for (var j = 0; j < docs[i]['alchemyTags'].length; j++){
-						if (docs[i]['alchemyTags'][j]['text'] == query){
-							//console.log('score::' + docs[i]['alchemyTags'][j]['score']);
-							docs[i]['rank'] = parseFloat(convertToPercentageHelper(docs[i]['alchemyTags'][j]['score']));
+					var currRank = 0;
+					if (docs[i]['alchemyTags'] != null){
+						for (var j = 0; j < docs[i]['alchemyTags'].length; j++){						
+							if (docs[i]['alchemyTags'][j]['text'] == query){
+								var buffRank = parseFloat(convertToPercentageHelper(docs[i]['alchemyTags'][j]['score']));
+								if (currRank < buffRank){
+									currRank = buffRank
+								}
+							}
 						}
 					}
+					
+					if (docs[i]['imaggaTags'] != null){
+						for (var j = 0; j < docs[i]['imaggaTags'].length; j++){						
+
+							if (docs[i]['imaggaTags'][j]['tag'] == query){
+								var buffRank = parseFloat((docs[i]['imaggaTags'][j]['confidence']));
+								if (currRank < buffRank){
+									currRank = buffRank
+								}
+							}
+						}
+					}
+
+					if (docs[i]['machineTags'] != null){
+
+						for (var j = 0; j < docs[i]['machineTags'].length; j++){						
+
+							if (docs[i]['machineTags'][j]['tag'] == query){
+								var buffRank = parseFloat((docs[i]['machineTags'][j]['confidence']));
+								if (currRank < buffRank){
+									currRank = buffRank
+								}
+							}
+						}
+					}
+
+					docs[i]['rank'] = currRank;
+
 				}
 				result.push.apply(result, docs);
 				imageCollection.find({
@@ -112,17 +146,51 @@ module.exports = function (imageCollection, tagCollection){
 				            "tag": query
 				        }
 				    }
-				}).limit(50).toArray(function (err, docs){
+				}).sort({"imaggaTags.confidence" : -1}).limit(100).toArray(function (err, docs){
+					console.log("imaggaTags :: " + docs.length);
 					if (err) {
 						//console.log(err);
 						res.render('error', { message:err });
 					} else {
 						for (var i = 0; i < docs.length; i++){
-							for (var j = 0; j < docs[i]['imaggaTags'].length; j++){
-								if (docs[i]['imaggaTags'][j]['tag'] == query){
-									docs[i]['rank'] = parseFloat(docs[i]['imaggaTags'][j]['confidence']);
+							var currRank = 0;
+							if (docs[i]['alchemyTags'] != null){
+								for (var j = 0; j < docs[i]['alchemyTags'].length; j++){						
+									if (docs[i]['alchemyTags'][j]['text'] == query){
+										var buffRank = parseFloat(convertToPercentageHelper(docs[i]['alchemyTags'][j]['score']));
+										if (currRank < buffRank){
+											currRank = buffRank
+										}
+									}
 								}
 							}
+							
+							if (docs[i]['imaggaTags'] != null){
+								for (var j = 0; j < docs[i]['imaggaTags'].length; j++){						
+
+									if (docs[i]['imaggaTags'][j]['tag'] == query){
+										var buffRank = parseFloat((docs[i]['imaggaTags'][j]['confidence']));
+										if (currRank < buffRank){
+											currRank = buffRank
+										}
+									}
+								}
+							}
+
+							if (docs[i]['machineTags'] != null){
+
+								for (var j = 0; j < docs[i]['machineTags'].length; j++){						
+
+									if (docs[i]['machineTags'][j]['tag'] == query){
+										var buffRank = parseFloat((docs[i]['machineTags'][j]['confidence']));
+										if (currRank < buffRank){
+											currRank = buffRank
+										}
+									}
+								}
+							}
+
+							docs[i]['rank'] = currRank;
 						}
 						result.push.apply(result, docs);
 						imageCollection.find({
@@ -131,27 +199,56 @@ module.exports = function (imageCollection, tagCollection){
 						            "tag": query
 						        }
 						    }
-						}).limit(50).toArray(function (err, docs){
+						}).sort({"machineTags.confidence" : -1}).limit(100).toArray(function (err, docs){
+							console.log("machineTags :: " + docs.length);
 							if (err) {
 								//console.log(err);
 								res.render('error', { message:err });
 							} else {
 								for (var i = 0; i < docs.length; i++){
-									for (var j = 0; j < docs[i]['machineTags'].length; j++){
-										if (docs[i]['machineTags'][j]['tag'] == query){
-											docs[i]['rank'] = parseFloat(docs[i]['machineTags'][j]['confidence']);
+									var currRank = 0;
+									if (docs[i]['alchemyTags'] != null){
+										for (var j = 0; j < docs[i]['alchemyTags'].length; j++){						
+											if (docs[i]['alchemyTags'][j]['text'] == query){
+												var buffRank = parseFloat(convertToPercentageHelper(docs[i]['alchemyTags'][j]['score']));
+												if (currRank < buffRank){
+													currRank = buffRank
+												}
+											}
 										}
 									}
+									
+									if (docs[i]['imaggaTags'] != null){
+										for (var j = 0; j < docs[i]['imaggaTags'].length; j++){						
+
+											if (docs[i]['imaggaTags'][j]['tag'] == query){
+												var buffRank = parseFloat((docs[i]['imaggaTags'][j]['confidence']));
+												if (currRank < buffRank){
+													currRank = buffRank
+												}
+											}
+										}
+									}
+
+									if (docs[i]['machineTags'] != null){
+
+										for (var j = 0; j < docs[i]['machineTags'].length; j++){						
+
+											if (docs[i]['machineTags'][j]['tag'] == query){
+												var buffRank = parseFloat((docs[i]['machineTags'][j]['confidence']));
+												if (currRank < buffRank){
+													currRank = buffRank
+												}
+											}
+										}
+									}
+
+									docs[i]['rank'] = currRank;
 								}
 								result.push.apply(result, docs);
 								result.sort(sortByRank);
-								//console.log('-- tags --\n');
-								if (result.length > 0){
-									for (var i = 0;i < result.length; i++){
-										//console.log(result[i]['title']);
-										//console.log(result[i]['rank']);
-									}
-								}
+								result.splice(100, result.length - 1);
+								console.log("length :: " + result.length);
 								
 								//console.log("result tags : " + result);
 								if (result.length == 0){
@@ -338,17 +435,52 @@ module.exports = function (imageCollection, tagCollection){
 		            "text": query
 		        }
 		    }
-		}).limit(50).toArray(function (err, docs){
+		}).sort({"alchemyTags.score" : -1}).limit(100).toArray(function (err, docs){
+			console.log("AlchemyAPI :: " + docs.length);
 			if (err) {
 				//console.log(err);
 				res.render('error', { message:err });
 			} else {
 				for (var i = 0; i < docs.length; i++){
-					for (var j = 0; j < docs[i]['alchemyTags'].length; j++){
-						if (docs[i]['alchemyTags'][j]['text'] == query){
-							docs[i]['rank'] = parseFloat(docs[i]['alchemyTags'][j]['score']);
+					var currRank = 0;
+					if (docs[i]['alchemyTags'] != null){
+						for (var j = 0; j < docs[i]['alchemyTags'].length; j++){						
+							if (docs[i]['alchemyTags'][j]['text'] == query){
+								var buffRank = parseFloat(convertToPercentageHelper(docs[i]['alchemyTags'][j]['score']));
+								if (currRank < buffRank){
+									currRank = buffRank
+								}
+							}
 						}
 					}
+					
+					if (docs[i]['imaggaTags'] != null){
+						for (var j = 0; j < docs[i]['imaggaTags'].length; j++){						
+
+							if (docs[i]['imaggaTags'][j]['tag'] == query){
+								var buffRank = parseFloat((docs[i]['imaggaTags'][j]['confidence']));
+								if (currRank < buffRank){
+									currRank = buffRank
+								}
+							}
+						}
+					}
+
+					if (docs[i]['machineTags'] != null){
+
+						for (var j = 0; j < docs[i]['machineTags'].length; j++){						
+
+							if (docs[i]['machineTags'][j]['tag'] == query){
+								var buffRank = parseFloat((docs[i]['machineTags'][j]['confidence']));
+								if (currRank < buffRank){
+									currRank = buffRank
+								}
+							}
+						}
+					}
+
+					docs[i]['rank'] = currRank;
+
 				}
 				result.push.apply(result, docs);
 				imageCollection.find({
@@ -357,17 +489,51 @@ module.exports = function (imageCollection, tagCollection){
 				            "tag": query
 				        }
 				    }
-				}).limit(50).toArray(function (err, docs){
+				}).sort({"imaggaTags.confidence" : -1}).limit(100).toArray(function (err, docs){
+					console.log("imaggaTags :: " + docs.length);
 					if (err) {
 						//console.log(err);
 						res.render('error', { message:err });
 					} else {
 						for (var i = 0; i < docs.length; i++){
-							for (var j = 0; j < docs[i]['imaggaTags'].length; j++){
-								if (docs[i]['imaggaTags'][j]['tag'] == query){
-									docs[i]['rank'] = parseFloat(docs[i]['imaggaTags'][j]['confidence']);
+							var currRank = 0;
+							if (docs[i]['alchemyTags'] != null){
+								for (var j = 0; j < docs[i]['alchemyTags'].length; j++){						
+									if (docs[i]['alchemyTags'][j]['text'] == query){
+										var buffRank = parseFloat(convertToPercentageHelper(docs[i]['alchemyTags'][j]['score']));
+										if (currRank < buffRank){
+											currRank = buffRank
+										}
+									}
 								}
 							}
+							
+							if (docs[i]['imaggaTags'] != null){
+								for (var j = 0; j < docs[i]['imaggaTags'].length; j++){						
+
+									if (docs[i]['imaggaTags'][j]['tag'] == query){
+										var buffRank = parseFloat((docs[i]['imaggaTags'][j]['confidence']));
+										if (currRank < buffRank){
+											currRank = buffRank
+										}
+									}
+								}
+							}
+
+							if (docs[i]['machineTags'] != null){
+
+								for (var j = 0; j < docs[i]['machineTags'].length; j++){						
+
+									if (docs[i]['machineTags'][j]['tag'] == query){
+										var buffRank = parseFloat((docs[i]['machineTags'][j]['confidence']));
+										if (currRank < buffRank){
+											currRank = buffRank
+										}
+									}
+								}
+							}
+
+							docs[i]['rank'] = currRank;
 						}
 						result.push.apply(result, docs);
 						imageCollection.find({
@@ -376,20 +542,58 @@ module.exports = function (imageCollection, tagCollection){
 						            "tag": query
 						        }
 						    }
-						}).limit(50).toArray(function (err, docs){
+						}).sort({"machineTags.confidence" : -1}).limit(100).toArray(function (err, docs){
+							console.log("machineTags :: " + docs.length);
 							if (err) {
 								//console.log(err);
 								res.render('error', { message:err });
 							} else {
 								for (var i = 0; i < docs.length; i++){
-									for (var j = 0; j < docs[i]['machineTags'].length; j++){
-										if (docs[i]['machineTags'][j]['tag'] == query){
-											docs[i]['rank'] = parseFloat(docs[i]['machineTags'][j]['confidence']);
+									var currRank = 0;
+									if (docs[i]['alchemyTags'] != null){
+										for (var j = 0; j < docs[i]['alchemyTags'].length; j++){						
+											if (docs[i]['alchemyTags'][j]['text'] == query){
+												var buffRank = parseFloat(convertToPercentageHelper(docs[i]['alchemyTags'][j]['score']));
+												if (currRank < buffRank){
+													currRank = buffRank
+												}
+											}
 										}
 									}
+									
+									if (docs[i]['imaggaTags'] != null){
+										for (var j = 0; j < docs[i]['imaggaTags'].length; j++){						
+
+											if (docs[i]['imaggaTags'][j]['tag'] == query){
+												var buffRank = parseFloat((docs[i]['imaggaTags'][j]['confidence']));
+												if (currRank < buffRank){
+													currRank = buffRank
+												}
+											}
+										}
+									}
+
+									if (docs[i]['machineTags'] != null){
+
+										for (var j = 0; j < docs[i]['machineTags'].length; j++){						
+
+											if (docs[i]['machineTags'][j]['tag'] == query){
+												var buffRank = parseFloat((docs[i]['machineTags'][j]['confidence']));
+												if (currRank < buffRank){
+													currRank = buffRank
+												}
+											}
+										}
+									}
+
+									docs[i]['rank'] = currRank;
 								}
 								result.push.apply(result, docs);
 								result.sort(sortByRank);
+								result.splice(100, result.length - 1);
+								console.log("length :: " + result.length);
+								
+								//console.log("result tags : " + result);
 								if (result.length == 0){
 									res.jsonp('{}');
 								} else {
@@ -400,6 +604,7 @@ module.exports = function (imageCollection, tagCollection){
 									});
 								}
 							}
+							
 						});
 					}
 				});

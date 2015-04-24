@@ -6,7 +6,7 @@ $(window).load(function(){
     } else {
         $('#query').attr("action", "/searchTags");
     }
-    if (document.URL.indexOf('search') > 0){
+    if (document.URL.indexOf('searchTags') > 0){
         var container = document.querySelector('#columns');
         var msnry = new Masonry( container, {
             // options
@@ -67,7 +67,6 @@ $(window).load(function(){
         };
         var url = window.location.href.split('/');
         var APIUrl = url[0] + '//' + url[2];
-
         $.ajax({
             method: 'GET',
             url : APIUrl + '/api/getStatistics'
@@ -127,12 +126,17 @@ $(document).ready(function(){
     $(document.body).on('click', '.tag', function(){
         var url = window.location.href.split('/');
         var APIUrl = url[0] + '//' + url[2];
+        console.log(APIUrl);
         var keywords = String($(this).html()).split(" ");
+        console.log(keywords);
         var tagName = keywords[0];
-        if (keywords[1] != ':' && keywords[1] != ' ' & keywords[1] != undefined){
+        if (keywords[2] == ':'){
             tagName = keywords[0] + ' ' + keywords[1];
         }
 
+        if (keywords[3] == ':'){
+            tagName = keywords[0] + ' ' + keywords[1] + ' ' + keywords[2];
+        }
         $('.tag-name').html('"' + tagName + '"');
         
         $.ajax({
