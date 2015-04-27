@@ -6,7 +6,7 @@ $(window).load(function(){
     } else {
         $('#query').attr("action", "/searchTags");
     }
-    if (document.URL.indexOf('searchTags') > 0){
+    if (document.URL.indexOf('searchTags') > 0 || (document.URL.indexOf('search') > 0 && document.URL.length < 41)){
         var container = document.querySelector('#columns');
         var msnry = new Masonry( container, {
             // options
@@ -126,9 +126,9 @@ $(document).ready(function(){
     $(document.body).on('click', '.tag', function(){
         var url = window.location.href.split('/');
         var APIUrl = url[0] + '//' + url[2];
-        console.log(APIUrl);
+        //console.log(APIUrl);
         var keywords = String($(this).html()).split(" ");
-        console.log(keywords);
+        //console.log(keywords);
         var tagName = keywords[0];
         if (keywords[2] == ':'){
             tagName = keywords[0] + ' ' + keywords[1];

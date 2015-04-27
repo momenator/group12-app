@@ -47,14 +47,14 @@ module.exports = function (imageCollection, tagCollection){
 	};
 
 	functions.postSearchByTitlePage = function(req, res, next){
-		//console.log("searched for title : " + req.body.query);
+		////console.log("searched for title : " + req.body.query);
 		imageCollection.find({
 			"$text" : {
 				"$search" : req.body.query
 			}
 		}).limit(50).toArray(function (err, docs){
 			if (err) {
-				//console.log (err);
+				////console.log (err);
 				res.render('error', { message:err });
 			} else {
 				if (docs.length == 0){
@@ -83,7 +83,7 @@ module.exports = function (imageCollection, tagCollection){
 	};
 
 	functions.postSearchByTagPage = function(req, res, next){
-		//console.log("searched for tag : " + req.body.query);
+		////console.log("searched for tag : " + req.body.query);
 		var query = (req.params.query == undefined) ? req.body.query : req.params.query;
 		var result = [];
 		imageCollection.find({
@@ -93,9 +93,9 @@ module.exports = function (imageCollection, tagCollection){
 		        }
 		    }
 		}).sort({"alchemyTags.score" : -1}).limit(100).toArray(function (err, docs){
-			console.log("AlchemyAPI :: " + docs.length);
+			//console.log("AlchemyAPI :: " + docs.length);
 			if (err) {
-				//console.log(err);
+				////console.log(err);
 				res.render('error', { message:err });
 			} else {
 				for (var i = 0; i < docs.length; i++){
@@ -147,9 +147,9 @@ module.exports = function (imageCollection, tagCollection){
 				        }
 				    }
 				}).sort({"imaggaTags.confidence" : -1}).limit(100).toArray(function (err, docs){
-					console.log("imaggaTags :: " + docs.length);
+					//console.log("imaggaTags :: " + docs.length);
 					if (err) {
-						//console.log(err);
+						////console.log(err);
 						res.render('error', { message:err });
 					} else {
 						for (var i = 0; i < docs.length; i++){
@@ -200,9 +200,9 @@ module.exports = function (imageCollection, tagCollection){
 						        }
 						    }
 						}).sort({"machineTags.confidence" : -1}).limit(100).toArray(function (err, docs){
-							console.log("machineTags :: " + docs.length);
+							//console.log("machineTags :: " + docs.length);
 							if (err) {
-								//console.log(err);
+								////console.log(err);
 								res.render('error', { message:err });
 							} else {
 								for (var i = 0; i < docs.length; i++){
@@ -247,10 +247,20 @@ module.exports = function (imageCollection, tagCollection){
 								}
 								result.push.apply(result, docs);
 								result.sort(sortByRank);
-								result.splice(100, result.length - 1);
-								console.log("length :: " + result.length);
+								result.splice(150, result.length - 1);
+								for (var i = 0; i < result.length; i++){
+									for(var j = 0; j < result.length; j++){
+										if (i == j) {
+											continue;
+										}
+										if (result[i]["title"] == result[j]["title"]){
+											result.splice(j,1);
+										}
+									}
+								}
+								//console.log("length :: " + result.length);
 								
-								//console.log("result tags : " + result);
+								////console.log("result tags : " + result);
 								if (result.length == 0){
 									res.render('search', { 
 										searchByTags: 'checked',
@@ -286,7 +296,7 @@ module.exports = function (imageCollection, tagCollection){
 	};
 	
 	functions.getImagePage = function(req, res, next){
-		//console.log("visited image id : " + req.params.imageid);
+		////console.log("visited image id : " + req.params.imageid);
 		var query;
 		var options;
 		if (req.params.imageid == 'random'){
@@ -300,12 +310,12 @@ module.exports = function (imageCollection, tagCollection){
 			options = {};
 		}
 		imageCollection.findOne(query, {}, options, function (err, doc){
-			//console.log(doc);
+			////console.log(doc);
 			if (err) {
-				//console.log (err);
+				////console.log (err);
 				res.render('error', { message:err } );
 			} else if (doc == undefined){ 
-				//console.log ('Image Not found, redirecting to error 404 page');
+				////console.log ('Image Not found, redirecting to error 404 page');
 				res.redirect('/invalid-image-id');
 			} else if (doc.alchemyTags == undefined && doc.imaggaTags == undefined ){
 				var url = doc.flickr_small_source;
@@ -327,7 +337,7 @@ module.exports = function (imageCollection, tagCollection){
 								imaggaTags: imaggaTags
 							}
 						},function(){ 
-							//console.log('inserted tags') 
+							////console.log('inserted tags') 
 						});
 						res.render('image', { 
 							url: doc.flickr_original_source, 
@@ -374,7 +384,7 @@ module.exports = function (imageCollection, tagCollection){
 	};
 
 	functions.RestAPIgetCoOccurringTags = function (req, res, next){
-		//console.log('Rest API : get tag : ' + req.params.tagName);
+		////console.log('Rest API : get tag : ' + req.params.tagName);
 		var tagQuery = req.params.tagName;
 		var query = {
 			tag : tagQuery
@@ -385,7 +395,7 @@ module.exports = function (imageCollection, tagCollection){
 		} else {
 			tagCollection.findOne(query, function (err, doc) {
 				if (err) {
-					//console.log(err);
+					////console.log(err);
 					res.jsonp({error : err, message : 'an error has occured'});
 				}
 				if (doc == undefined) {
@@ -402,14 +412,14 @@ module.exports = function (imageCollection, tagCollection){
 	};
 
 	functions.RestAPIgetSearchByTitle = function(req, res, next){
-		//console.log("Rest API : searched for title : " + req.params.title);
+		////console.log("Rest API : searched for title : " + req.params.title);
 		imageCollection.find({
 			"$text" : {
 				"$search" : req.params.title
 			}
 		}).limit(50).toArray(function (err, docs){
 			if (err) {
-				//console.log (err);
+				////console.log (err);
 				res.render('error', { message:err });
 			} else {
 				if (docs.length == 0){
@@ -426,7 +436,7 @@ module.exports = function (imageCollection, tagCollection){
 	};
 
 	functions.RestAPIgetSearchByTag = function(req, res, next){
-		//console.log("Rest API : searched for tag : " + req.params.tag);
+		////console.log("Rest API : searched for tag : " + req.params.tag);
 		var query = req.params.tag;
 		var result = [];
 		imageCollection.find({
@@ -436,9 +446,9 @@ module.exports = function (imageCollection, tagCollection){
 		        }
 		    }
 		}).sort({"alchemyTags.score" : -1}).limit(100).toArray(function (err, docs){
-			console.log("AlchemyAPI :: " + docs.length);
+			//console.log("AlchemyAPI :: " + docs.length);
 			if (err) {
-				//console.log(err);
+				////console.log(err);
 				res.render('error', { message:err });
 			} else {
 				for (var i = 0; i < docs.length; i++){
@@ -490,9 +500,9 @@ module.exports = function (imageCollection, tagCollection){
 				        }
 				    }
 				}).sort({"imaggaTags.confidence" : -1}).limit(100).toArray(function (err, docs){
-					console.log("imaggaTags :: " + docs.length);
+					//console.log("imaggaTags :: " + docs.length);
 					if (err) {
-						//console.log(err);
+						////console.log(err);
 						res.render('error', { message:err });
 					} else {
 						for (var i = 0; i < docs.length; i++){
@@ -543,9 +553,9 @@ module.exports = function (imageCollection, tagCollection){
 						        }
 						    }
 						}).sort({"machineTags.confidence" : -1}).limit(100).toArray(function (err, docs){
-							console.log("machineTags :: " + docs.length);
+							//console.log("machineTags :: " + docs.length);
 							if (err) {
-								//console.log(err);
+								////console.log(err);
 								res.render('error', { message:err });
 							} else {
 								for (var i = 0; i < docs.length; i++){
@@ -591,9 +601,19 @@ module.exports = function (imageCollection, tagCollection){
 								result.push.apply(result, docs);
 								result.sort(sortByRank);
 								result.splice(100, result.length - 1);
-								console.log("length :: " + result.length);
+								for (var i = 0; i < result.length; i++){
+									for(var j = 0; j < result.length; j++){
+										if (i == j) {
+											continue;
+										}
+										if (result[i]["title"] == result[j]["title"]){
+											result.splice(j,1);
+										}
+									}
+								}
+								//console.log("length :: " + result.length);
 								
-								//console.log("result tags : " + result);
+								////console.log("result tags : " + result);
 								if (result.length == 0){
 									res.jsonp('{}');
 								} else {
@@ -613,7 +633,7 @@ module.exports = function (imageCollection, tagCollection){
 	};
 
 	functions.RestAPIgetImageDetails = function(req, res, next){
-		//console.log("Rest API : visited image id : " + req.params.imageid);
+		////console.log("Rest API : visited image id : " + req.params.imageid);
 		var query;
 		var options;
 		if (req.params.imageid == 'random'){
@@ -628,10 +648,10 @@ module.exports = function (imageCollection, tagCollection){
 		}
 		imageCollection.findOne(query, {}, options, function (err, doc){
 			if (err) {
-				//console.log (err);
+				////console.log (err);
 				res.render('error', { message:err } );
 			} else if (doc == undefined){ 
-				//console.log ('Image Not found, redirecting to error 404 page');
+				////console.log ('Image Not found, redirecting to error 404 page');
 				res.jsonp('{}');
 			} else if (doc.alchemyTags != undefined || doc.alchemyTags != undefined ){
 				res.jsonp({ 
@@ -668,7 +688,7 @@ module.exports = function (imageCollection, tagCollection){
 								imaggaTags: imaggaTags
 							}
 						},function(){ 
-							//console.log('inserted tags') 
+							////console.log('inserted tags') 
 						});
 						res.jsonp({ 
 							url: doc.flickr_original_source, 
@@ -692,10 +712,10 @@ module.exports = function (imageCollection, tagCollection){
 	};
 
 	functions.RestAPIgetStatistics = function (req, res, next){
-		//console.log("Rest API : get statistics");
+		////console.log("Rest API : get statistics");
 		imageCollection.count(function (err, count){
 			var collectionSize = count;
-			//console.log(collectionSize);
+			////console.log(collectionSize);
 			var query1 = {
 			    "$or": [
 			        {
@@ -717,7 +737,7 @@ module.exports = function (imageCollection, tagCollection){
 			};
 			imageCollection.find(query1).toArray(function (err, taggedDocs){
 				var taggedImages = taggedDocs.length;
-				//console.log(taggedImages);
+				////console.log(taggedImages);
 				var query2 = {
 				    "$and": [
 				        {
